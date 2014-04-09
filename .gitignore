@@ -1,1 +1,6 @@
 .project
+*.bak
+*.log
+*.DS_Store
+*.rar
+*.zip
