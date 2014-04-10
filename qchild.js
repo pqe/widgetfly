@@ -35,8 +35,8 @@ if(window.Qwidget === undefined){
 			
 		},
 		
-		trigger : function(widgetId){
-			parent.Qplugin.trigger(widgetId);
+		trigger : function(widgetId, action){
+			parent.Qplugin.trigger(widgetId, action);
 		},
 		
 		getModal : function(){

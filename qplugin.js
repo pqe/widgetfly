@@ -2,6 +2,8 @@ var nowScripts = document.getElementsByTagName('script');
 if (window.Qplugin === undefined) {
 	window.Qplugin = {
 
+		debug : true,
+
 		appInfo : {
 			caller : null,
 			id : null,
@@ -190,7 +192,7 @@ if (window.Qplugin === undefined) {
 		},
 
 		modalRender : function(widgetId, appendType, options) {
-			var contentView = document.createElement('div'), viewTop = document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = document.createElement('iFrame');
+			var self = this, contentView = document.createElement('div'), viewTop = document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = document.createElement('iFrame');
 
 			if (options !== undefined && options !== null && options !== {}) {
 				spanTitle.textContent = options.title;
@@ -199,12 +201,15 @@ if (window.Qplugin === undefined) {
 			aClose.setAttribute('href', 'javascript:void(0)');
 			aClose.setAttribute('class', 'close');
 			aClose.textContent = 'x';
+			aClose.onclick = function() {
+				self.removeClass('.modal', 'active', self.getElementsByClassName('QT')[0]);
+			};
 
 			viewTop.setAttribute('class', 'QT view-top');
 			viewTop.appendChild(spanTitle);
 			viewTop.appendChild(aClose);
 
-			iframe.setAttribute('src', 'http://192.168.73.128/widgetjs/test.html');
+			iframe.setAttribute('src', options.src);
 			iframe.setAttribute('id', widgetId);
 
 			contentView.setAttribute('class', 'QT content');
@@ -212,17 +217,6 @@ if (window.Qplugin === undefined) {
 			contentView.appendChild(iframe);
 
 			this.getElementsByClassName('QT modal')[0].appendChild(contentView);
-		},
-
-		modalActivate : function(appendType, append) {
-			if (this.getElementsByClassName('QT modal')[0].childNodes.length === 1) {
-				if (appendType === 'class') {
-					this.getElementsByClassName('QT modal.' + appendClass)[0].setAttribute('class', 'QT active modal ' + append);
-				} else {
-					this.getElementsByClassName('QT modal.' + appendClass)[0].setAttribute('class', 'QT active modal');
-					this.getElementsByClassName('QT modal.' + appendClass)[0].setAttribute('id', append);
-				}
-			}
 		},
 
 		popoverInit : function() {
@@ -268,11 +262,28 @@ if (window.Qplugin === undefined) {
 			}
 		},
 
-		trigger : function(widgetId) {
-			var targetClass = document.getElementById(widgetId).parentNode.parentNode.getAttribute('class') + ' active';
-			document.getElementById(widgetId).parentNode.parentNode.setAttribute('class', targetClass);
+		trigger : function(widgetId, action) {
+			var target = document.getElementById(widgetId).parentNode.parentNode;
+			//get instance which is QT child.
+			switch(action) {
+				case 'open' :
+					if (!this.hasClass(target, 'active')) {
+						this.addClass(target, 'active');
+					}
+					break;
+				case 'close':
+					//console.log(target.className);
+					if (this.hasClass(target, 'active')) {
+						this.removeClass(target, 'active');
+					}
+					break;
+				default :
+					if (this.debug) {
+						console.info('No this action, action id is %s', widgetId);
+					}
+			}
 		},
-
+		// Self tool function
 		getElementsByClassName : function(testClass, startFrom) {
 			/**
 			 * getElementsByClassName
@@ -284,33 +295,110 @@ if (window.Qplugin === undefined) {
 			 */
 
 			for (var// this will be incremented to 0 at start of loop
-				i = -1,
-				// results of the DOM query (elements with matching class)
-				results = [],
-				// regular expression to see if the class attribute contains
-				// the searched for class
-				finder = new RegExp('(?:^|\\s)' + testClass + '(?:\\s|$)'),
-				// grab all DOM elements and the set's length
-				a = startFrom && startFrom.getElementsByTagName && startFrom.getElementsByTagName('*') || document.all || document.getElementsByTagName('*'),
+			i = -1,
+			// results of the DOM query (elements with matching class)
+			results = [],
+			// regular expression to see if the class attribute contains
+			// the searched for class
+			finder = new RegExp('(?:^|\\s)' + testClass + '(?:\\s|$)'),
+			// grab all DOM elements and the set's length
+			a = startFrom && startFrom.getElementsByTagName && startFrom.getElementsByTagName('*') || document.all || document.getElementsByTagName('*'),
 
-				// cache the length property
-				l = a.length;
+			// cache the length property
+			l = a.length;
 
-				// this is done before we start and at every comparison (note the ++)
-				++i < l;
-				// this is done after the first comparison and every iteration afterward
-				finder.test(a[i].className) && results.push(a[i]));
-				// do memory management and return the results of our query
-				a = null;
-				return results;
+			// this is done before we start and at every comparison (note the ++)
+			++i < l;
+			// this is done after the first comparison and every iteration afterward
+			finder.test(a[i].className) && results.push(a[i]));
+			// do memory management and return the results of our query
+			a = null;
+			return results;
 		},
-		
+
 		isNative : function(object, method) {
-  			return object && method in object &&
-    		typeof object[method] != 'string' &&
-    		// IE & W3C browser return "[native code]"
-    		// Safari <= 2.0.4 will return "[function]"
-    		(/\{\s*\[native code\]\s*\}|^\[function\]$/).test(object[method]);
+			return object && method in object && typeof object[method] != 'string' &&
+			// IE & W3C browser return "[native code]"
+			// Safari <= 2.0.4 will return "[function]"
+			(/\{\s*\[native code\]\s*\}|^\[function\]$/).test(object[method]);
+		},
+
+		//Returns true if it is a DOM node
+		isNode : function(o) {
+			return ( typeof Node === "object" ? o instanceof Node : o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName === "string");
+		},
+
+		//Returns true if it is a DOM element
+		isElement : function(o) {
+			return ( typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string");
+		},
+
+		trans2Elem : function(element, startFrom){
+			if(typeof element === 'string'){			
+				if (element.substr(0, 1) === '#') {
+					target = document.getElementById(element.replace('#', ''));
+				} else if (element.substr(0, 1) === '.') {
+					target = this.getElementsByClassName(element.replace('.', ''), startFrom)[0];
+				} else {
+					target = document.getElementsByTagName(element)[0];
+				}
+			}
+			else{
+				target = element;
+			}
+			return target;			
+		},
+
+		hasClass : function(element, cls) {
+			return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+		},
+
+		addClass : function(element, className, startFrom) {
+			var target;
+			if (startFrom === undefined) {
+				startFrom = document;
+			}
+			target = this.trans2Elem(element, startFrom);
+		    if (!this.hasClass(target, className)) {
+		        target.className += ' ' + className;
+		    }
+		},
+
+		removeClass : function(element, rmClass, startFrom) {
+			var target, newClass;
+			if (startFrom === undefined) {
+				startFrom = document;
+			}
+			target = this.trans2Elem(element, startFrom);
+			
+			if (target !== undefined && this.isElement(target)) {
+				newClass = ' ' + target.className.replace(/[\t\r\n]/g, ' ') + ' ';
+				if (this.hasClass(target, rmClass)) {
+					while (newClass.indexOf(' ' + rmClass + ' ') >= 0) {
+						newClass = newClass.replace(' ' + rmClass + ' ', ' ');
+					}
+					target.className = newClass.replace(/^\s+|\s+$/g, '');
+				}
+			}
+		},
+
+		toggleClass : function(element, className, startFrom) {
+			var target, newClass;
+			if (startFrom === undefined) {
+				startFrom = document;
+			}
+			target = this.trans2Elem(element, startFrom);
+			if (target !== undefined && this.isElement(target)) {
+				newClass = ' ' + target.className.replace(/[\t\r\n]/g, ' ') + ' ';
+			    if (this.hasClass(target, className)) {
+			        while (newClass.indexOf(' ' + className + ' ') >= 0 ) {
+			            newClass = newClass.replace( ' ' + className + ' ' , ' ' );
+			        }
+			        target.className = newClass.replace(/^\s+|\s+$/g, '');
+			    } else {
+			        target.className += ' ' + className;
+			    }
+		    }
 		}
 	};
 	window.Qplugin.initialize();
