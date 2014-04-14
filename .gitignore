@@ -1,6 +1,3 @@
-.project
-*.bak
+node_modules
+bower_components
 *.log
-*.DS_Store
-*.rar
-*.zip

@@ -1,0 +1,30 @@
+{
+	"name": "widgetfly",
+	"version": "0.1.0",
+	"author": "hsfeng",
+	"homepage": "https://github.com/hsfeng/widgetfly",
+	"bugs": "https://github.com/hsfeng/widgetfly/issues",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/hsfeng/widgetfly.git"
+	},
+	"engines": {
+		"node": ">= 0.10.0"
+	},
+	"devDependencies": {
+		"grunt": "0.4.2",
+		"grunt-contrib-watch": "~0.5.3",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-open": "~0.2.3",
+		"connect-livereload": "~0.3.2",
+		"grunt-contrib-jshint": "~0.8.0",
+		"grunt-contrib-uglify": "~0.3.0",
+		"grunt-contrib-copy": "~0.5.0",
+		"grunt-jsdoc": "~0.5.1",
+		"grunt-jscs-checker": "~0.3.2",
+		"grunt-version": "~0.3.0",
+		"load-grunt-tasks": "~0.2.1",
+		"time-grunt": "~0.2.8",
+		"jshint-stylish": "~0.1.5"
+	}
+}
