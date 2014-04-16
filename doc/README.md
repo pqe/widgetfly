@@ -1,54 +1,97 @@
-widgetfly
+Widgetfly
 ==============
 
-About
---------------
-
-URL: [https://github.com/hsfeng/widgetfly](https://github.com/hsfeng/widgetfly)
-
-Author: [hsfeng](https://github.com/hsfeng)
+A javascript library for building cross-site web widgets.
 
 
+#Widgetfly.Panel
 
-Build from source
---------------
+**Panel** is a module that ................ For example:
 
-In order to build your generated AMD module from its source, you will also need Grunt. To install Grunt globally on the command line (and run the above build task), run:
 
 ```
-npm install -g grunt-cli
-```
-
-Once you have generated your AMD module skeleton, you can build the minified files, the documentation and the example with Grunt:
-
-```
-grunt build
-```
-
-You can also launch the `grunt serve` task to load the "example" folder in your browser and benefit from livereload of the page in the browser once you edit one of your source file or one of the example files:
+var myPanel = new Widgetfly.Panel({
+    options....
+});
 
 ```
-grunt serve
+
+##Options
+* Color Scheme : light / dark
+* Size : width / height (autoresize?)
+* Type : Modal(center? overlay?) / Panel / Popover(left/bottom/right/top?)
+* URL
+
+
+##Methods
+###show()
+###hide()
+###destroy()
+###setSize(width,height)
+
+
+
+#Widgetfly.Modal
+
+**Modal** is a module that ................ For example:
+
+
+```
+var myModal = new Widgetfly.Modal({
+    options....
+});
+
+```
+##Options
+* 1
+* 2
+* 3
+
+##Methods
+###show
+###hide
+
+
+#Widgetfly.Popover
+
+**Popover** is a module that ................ For example:
+
+
+```
+var myPopover = new Widgetfly.Popover({
+    options....
+});
+
+
+```
+##Options
+* 1
+* 2
+* 3
+
+##Methods
+###show
+###hide
+
+#Widgetfly.Server
+
+**Server** is a module that ................ For example:
+
+
+```
+var myServer = new Widgetfly.Server({
+    options....
+});
+
 ```
 
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+##Options
+* 1
+* 2
+* 3
+
+##Methods
+###show
+###hide
 
 
-Credits
---------------
-
-widgetfly was initiated with [generator-amd](https://github.com/T1st3/generator-amd), a [Yeoman](http://yeoman.io) generator that builds an AMD module boilerplate.
-
-This project uses the following as development dependencies:
-
-* [JSHint](http://jshint.com)
-* [JSCS](https://npmjs.org/package/jscs)
-* [UglifyJS](http://marijn.haverbeke.nl/uglifyjs)
-* [JSDoc](http://usejsdoc.org)
-
-
-
-License
---------------
-
-[License](https://github.com/hsfeng/widgetfly/blob/master/LICENSE)

@@ -1,10 +1,10 @@
-widgetfly
+Widgetfly
 ==============
 
 About
 --------------
 
-URL: [https://github.com/hsfeng/widgetfly](https://github.com/hsfeng/widgetfly)
+URL: [https://github.com/pqe/widgetfly](https://github.com/hsfeng/widgetfly)
 
 Author: [hsfeng](https://github.com/hsfeng)
 
@@ -51,4 +51,4 @@ This project uses the following as development dependencies:
 License
 --------------
 
-[License](https://github.com/hsfeng/widgetfly/blob/master/LICENSE)
+[License](https://github.com/pqe/widgetfly/blob/master/LICENSE)
