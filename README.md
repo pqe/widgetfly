@@ -4,7 +4,7 @@ Widgetfly
 About
 --------------
 
-URL: [https://github.com/pqe/widgetfly](https://github.com/hsfeng/widgetfly)
+URL: [https://github.com/pqe/widgetfly](https://github.com/pqe/widgetfly)
 
 Author: [hsfeng](https://github.com/hsfeng)
 
