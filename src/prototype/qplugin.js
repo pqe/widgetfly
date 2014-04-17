@@ -27,7 +27,7 @@ if (window.Qplugin === undefined) {
 				document.getElementsByTagName('body')[0].appendChild(instance);
 			}
 			window.addEventListener('message', function(msgObj) {
-				self.listener(msgObj.data);
+				self.listener(msgObj);
 			}, false);
 		},
 
@@ -53,58 +53,62 @@ if (window.Qplugin === undefined) {
 
 		parseUrl : function(URL, checkLib) {
 			var nowSrc, parameter, createParam = {}, i, tmpStr, tmpParam;
-			if (URL.length > 0) {
+			if (typeof URL !== 'string' && URL.length > 0) {				
 				URL = URL[URL.length - 1];
 				if (URL.getAttribute.length !== undefined) {
 					nowSrc = URL.getAttribute('src', -1);
-					parameter = nowSrc.split('?', 2);
-					if (parameter.length > 1) {
-						parameter = parameter[1];
-						parameter = parameter.split('&');
-						if (parameter.length > 0) {
-							if (parameter[0].split('=', 2).length > 0) {
-								createParam.type = parameter[0].split('=', 2)[1];
-							}
+				}
+			}
+			else{
+				nowSrc = URL;
+			}
+			
+			parameter = nowSrc.split('?', 2);
+			if (parameter.length > 1) {
+				parameter = parameter[1];
+				parameter = parameter.split('&');
+				if (parameter.length > 0) {
+					if (parameter[0].split('=', 2).length > 0) {
+						createParam.type = parameter[0].split('=', 2)[1];
+					}
 
-							if (parameter[1] !== undefined && parameter[1].split('=', 2).length > 0) {
-								if (parameter[1].split('=', 2)[1] !== "") {
-									createParam.append = parameter[1].split('=', 2)[1];
-									if (parameter[1].split('=', 2)[0] === 'appendClass') {
-										createParam.appendType = 'class';
-									} else {
-										createParam.appendType = 'id';
-									}
-								}
+					if (parameter[1] !== undefined && parameter[1].split('=', 2).length > 0) {
+						if (parameter[1].split('=', 2)[1] !== "") {
+							createParam.append = parameter[1].split('=', 2)[1];
+							if (parameter[1].split('=', 2)[0] === 'appendClass') {
+								createParam.appendType = 'class';
+							} else {
+								createParam.appendType = 'id';
 							}
-							if (parameter.length > 2) {
-								createParam.options = {};
-								for ( i = 2; i < parameter.length; i++) {
-									if (parameter[i].split('=', 2).length > 0) {
-										tmpParam = parameter[i].split('=', 2)[1];
-										tmpParam = tmpParam.split(':');
-										if (tmpParam.length > 0) {
-											tmpStr = tmpParam.shift();
-											if (tmpParam.length !== 0) {
-												tmpParam = tmpParam.join(':');
-												if (tmpParam !== "" && tmpParam !== null && tmpParam !== 'null') {
-													createParam.options[tmpStr] = tmpParam;
-												}
-											}
+						}
+					}
+					if (parameter.length > 2) {
+						createParam.options = {};
+						for ( i = 2; i < parameter.length; i++) {
+							if (parameter[i].split('=', 2).length > 0) {
+								tmpParam = parameter[i].split('=', 2)[1];
+								tmpParam = tmpParam.split(':');
+								if (tmpParam.length > 0) {
+									tmpStr = tmpParam.shift();
+									if (tmpParam.length !== 0) {
+										tmpParam = tmpParam.join(':');
+										if (tmpParam !== "" && tmpParam !== null && tmpParam !== 'null') {
+											createParam.options[tmpStr] = tmpParam;
 										}
 									}
 								}
 							}
 						}
 					}
-
-					if (checkLib === undefined) {
-						this.library = true;
-						return createParam;
-					} else {
-						checkLib(createParam);
-					}
 				}
 			}
+
+			if (checkLib === undefined) {
+				this.library = true;
+				return createParam;
+			} else {
+				checkLib(createParam);
+			}			
 		},
 
 		create : function(caller, type, widgetId, append, options, appendType) {
@@ -147,13 +151,58 @@ if (window.Qplugin === undefined) {
 			}
 		},
 
-		listener : function(msg) {
-			if (msg.from !== undefined && msg.to !== undefined && this.pluginIds.indexOf(msg.from) > -1) {
-				if (msg.to === '' || msg.to === null) {
-					console.log('Get message from child : ' + msg.from + ' and no to other space, so get it data : ' + msg.msg);
+		listener : function(msgObj) {
+			switch(msgObj.data.action){
+				case 'register':
+					if(msgObj.data.msg === undefined){
+						msgObj.source.postMessage({resp : this.register(msgObj.data.msg.caller, msgObj.data.msg.type), action : msgObj.data.action}, msgObj.origin);						
+					}
+					else{
+						msgObj.source.postMessage({resp : this.register(msgObj.data.msg.caller, msgObj.data.msg.type), action : msgObj.data.action, createParam : msgObj.data.msg.createParam}, msgObj.origin);
+					}
+				break;
+				case 'getInfo2reg':
+					if(msgObj.data.msg === undefined){
+						msgObj.source.postMessage({resp : this.appInfo, action : msgObj.data.action}, msgObj.origin);
+					}
+					else{
+						msgObj.source.postMessage({resp : this.appInfo, action : msgObj.data.action, createParam : msgObj.data.msg.createParam}, msgObj.origin);
+					}
+				break;
+				case 'getInfo':
+					msgObj.source.postMessage({resp : this.appInfo, action : msgObj.data.action}, msgObj.origin);
+				break;
+				case 'parseUrl':
+					this.parseUrl(msgObj.data.msg, function(createParam){
+						msgObj.source.postMessage({resp : createParam, action : msgObj.data.action}, msgObj.origin);
+					});
+				break;
+				case 'trigger':
+					this.trigger(msgObj.data.msg.widgetId, msgObj.data.msg.action);
+				break;
+				case 'create' :
+					this.create(msgObj.data.msg.caller, msgObj.data.msg.type, msgObj.data.msg.widgetId, msgObj.data.msg.append, msgObj.data.msg.options, msgObj.data.msg.appendType);
+				break;
+				default:
 					return false;
+			}
+			/*
+			if(msg.action !== 'register' && msg.action !== 'getInfo'){
+				if (msg.from !== undefined && msg.to !== undefined && this.pluginIds.indexOf(msg.from) > -1) {
+					if (msg.to === '' || msg.to === null) {
+						console.log('Get message from child : ' + msg.from + ' and no to other space, so get it data : ' + msg.msg);
+						return false;
+					}
 				}
 			}
+			else{
+				if()
+			}
+			*/
+		},
+
+		getInfo : function(){
+			return this.appInfo;
 		},
 
 		getPlugins : function() {
@@ -403,7 +452,6 @@ if (window.Qplugin === undefined) {
 	};
 	window.Qplugin.initialize();
 } else {
-	//console.log(this.plugins);
 	window.Qplugin.parseUrl(nowScripts, function(createParam) {
 		var widget = Qplugin.register(Qplugin.appInfo.id, createParam.type);
 		Qplugin.create(Qplugin.appInfo.id, createParam.type, widget.id, createParam.append, createParam.options, createParam.appendType);
