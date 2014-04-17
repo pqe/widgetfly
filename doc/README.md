@@ -14,21 +14,39 @@ $ bower install widgetfly --save
 
 Configure RequireJS 
 
-```javascript
+```
 require.config({
 	...
 	paths : {
 		...
 		'widgetfly' : 'path_to_bower_components/widgetfly/dist/widgetfly.min'
 		...
-}
+	}
 ...
 	
 define(["widgetfly"], function (Widgetfly) {
 	new Widgetfly.Modal({...});
 });
-}
+
 ```
+
+#Usage
+
+Include the Widgetfly SDK on your page once, ideally right after the opening <body> tag.
+
+```
+<div id="widgitfly-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//yourwebsite/wigetfly.min.js#xfbml=1&appId=430127053738244";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'widgetfly-sdk'));</script>
+
+```
+
+
 
 #Widgetfly.Panel
 
