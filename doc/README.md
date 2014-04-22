@@ -135,7 +135,31 @@ var myServer = new Widgetfly.Server({
 * 3
 
 ##Methods
-###show
-###hide
+###on()
+###off()
+####trigger()
+
+#Widgetfly.Widget
+
+**Widget** is a module that ................ For example:
+
+
+```
+var myWidget = new Widgetfly.Widget({
+    options....
+});
+
+```
+
+##Options
+* 1
+* 2
+* 3
+
+##Methods
+###on()
+###off()
+###trigger()
+
 
 
