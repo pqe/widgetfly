@@ -30,41 +30,47 @@
 		 * @version 0.1.0
 		 * @author hsfeng
 		 */
-		var Widgetfly = function(){
+		var Widgetfly = {
 			/**
-		 	* @constructor
-		 	* @since 0.1.0
-		 	*/
-			console.log('Initialize the lib');
-			
-			var baseObj = Object.create(Base), script = document.getElementsByTagName('script'), index = script.length - 1, nowScript = script[index], parameter = baseObj.parseUrl(nowScript.src);
-			if(!baseObj.isEmpty(parameter)){
-				baseObj.Widget = widget;
-			}
-			else{
-				baseObj.Server = Server;
-			}
-			return baseObj;
-		}, 
+			 * @constructor
+			 * @since 0.1.0
+			 */
+		};
 		
-		Base = {	
-			isEmpty : function(obj){
-			    // null and undefined are "empty"
-			    if (obj == null) return true;
-			
-			    // Assume if it has a length property with a non-zero value
-			    // that that property is correct.
-			    if (obj.length > 0)    return false;
-			    if (obj.length === 0)  return true;
-			
-			    // Otherwise, does it have any properties of its own?
-			    // Note that this doesn't handle
-			    // toString and valueOf enumeration bugs in IE < 9
-			    for (var key in obj) {
-			        if (hasOwnProperty.call(obj, key)) return false;
-			    }			
-			    return true;				
+		Widgetfly.utilties = {
+			isEmpty : function(obj) {
+				// null and undefined are "empty"
+				if (obj == null)
+					return true;
+
+				// Assume if it has a length property with a non-zero value
+				// that that property is correct.
+				if (obj.length > 0)
+					return false;
+				if (obj.length === 0)
+					return true;
+
+				// Otherwise, does it have any properties of its own?
+				// Note that this doesn't handle
+				// toString and valueOf enumeration bugs in IE < 9
+				for (var key in obj) {
+					if (hasOwnProperty.call(obj, key))
+						return false;
+				}
+				return true;
 			},
+
+			extend : function(obj) {
+				each(slice.call(arguments, 1), function(source) {
+					if (source) {
+						for (var prop in source) {
+							obj[prop] = source[prop];
+						}
+					}
+				});
+				return obj;
+			},
+
 			parseUrl : function(URL, checkLib) {
 				var nowSrc, parameter, createParam = {}, i, tmpStr, tmpParam;
 				if ( typeof URL !== 'string' && URL.length > 0) {
@@ -75,7 +81,7 @@
 				} else {
 					nowSrc = URL;
 				}
-	
+
 				parameter = nowSrc.split('?', 2);
 				if (parameter.length > 1) {
 					parameter = parameter[1];
@@ -84,7 +90,7 @@
 						if (parameter[0].split('=', 2).length > 0) {
 							createParam.type = parameter[0].split('=', 2)[1];
 						}
-	
+
 						if (parameter[1] !== undefined && parameter[1].split('=', 2).length > 0) {
 							if (parameter[1].split('=', 2)[1] !== "") {
 								createParam.append = parameter[1].split('=', 2)[1];
@@ -115,24 +121,28 @@
 						}
 					}
 				}
-	
+
 				if (checkLib === undefined) {
 					return createParam;
 				} else {
 					checkLib(createParam);
 				}
 			}
-		},
+		}; 
 		
-		Events = Widgetfly.Events = {
+		Widgetfly.Events = function(){
+			
+		};
+
+		Widgetfly.Events.prototype = {
 
 			events : [],
 
 			on : function(action, callback) {
 				switch(action) {
 					case 'click':
-						
-					break;
+
+						break;
 					case 'open':
 						break;
 					case 'close':
@@ -152,25 +162,45 @@
 					default:
 				}
 			}
-		}, 
+		}; 
 		
-		Server = {
-			on : Events.on
-		},
+		Widgetfly.Server = {
+		};
 		
-		Widget = function() {
-			/**
+		Widgetfly.widget = function(){
+			console.log(2);
+		};
+		
+		Widgetfly.widget.prototype = {
+			widget : function(){
+				
+			}
+		};
+		
+		Widgetfly.Panel = function(){
+			console.log(1);
+		};
+		
+		Widgetfly.Panel.prototype = Widgetfly.widget.prototype = {
+			Panel : function(){
+				
+			}
+		};
+		var test = new Widgetfly.Panel();
+		console.log(test);
+		
+		/*
+		var Widget = function() {
+			*
 			 * my method
 			 * @method myMethod
 			 * @memberof Widgetfly
 			 * @param {string|Object|number} param
 			 * @since 0.1.0
 			 * @returns {String} returns params
-			 */
+			 
 			return this;
 		};
-
-		/**
 		 * my prototype
 		 * @method myPrototype
 		 * @memberof Widgetfly
@@ -180,13 +210,10 @@
 		 * @returns {String} returns name | value
 		 */
 		/*
-		Widgetfly.Server.prototype.myPrototype = function(name, value) {
-			console.log('Method: myPrototype');
-			return name + ' | ' + value;
-		};
-		*/
-		if(window.Widgetfly === undefined){
-			window.Widgetfly = window.$Q = Widgetfly();					
-		}
-		return window.Widgetfly;
-	})); 
+		 Widgetfly.Server.prototype.myPrototype = function(name, value) {
+		 console.log('Method: myPrototype');
+		 return name + ' | ' + value;
+		 };
+		 */
+		return Widgetfly;
+	}));
