@@ -2,13 +2,9 @@
 require.config({
 	baseUrl: '',
 	paths: {
-		jquery: 'jquery.min',
-		widgetfly: 'widgetfly.min'
+		widgetfly: '../src/widgetfly'
 	},
 	shim: {
-		jquery: {
-			exports: '$'
-		},
 		widgetfly: {
 			exports: 'Widgetfly'
 		}
@@ -17,10 +13,8 @@ require.config({
 });
 
 require([
-	'jquery',
 	'widgetfly'
-], function ($, Widgetfly) {
-	var a = new  Widgetfly();
-	a.myMethod('foo');
-	a.myPrototype('foo', 'bar');
+], function (Widgetfly) {
+	var a = new Widgetfly.Panel();
+	console.log(a);
 });
