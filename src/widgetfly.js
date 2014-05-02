@@ -36,6 +36,9 @@
 			 * @constructor
 			 * @since 0.1.0
 			 */
+			find : function(){
+				
+			}
 		},
 		
 		Utils = {
@@ -200,32 +203,122 @@
 			    } catch (e) {
 			        return true;
 			    }
-			}
-		};
-		
-		Widgetfly.Events = { 
+			},
 
+			isFunction : function(obj) {
+      			return typeof obj === 'function';
+	    	},
+	    	
+			isElement : function(o) {
+				return ( typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string");
+			},
+	
+			trans2Elem : function(element, startFrom){
+				if(typeof element === 'string'){			
+					if (element.substr(0, 1) === '#') {
+						target = document.getElementById(element.replace('#', ''));
+					} else if (element.substr(0, 1) === '.') {
+						target = this.getElementsByClassName(element.replace('.', ''), startFrom)[0];
+					} else {
+						target = document.getElementsByTagName(element)[0];
+					}
+				}
+				else{
+					target = element;
+				}
+				return target;			
+			},
+	
+			hasClass : function(element, cls) {
+				return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+			},
+	
+			addClass : function(element, className, startFrom) {
+				var target;
+				if (startFrom === undefined) {
+					startFrom = document;
+				}
+				target = this.trans2Elem(element, startFrom);
+			    if (!this.hasClass(target, className)) {
+			        target.className += ' ' + className;
+			    }
+			},
+	
+			removeClass : function(element, rmClass, startFrom) {
+				var target, newClass;
+				if (startFrom === undefined) {
+					startFrom = document;
+				}
+				target = this.trans2Elem(element, startFrom);
+				
+				if (target !== undefined && this.isElement(target)) {
+					newClass = ' ' + target.className.replace(/[\t\r\n]/g, ' ') + ' ';
+					if (this.hasClass(target, rmClass)) {
+						while (newClass.indexOf(' ' + rmClass + ' ') >= 0) {
+							newClass = newClass.replace(' ' + rmClass + ' ', ' ');
+						}
+						target.className = newClass.replace(/^\s+|\s+$/g, '');
+					}
+				}
+			},
+	
+			toggleClass : function(element, className, startFrom) {
+				var target, newClass;
+				if (startFrom === undefined) {
+					startFrom = document;
+				}
+				target = this.trans2Elem(element, startFrom);
+				if (target !== undefined && this.isElement(target)) {
+					newClass = ' ' + target.className.replace(/[\t\r\n]/g, ' ') + ' ';
+				    if (this.hasClass(target, className)) {
+				        while (newClass.indexOf(' ' + className + ' ') >= 0 ) {
+				            newClass = newClass.replace( ' ' + className + ' ' , ' ' );
+				        }
+				        target.className = newClass.replace(/^\s+|\s+$/g, '');
+				    } else {
+				        target.className += ' ' + className;
+				    }
+			    }
+			}
+		},
+		
+		Events = { 
+			send : function(id, action, data, targetId, targetOrigin, transfer){
+				var corsObj = {
+					msg : data,
+					action : action,
+					id : id
+				};
+				
+				if(targetId !== undefined){
+					corsObj.targetId = targetId;
+				}
+				
+				if(targetOrigin === undefined){
+					targetOrigin = '*';
+				}
+				parent.postMessage(corsObj, targetOrigin, transfer);				
+			}
 		};
 		
 		var self = this, nowScripts = document.getElementsByTagName('script'), 
 		instance, param = Utils.parseUrl(nowScripts);
 			
-		if (!Utils.inIframe() && Utils.getElementsByClassName('QT').length <= 0) {
-			// App
-			instance = document.createElement('div');
-			instance.setAttribute('class', 'QT');
-			document.getElementsByTagName('body')[0].appendChild(instance);
-			
+		if (!Utils.inIframe()) {
+			console.log('Now is app initialize');
+			// App initialize			
 			var	Server = {
 				
-				instance : [],
+				instance : {},
 				
-				eventInstance : [],
+				eventInstance : {},
+				
+				mapping : {},
 				
 				init : function(){
 					window.addEventListener('message', function(msgObj) {
 						Server.receive(msgObj);
-					}, false);					
+					}, false);
 				},
 				
 				getInstance : function(){
@@ -233,19 +326,33 @@
 				},
 				
 				receive : function(msgObj){
-					console.log(msgObj);
+					var intanceId = msgObj.data.id;
+					if(msgObj.data.targetId !== undefined){
+						intanceId = msgObj.data.targetId;
+					}
+					var instance = Server.instance[intanceId], 
+					eventInstance = Server.eventInstance[intanceId], action = msgObj.data.action;
+					if(Utils.isFunction(instance[action])){
+						instance[action]();
+					}
+					else{
+						if(!Utils.isEmpty(eventInstance) && Utils.isFunction(eventInstance[action])){
+							eventInstance[action](msgObj.data.msg);
+						}
+					}
 				}
 			};
 			
 			Server.init();
-	
+			
+//-------------------------------------------------------------------------------------------------------------				
 			var Widget = function() {
 				this.id = Utils.genId();
-				this.register(this.id);
 			};
 			
-			Widget.prototype.on = function(){
-				
+			Widget.prototype.on = function(eventName, callback){
+				Server.eventInstance[this.id] = {};
+				Server.eventInstance[this.id][eventName] = callback;
 			};
 			
 			Widget.prototype.off = function(){
@@ -253,43 +360,57 @@
 			};
 			
 			Widget.prototype.register = function(){
-				Server.instance.push(this);
+				Server.instance[this.id] = this;
+			};
+			
+			Widget.prototype.setMap = function(setting){
+				var append = setting.append;
+				if(setting.appendType === 'id'){
+					Server.mapping['#'+append] = setting.id;
+				}
+				else{
+					Server.mapping['.'+append] = setting.id;
+				}
 			};
 			
 			// Panel
-			Widgetfly.Panel = function(options) {
-				if(options === undefined){
-					options = param;
-					options.render = true;
-				}
-
-				if(options.render && options.src !== undefined){
-					if(options.append === undefined && options.appendClass !== undefined){
-						options.appendType = 'class';
-						options.append = options.appendClass;
+			Widgetfly.Panel = function(setting) {
+				//console.log(setting);
+				if(setting.options.src !== undefined){
+					if(setting.append === undefined && setting.appendClass !== undefined){
+						setting.appendType = 'class';
+						setting.append = setting.appendClass;
 					}
-					this.render(options);
-				}		
+				}
+				
+				setting.id = this.id;
+				this.setting = setting;
+				this.setMap(setting);
+				this.register(this.id);
+				
+				if(setting.options.initRender){
+					this.render(setting);
+				}				
 				return this;
 			};
 			
 			Widgetfly.Panel.prototype = new Widget;
 
-			Widgetfly.Panel.prototype.render = function(options){
+			Widgetfly.Panel.prototype.render = function(setting){
 				var iframe = document.createElement('iFrame');
-				iframe.setAttribute('src', options.src.toString());
-				iframe.setAttribute('id', this.id);
+				iframe.setAttribute('src', setting.options.src.toString());
+				iframe.setAttribute('name', setting.id);
 				//console.log(document.getElementsByTagName('iFrame').item(0));
-				if (options.append === undefined || options.append === null) {
+				if (setting.append === undefined || setting.append === null) {
 					Utils.getElementsByClassName('QT')[0].appendChild(iframe);
 				} else {
 					//console.log(append.substr(1, append.length));
-					if (options.appendType === 'id') {
-						if (document.getElementById(options.append).length > 0) {
-							document.getElementById(options.append).appendChild(iframe);
+					if (setting.appendType === 'id') {
+						if (document.getElementById(setting.append).length > 0) {
+							document.getElementById(setting.append).appendChild(iframe);
 						}
 					} else {
-						Utils.getElementsByClassName(options.append)[0].appendChild(iframe);
+						Utils.getElementsByClassName(setting.append)[0].appendChild(iframe);
 					}
 				}					
 			};
@@ -299,48 +420,167 @@
 			};
 			
 			Widgetfly.Panel.prototype.show = function(){
-				
+				if(this.setting.appendType === 'id'){
+					document.getElementById(this.setting.append).show();
+				}
+				else{
+					document.getElementsByClassName(this.setting.append)[0].show();
+				}				
 			};
 			
 			Widgetfly.Panel.prototype.hide = function(){
-				
+				if(this.setting.appendType === 'id'){
+					document.getElementById(this.setting.append).hide();
+				}
+				else{
+					document.getElementsByClassName(this.setting.append)[0].hide();
+				}
 			};
 		
 			// Model
-			Widgetfly.Model = function() {
+			Widgetfly.Model = function(setting) {
+				if (Utils.getElementsByClassName('QT modal').length <= 0) {
+					var modalDiv = document.createElement('div');
+					if (setting.appendType === 'class') {
+						modalDiv.setAttribute('class', 'QT modal ' + setting.append);
+					} else {
+						modalDiv.setAttribute('class', 'QT modal');
+						modalDiv.setAttribute('id', setting.append);
+					}
+					Utils.getElementsByClassName('QT')[0].appendChild(modalDiv);
+				}
+	
+				if (Utils.getElementsByClassName('QT modal')[0].childNodes.length > 0) {
+					Utils.getElementsByClassName('QT modal')[0].removeChild(Utils.getElementsByClassName('QT content')[0]);
+					if (setting.appendType === 'class') {
+						Utils.getElementsByClassName('QT modal')[0].setAttribute('class', 'QT modal ' + setting.append);
+					} else {
+						Utils.getElementsByClassName('QT modal')[0].setAttribute('class', 'QT modal');
+						Utils.getElementsByClassName('QT modal')[0].setAttribute('id', setting.append);
+					}
+				}
+				
+				setting.id = this.id;
+				this.setting = setting;
+				this.setMap(setting);
+				this.register(this.id);
+				
+				if(setting.options.initRender){
+					//console.log(123);
+					this.render(setting);
+					Utils.addClass(Utils.getElementsByClassName('QT modal')[0], 'active');
+				}
 				return this;
 			};
 	
-			//Widgetfly.Model.prototype = new Widget;
+			Widgetfly.Model.prototype = new Widget;
 			
 			Widgetfly.Model.prototype.getId = function() {
 				return this.id;
 			};
-						
+
+			Widgetfly.Model.prototype.render = function(setting) {
+				//console.log(setting);
+				var self = this, contentView = document.createElement('div'), viewTop = document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = document.createElement('iFrame');
+	
+				if (setting.options !== undefined && setting.options !== null && setting.options !== {}) {
+					spanTitle.textContent = setting.options.title;
+				}
+	
+				aClose.setAttribute('href', 'javascript:void(0)');
+				aClose.setAttribute('class', 'close');
+				aClose.textContent = 'x';
+				aClose.onclick = function() {
+					Utils.removeClass('.modal', 'active', Utils.getElementsByClassName('QT')[0]);
+				};
+	
+				viewTop.setAttribute('class', 'QT view-top');
+				viewTop.appendChild(spanTitle);
+				viewTop.appendChild(aClose);
+	
+				iframe.setAttribute('src', setting.options.src);
+				iframe.setAttribute('id', setting.id);
+	
+				contentView.setAttribute('class', 'QT content');
+				contentView.appendChild(viewTop);
+				contentView.appendChild(iframe);
+	
+				Utils.getElementsByClassName('QT modal')[0].appendChild(contentView);
+			};
+								
 			// PopOver
-			Widgetfly.PopOver = function() {
+			Widgetfly.PopOver = function(setting) {
+				console.log(setting);
+				if(setting.options.initRender && setting.options.src !== undefined){
+					if(setting.append === undefined && setting.appendClass !== undefined){
+						setting.appendType = 'class';
+						setting.append = setting.appendClass;
+					}
+					setting.id = this.id;
+					this.setting = setting;
+					this.setMap(setting);
+					this.register(this.id);
+					
+					this.render(setting);
+				}		
 				return this;
 			};
-	
-			//Widgetfly.PopOver.prototype = new Widget;
+			
+			Widgetfly.PopOver.prototype = new Widget;
 			
 			Widgetfly.PopOver.prototype.getId = function() {
 				return this.id;
 			};
+			
+			Widgetfly.PopOver.prototype.render = function() {
+				return this.id;
+			};
+//----------------------------------------------------------------------------------------			
+			//Initialize for DOM prepare
+			if(Utils.getElementsByClassName('QT').length <= 0){
+				instance = document.createElement('div');
+				instance.setAttribute('class', 'QT');
+				document.getElementsByTagName('body')[0].appendChild(instance);				
+			}
+						
+			if(!Utils.isEmpty(param)){				
+				//console.log(param);
+				new Widgetfly.Panel(param);
+			}
 		}
 		else{
+			console.log('Now is widget initialize');
 			// widget
-		}
+			window.addEventListener('message', function(msgObj) {
+				console.log(msgObj);
+			}, false);
+			
+			Widgetfly.Panel = Widgetfly.Model = Widgetfly.PopOver = {
+				trigger : function(action, data, targetId){
+					Events.send(window.name, action, data, targetId);
+				},
 				
-
-		
-		var test = new Widgetfly.Panel({render:true, appendClass:'QFB', src : 'http://192.168.73.128/widgetfly/src/prototype/relative.html'});
-		//var test2 = new Widgetfly.Panel();
-		//var test3 = new Widgetfly.Panel();
-		console.log(test);
-		//console.log(test2);
-		//console.log(test3);
-		console.log(Server.getInstance()[0].id);
+				show : function(){
+					Events.send(window.name, 'show');
+				},
+				
+				hide : function(){
+					Events.send(window.name, 'hide');
+				}
+			};
+		}
+		/*
+		var test = new Widgetfly.Panel({
+			append : 'QFB',
+			appendType : 'class',
+			options : {
+				initRender : true,
+				src : 'http://192.168.73.128/widgetfly/src/prototype/relative.html'
+			}
+		});
+		*/
+		//console.log(test);
+		//console.log(Server.getInstance()[0].id);
 
 		return Widgetfly;
 	}));
