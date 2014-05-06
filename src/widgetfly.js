@@ -437,10 +437,14 @@
 			
 			Widgetfly.Panel.prototype.show = function () {
 				if (this.setting.appendType === 'id') {
-					window.document.getElementById(this.setting.append).show();
+					if (window.document.getElementById(this.setting.append) !== undefined) {
+						window.document.getElementById(this.setting.append).show();
+					}					
 				}
 				else {
-					window.document.getElementsByClassName(this.setting.append)[0].show();
+					if (window.document.getElementsByClassName(this.setting.append)[0] !== undefined) {
+						window.document.getElementsByClassName(this.setting.append)[0].show();
+					}					
 				}
 			};
 			
