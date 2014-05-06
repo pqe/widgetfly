@@ -604,4 +604,4 @@
 		//console.log(Server.getInstance()[0].id);
 
 		return Widgetfly;
-	})); 
+	}));
