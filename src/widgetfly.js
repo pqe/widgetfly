@@ -506,7 +506,7 @@
 					spanTitle.textContent = setting.options.title;
 				}
 	
-				aClose.setAttribute('href', 'javascript:void(0)');
+				aClose.setAttribute('href', '###');
 				aClose.setAttribute('class', 'close');
 				aClose.textContent = 'x';
 				aClose.onclick = function () {
