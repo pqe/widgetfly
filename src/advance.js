@@ -3,7 +3,10 @@ var test = new Widgetfly.Panel({
 	appendType : 'class',
 	options : {
 		initRender : true,
-		src : 'http://192.168.73.128/widgetfly/src/prototype/relative.html'
+		src : 'http://192.168.73.128/widgetfly/src/demo/qusion.html'
+	},
+	css : {
+
 	}
 });
 
@@ -13,7 +16,7 @@ test.on('click', function(data){
 		appendType : 'class',
 		options : {
 			initRender : true,
-			src : 'http://192.168.73.128/widgetfly/src/prototype/relative2.html',
+			src : 'http://192.168.73.128/widgetfly/src/demo/relative2.html',
 			title : 'test'
 		}
 	});

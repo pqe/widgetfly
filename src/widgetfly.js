@@ -437,8 +437,8 @@
 				}
 			};
 		
-			// Model
-			Widgetfly.Model = function(setting) {
+			// Modal
+			Widgetfly.Modal = function(setting) {
 				if (Utils.getElementsByClassName('QT modal').length <= 0) {
 					var modalDiv = document.createElement('div');
 					if (setting.appendType === 'class') {
@@ -473,13 +473,13 @@
 				return this;
 			};
 	
-			Widgetfly.Model.prototype = new Widget;
+			Widgetfly.Modal.prototype = new Widget;
 			
-			Widgetfly.Model.prototype.getId = function() {
+			Widgetfly.Modal.prototype.getId = function() {
 				return this.id;
 			};
 
-			Widgetfly.Model.prototype.render = function(setting) {
+			Widgetfly.Modal.prototype.render = function(setting) {
 				//console.log(setting);
 				var self = this, contentView = document.createElement('div'), viewTop = document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = document.createElement('iFrame');
 	
@@ -555,7 +555,7 @@
 				console.log(msgObj);
 			}, false);
 			
-			Widgetfly.Panel = Widgetfly.Model = Widgetfly.PopOver = {
+			Widgetfly.Panel = Widgetfly.Modal = Widgetfly.PopOver = {
 				trigger : function(action, data, targetId){
 					Events.send(window.name, action, data, targetId);
 				},
