@@ -8,10 +8,11 @@
  * @copyright hsfeng
  */
 
-( function(root, factory) {
-		if ( typeof define === 'function' && define.amd) {
+(function (root, factory) {
+		'use strict';
+		if (typeof define === 'function' && define.amd) {
 			// AMD. Register as an anonymous module.
-			define([], function() {
+			define([], function () {
 				// Also create a global in case some scripts
 				// that are loaded still are looking for
 				// a global even when an AMD loader is in use.
@@ -21,7 +22,8 @@
 			// Browser globals
 			root.Widgetfly = factory(root);
 		}
-	}(this, function() {
+	}(this, function () {
+		'use strict';
 		console.log('Module Widgetfly loaded');
 		/**
 		 * My AMD module: Widgetfly
@@ -31,65 +33,74 @@
 		 * @author hsfeng
 		 */
 
-		var Widgetfly = {
+		var breaker = {}, Widgetfly = {
 			/**
 			 * @constructor
 			 * @since 0.1.0
 			 */
-			find : function(){
+			find : function () {
 				
 			}
 		},
 		
 		Utils = {
-			has : function(obj, key){
+			has : function (obj, key) {
 				return Object.prototype.hasOwnProperty.call(obj, key);
 			},
 			
-			each : function(obj, iterator, context) {
-				if (obj == null)
-					return;
+			each : function (obj, iterator, context) {
+				if (obj === null) {
+					return false;
+				}
+					
 				if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
 					obj.forEach(iterator, context);
 				} else if (obj.length === +obj.length) {
 					for (var i = 0, l = obj.length; i < l; i++) {
-						if (iterator.call(context, obj[i], i, obj) === breaker)
-							return;
+						if (iterator.call(context, obj[i], i, obj) === breaker) {
+							return false;
+						}
 					}
 				} else {
 					for (var key in obj) {
-						if (_.has(obj, key)) {
-							if (iterator.call(context, obj[key], key, obj) === breaker)
-								return;
+						if (Utils.has(obj, key)) {
+							if (iterator.call(context, obj[key], key, obj) === breaker) {
+								return false;
+							}
 						}
 					}
 				}
 			},
 			
-			isEmpty : function(obj) {
+			isEmpty : function (obj) {
 				// null and undefined are "empty"
-				if (obj == null)
+				if (obj === null) {
 					return true;
+				}
 
 				// Assume if it has a length property with a non-zero value
 				// that that property is correct.
-				if (obj.length > 0)
+				if (obj.length > 0) {
 					return false;
-				if (obj.length === 0)
+				}
+					
+				if (obj.length === 0) {
 					return true;
+				}
 
 				// Otherwise, does it have any properties of its own?
 				// Note that this doesn't handle
 				// toString and valueOf enumeration bugs in IE < 9
 				for (var key in obj) {
-					if (hasOwnProperty.call(obj, key))
+					if (hasOwnProperty.call(obj, key)) {
 						return false;
+					}
 				}
 				return true;
 			},
 
-			extend : function(obj) {
-				this.each(Array.prototype.slice.call(arguments, 1), function(source) {
+			extend : function (obj) {
+				this.each(Array.prototype.slice.call(arguments, 1), function (source) {
 					if (source) {
 						for (var prop in source) {
 							obj[prop] = source[prop];
@@ -99,9 +110,9 @@
 				return obj;
 			},
 
-			parseUrl : function(URL, checkLib) {
+			parseUrl : function (URL, checkLib) {
 				var nowSrc, parameter, createParam = {}, i, tmpStr, tmpParam;
-				if ( typeof URL !== 'string' && URL.length > 0) {
+				if (typeof URL !== 'string' && URL.length > 0) {
 					URL = URL[URL.length - 1];
 					if (URL.getAttribute.length !== undefined) {
 						nowSrc = URL.getAttribute('src', -1);
@@ -119,7 +130,7 @@
 						}
 
 						if (parameter[1] !== undefined && parameter[1].split('=', 2).length > 0) {
-							if (parameter[1].split('=', 2)[1] !== "") {
+							if (parameter[1].split('=', 2)[1] !== '') {
 								createParam.append = parameter[1].split('=', 2)[1];
 								if (parameter[1].split('=', 2)[0] === 'appendClass') {
 									createParam.appendType = 'class';
@@ -130,7 +141,7 @@
 						}
 						if (parameter.length > 2) {
 							createParam.options = {};
-							for ( i = 2; i < parameter.length; i++) {
+							for (i = 2; i < parameter.length; i++) {
 								if (parameter[i].split('=', 2).length > 0) {
 									tmpParam = parameter[i].split('=', 2)[1];
 									tmpParam = tmpParam.split(':');
@@ -138,7 +149,7 @@
 										tmpStr = tmpParam.shift();
 										if (tmpParam.length !== 0) {
 											tmpParam = tmpParam.join(':');
-											if (tmpParam !== "" && tmpParam !== null && tmpParam !== 'null') {
+											if (tmpParam !== '' && tmpParam !== null && tmpParam !== 'null') {
 												createParam.options[tmpStr] = tmpParam;
 											}
 										}
@@ -156,16 +167,16 @@
 				}
 			},
 			
-			genId : function() {
+			genId : function () {
 				var i = 0, id = '', first, possible1 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', possible2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 				first = possible1.charAt(Math.floor(Math.random() * possible1.length));
-				for ( i = 1; i < 20; i++) {
+				for (i = 1; i < 20; i++) {
 					id += possible2.charAt(Math.floor(Math.random() * possible2.length));
 				}
 				return (first + id);
 			},
 			
-			getElementsByClassName : function(testClass, startFrom) {
+			getElementsByClassName : function (testClass, startFrom) {
 				/**
 				 * getElementsByClassName
 				 * @fileOverview An easy way to find DOM Nodes with a specific class
@@ -191,7 +202,7 @@
 				// this is done before we start and at every comparison (note the ++)
 				++i < l;
 				// this is done after the first comparison and every iteration afterward
-				finder.test(a[i].className) && results.push(a[i]));
+				finder.test(a[i].className) && results.push(a[i])) {}
 				// do memory management and return the results of our query
 				a = null;
 				return results;
@@ -205,16 +216,17 @@
 			    }
 			},
 
-			isFunction : function(obj) {
-      			return typeof obj === 'function';
-	    	},
-	    	
-			isElement : function(o) {
-				return ( typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string");
+			isFunction : function (obj) {
+				return typeof obj === 'function';
+			},
+			
+			isElement : function (o) {
+				return (typeof HTMLElement === 'object' ? o instanceof HTMLElement : o && typeof o === 'object' && o !== null && o.nodeType === 1 && typeof o.nodeName === 'string');
 			},
 	
-			trans2Elem : function(element, startFrom){
-				if(typeof element === 'string'){			
+			trans2Elem : function (element, startFrom) {
+				var target;
+				if (typeof element === 'string') {
 					if (element.substr(0, 1) === '#') {
 						target = document.getElementById(element.replace('#', ''));
 					} else if (element.substr(0, 1) === '.') {
@@ -223,17 +235,17 @@
 						target = document.getElementsByTagName(element)[0];
 					}
 				}
-				else{
+				else {
 					target = element;
 				}
-				return target;			
+				return target;
 			},
 	
-			hasClass : function(element, cls) {
+			hasClass : function (element, cls) {
 				return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 			},
 	
-			addClass : function(element, className, startFrom) {
+			addClass : function (element, className, startFrom) {
 				var target;
 				if (startFrom === undefined) {
 					startFrom = document;
@@ -244,7 +256,7 @@
 			    }
 			},
 	
-			removeClass : function(element, rmClass, startFrom) {
+			removeClass : function (element, rmClass, startFrom) {
 				var target, newClass;
 				if (startFrom === undefined) {
 					startFrom = document;
@@ -262,7 +274,7 @@
 				}
 			},
 	
-			toggleClass : function(element, className, startFrom) {
+			toggleClass : function (element, className, startFrom) {
 				var target, newClass;
 				if (startFrom === undefined) {
 					startFrom = document;
@@ -271,8 +283,8 @@
 				if (target !== undefined && this.isElement(target)) {
 					newClass = ' ' + target.className.replace(/[\t\r\n]/g, ' ') + ' ';
 				    if (this.hasClass(target, className)) {
-				        while (newClass.indexOf(' ' + className + ' ') >= 0 ) {
-				            newClass = newClass.replace( ' ' + className + ' ' , ' ' );
+				        while (newClass.indexOf(' ' + className + ' ') >= 0) {
+				            newClass = newClass.replace(' ' + className + ' ', ' ');
 				        }
 				        target.className = newClass.replace(/^\s+|\s+$/g, '');
 				    } else {
@@ -282,26 +294,26 @@
 			}
 		},
 		
-		Events = { 
-			send : function(id, action, data, targetId, targetOrigin, transfer){
+		Events = {
+			send : function (id, action, data, targetId, targetOrigin, transfer) {
 				var corsObj = {
 					msg : data,
 					action : action,
 					id : id
 				};
 				
-				if(targetId !== undefined){
+				if (targetId !== undefined) {
 					corsObj.targetId = targetId;
 				}
 				
-				if(targetOrigin === undefined){
+				if (targetOrigin === undefined) {
 					targetOrigin = '*';
 				}
-				parent.postMessage(corsObj, targetOrigin, transfer);				
+				parent.postMessage(corsObj, targetOrigin, transfer);
 			}
 		};
 		
-		var self = this, nowScripts = document.getElementsByTagName('script'), 
+		var nowScripts = document.getElementsByTagName('script'),
 		instance, param = Utils.parseUrl(nowScripts);
 			
 		if (!Utils.inIframe()) {
@@ -315,28 +327,28 @@
 				
 				mapping : {},
 				
-				init : function(){
-					window.addEventListener('message', function(msgObj) {
+				init : function () {
+					window.addEventListener('message', function (msgObj) {
 						Server.receive(msgObj);
 					}, false);
 				},
 				
-				getInstance : function(){
+				getInstance : function () {
 					return this.instance;
 				},
 				
-				receive : function(msgObj){
+				receive : function (msgObj) {
 					var intanceId = msgObj.data.id;
-					if(msgObj.data.targetId !== undefined){
+					if (msgObj.data.targetId !== undefined) {
 						intanceId = msgObj.data.targetId;
 					}
-					var instance = Server.instance[intanceId], 
+					var instance = Server.instance[intanceId],
 					eventInstance = Server.eventInstance[intanceId], action = msgObj.data.action;
-					if(Utils.isFunction(instance[action])){
+					if (Utils.isFunction(instance[action])) {
 						instance[action]();
 					}
-					else{
-						if(!Utils.isEmpty(eventInstance) && Utils.isFunction(eventInstance[action])){
+					else {
+						if (!Utils.isEmpty(eventInstance) && Utils.isFunction(eventInstance[action])) {
 							eventInstance[action](msgObj.data.msg);
 						}
 					}
@@ -346,38 +358,42 @@
 			Server.init();
 			
 //-------------------------------------------------------------------------------------------------------------				
-			var Widget = function() {
+			var Widget = function () {
 				this.id = Utils.genId();
 			};
 			
-			Widget.prototype.on = function(eventName, callback){
+			Widget.prototype.on = function (eventName, callback) {
 				Server.eventInstance[this.id] = {};
 				Server.eventInstance[this.id][eventName] = callback;
 			};
 			
-			Widget.prototype.off = function(){
+			Widget.prototype.off = function () {
 					
 			};
 			
-			Widget.prototype.register = function(){
+			Widget.prototype.register = function () {
 				Server.instance[this.id] = this;
 			};
 			
-			Widget.prototype.setMap = function(setting){
+			Widget.prototype.setMap = function (setting) {
 				var append = setting.append;
-				if(setting.appendType === 'id'){
-					Server.mapping['#'+append] = setting.id;
+				if (setting.appendType === 'id') {
+					Server.mapping['#' + append] = setting.id;
 				}
-				else{
-					Server.mapping['.'+append] = setting.id;
+				else {
+					Server.mapping['.' + append] = setting.id;
 				}
 			};
 			
 			// Panel
-			Widgetfly.Panel = function(setting) {
+			Widgetfly.Panel = function (setting) {
 				//console.log(setting);
-				if(setting.options.src !== undefined){
-					if(setting.append === undefined && setting.appendClass !== undefined){
+				if (setting === undefined) {
+					return false;
+				}
+				
+				if (setting.options.src !== undefined) {
+					if (setting.append === undefined && setting.appendClass !== undefined) {
 						setting.appendType = 'class';
 						setting.append = setting.appendClass;
 					}
@@ -388,15 +404,15 @@
 				this.setMap(setting);
 				this.register(this.id);
 				
-				if(setting.options.initRender){
+				if (setting.options.initRender) {
 					this.render(setting);
-				}				
+				}
 				return this;
 			};
 			
-			Widgetfly.Panel.prototype = new Widget;
+			Widgetfly.Panel.prototype = new Widget();
 
-			Widgetfly.Panel.prototype.render = function(setting){
+			Widgetfly.Panel.prototype.render = function (setting) {
 				var iframe = document.createElement('iFrame');
 				iframe.setAttribute('src', setting.options.src.toString());
 				iframe.setAttribute('name', setting.id);
@@ -406,41 +422,44 @@
 				} else {
 					//console.log(append.substr(1, append.length));
 					if (setting.appendType === 'id') {
-						if (document.getElementById(setting.append).length > 0) {
-							document.getElementById(setting.append).appendChild(iframe);
+						if (window.document.getElementById(setting.append).length > 0) {
+							window.document.getElementById(setting.append).appendChild(iframe);
 						}
 					} else {
 						Utils.getElementsByClassName(setting.append)[0].appendChild(iframe);
 					}
-				}					
+				}
 			};
 			
-			Widgetfly.Panel.prototype.getId = function() {
+			Widgetfly.Panel.prototype.getId = function () {
 				return this.id;
 			};
 			
-			Widgetfly.Panel.prototype.show = function(){
-				if(this.setting.appendType === 'id'){
-					document.getElementById(this.setting.append).show();
+			Widgetfly.Panel.prototype.show = function () {
+				if (this.setting.appendType === 'id') {
+					window.document.getElementById(this.setting.append).show();
 				}
-				else{
-					document.getElementsByClassName(this.setting.append)[0].show();
-				}				
+				else {
+					window.document.getElementsByClassName(this.setting.append)[0].show();
+				}
 			};
 			
-			Widgetfly.Panel.prototype.hide = function(){
-				if(this.setting.appendType === 'id'){
-					document.getElementById(this.setting.append).hide();
+			Widgetfly.Panel.prototype.hide = function () {
+				if (this.setting.appendType === 'id') {
+					window.document.getElementById(this.setting.append).hide();
 				}
-				else{
-					document.getElementsByClassName(this.setting.append)[0].hide();
+				else {
+					window.document.getElementsByClassName(this.setting.append)[0].hide();
 				}
 			};
 		
 			// Modal
-			Widgetfly.Modal = function(setting) {
+			Widgetfly.Modal = function (setting) {
+				if (setting === undefined) {
+					return false;
+				}
 				if (Utils.getElementsByClassName('QT modal').length <= 0) {
-					var modalDiv = document.createElement('div');
+					var modalDiv = window.document.createElement('div');
 					if (setting.appendType === 'class') {
 						modalDiv.setAttribute('class', 'QT modal ' + setting.append);
 					} else {
@@ -465,7 +484,7 @@
 				this.setMap(setting);
 				this.register(this.id);
 				
-				if(setting.options.initRender){
+				if (setting.options.initRender) {
 					//console.log(123);
 					this.render(setting);
 					Utils.addClass(Utils.getElementsByClassName('QT modal')[0], 'active');
@@ -473,15 +492,15 @@
 				return this;
 			};
 	
-			Widgetfly.Modal.prototype = new Widget;
+			Widgetfly.Modal.prototype = new Widget();
 			
-			Widgetfly.Modal.prototype.getId = function() {
+			Widgetfly.Modal.prototype.getId = function () {
 				return this.id;
 			};
 
-			Widgetfly.Modal.prototype.render = function(setting) {
+			Widgetfly.Modal.prototype.render = function (setting) {
 				//console.log(setting);
-				var self = this, contentView = document.createElement('div'), viewTop = document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = document.createElement('iFrame');
+				var contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = document.createElement('iFrame');
 	
 				if (setting.options !== undefined && setting.options !== null && setting.options !== {}) {
 					spanTitle.textContent = setting.options.title;
@@ -490,7 +509,7 @@
 				aClose.setAttribute('href', 'javascript:void(0)');
 				aClose.setAttribute('class', 'close');
 				aClose.textContent = 'x';
-				aClose.onclick = function() {
+				aClose.onclick = function () {
 					Utils.removeClass('.modal', 'active', Utils.getElementsByClassName('QT')[0]);
 				};
 	
@@ -509,10 +528,12 @@
 			};
 								
 			// PopOver
-			Widgetfly.PopOver = function(setting) {
-				console.log(setting);
-				if(setting.options.initRender && setting.options.src !== undefined){
-					if(setting.append === undefined && setting.appendClass !== undefined){
+			Widgetfly.PopOver = function (setting) {
+				if (setting === undefined) {
+					return false;
+				}
+				if (setting.options.initRender && setting.options.src !== undefined) {
+					if (setting.append === undefined && setting.appendClass !== undefined) {
 						setting.appendType = 'class';
 						setting.append = setting.appendClass;
 					}
@@ -522,49 +543,49 @@
 					this.register(this.id);
 					
 					this.render(setting);
-				}		
+				}
 				return this;
 			};
 			
-			Widgetfly.PopOver.prototype = new Widget;
+			Widgetfly.PopOver.prototype = new Widget();
 			
-			Widgetfly.PopOver.prototype.getId = function() {
+			Widgetfly.PopOver.prototype.getId = function () {
 				return this.id;
 			};
 			
-			Widgetfly.PopOver.prototype.render = function() {
+			Widgetfly.PopOver.prototype.render = function () {
 				return this.id;
 			};
 //----------------------------------------------------------------------------------------			
 			//Initialize for DOM prepare
-			if(Utils.getElementsByClassName('QT').length <= 0){
-				instance = document.createElement('div');
+			if (Utils.getElementsByClassName('QT').length <= 0) {
+				instance = window.document.createElement('div');
 				instance.setAttribute('class', 'QT');
-				document.getElementsByTagName('body')[0].appendChild(instance);				
+				window.document.getElementsByTagName('body')[0].appendChild(instance);
 			}
 						
-			if(!Utils.isEmpty(param)){				
+			if (!Utils.isEmpty(param)) {
 				//console.log(param);
 				new Widgetfly.Panel(param);
 			}
 		}
-		else{
+		else {
 			console.log('Now is widget initialize');
 			// widget
-			window.addEventListener('message', function(msgObj) {
+			window.addEventListener('message', function (msgObj) {
 				console.log(msgObj);
 			}, false);
 			
 			Widgetfly.Panel = Widgetfly.Modal = Widgetfly.PopOver = {
-				trigger : function(action, data, targetId){
+				trigger : function (action, data, targetId) {
 					Events.send(window.name, action, data, targetId);
 				},
 				
-				show : function(){
+				show : function () {
 					Events.send(window.name, 'show');
 				},
 				
-				hide : function(){
+				hide : function () {
 					Events.send(window.name, 'hide');
 				}
 			};
@@ -583,4 +604,4 @@
 		//console.log(Server.getInstance()[0].id);
 
 		return Widgetfly;
-	}));
+	})); 
