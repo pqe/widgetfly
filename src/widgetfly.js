@@ -1,10 +1,10 @@
 /*
- * widgetfly
- * Description of the module
- * @link https://github.com/hsfeng/widgetfly
+ * Widgetfly
+ * A javascript library for building cross-site web widgets.
+ * @link https://github.com/qpe/widgetfly
  * @author hsfeng
  * @version 0.1.0
- * @license https://github.com/hsfeng/widgetfly/blob/master/LICENSE
+ * @license https://github.com/qpe/widgetfly/blob/master/LICENSE
  * @copyright hsfeng
  */
 
@@ -25,8 +25,9 @@
 	}(this, function () {
 		'use strict';
 		console.log('Module Widgetfly loaded');
+		
 		/**
-		 * My AMD module: Widgetfly
+		 * Widgetfly
 		 * @module Widgetfly
 		 * @namespace Widgetfly
 		 * @version 0.1.0
@@ -43,6 +44,8 @@
 			}
 		},
 		
+		// Utilities
+		// -------------
 		Utils = {
 			has : function (obj, key) {
 				return Object.prototype.hasOwnProperty.call(obj, key);
@@ -294,6 +297,9 @@
 			}
 		},
 		
+		
+		// Events
+		// -------------
 		Events = {
 			send : function (id, action, data, targetId, targetOrigin, transfer) {
 				var corsObj = {
@@ -356,8 +362,9 @@
 			};
 			
 			Server.init();
-			
-//-------------------------------------------------------------------------------------------------------------				
+
+			// Widget
+			// -------------
 			var Widget = function () {
 				this.id = Utils.genId();
 			};
@@ -385,7 +392,8 @@
 				}
 			};
 			
-			// Panel
+			// Widgetfly.Panel
+			// -------------
 			Widgetfly.Panel = function (setting) {
 				//console.log(setting);
 				if (setting === undefined) {
@@ -439,12 +447,12 @@
 				if (this.setting.appendType === 'id') {
 					if (window.document.getElementById(this.setting.append) !== undefined) {
 						window.document.getElementById(this.setting.append).show();
-					}					
+					}
 				}
 				else {
 					if (window.document.getElementsByClassName(this.setting.append)[0] !== undefined) {
 						window.document.getElementsByClassName(this.setting.append)[0].show();
-					}					
+					}
 				}
 			};
 			
@@ -457,7 +465,8 @@
 				}
 			};
 		
-			// Modal
+			// Widgetfly.Modal
+			// -------------
 			Widgetfly.Modal = function (setting) {
 				if (setting === undefined) {
 					return false;
@@ -531,8 +540,9 @@
 				Utils.getElementsByClassName('QT modal')[0].appendChild(contentView);
 			};
 								
-			// PopOver
-			Widgetfly.PopOver = function (setting) {
+			// Widgetfly.Popover
+			// -------------
+			Widgetfly.Popover = function (setting) {
 				if (setting === undefined) {
 					return false;
 				}
@@ -551,17 +561,19 @@
 				return this;
 			};
 			
-			Widgetfly.PopOver.prototype = new Widget();
+			Widgetfly.Popover.prototype = new Widget();
 			
-			Widgetfly.PopOver.prototype.getId = function () {
+			Widgetfly.Popover.prototype.getId = function () {
 				return this.id;
 			};
 			
-			Widgetfly.PopOver.prototype.render = function () {
+			Widgetfly.Popover.prototype.render = function () {
 				return this.id;
 			};
-//----------------------------------------------------------------------------------------			
-			//Initialize for DOM prepare
+				
+			// Initialize for DOM prepare
+			// -------------
+			
 			if (Utils.getElementsByClassName('QT').length <= 0) {
 				instance = window.document.createElement('div');
 				instance.setAttribute('class', 'QT');
@@ -580,7 +592,7 @@
 				console.log(msgObj);
 			}, false);
 			
-			Widgetfly.Panel = Widgetfly.Modal = Widgetfly.PopOver = {
+			Widgetfly.Panel = Widgetfly.Modal = Widgetfly.Popover = {
 				trigger : function (action, data, targetId) {
 					Events.send(window.name, action, data, targetId);
 				},
@@ -594,7 +606,7 @@
 				}
 			};
 		}
-		/*
+		/* example
 		var test = new Widgetfly.Panel({
 			append : 'QFB',
 			appendType : 'class',
