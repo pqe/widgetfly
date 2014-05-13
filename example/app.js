@@ -15,10 +15,10 @@ require.config({
 require([
 	'widgetfly'
 ], function (Widgetfly) {
-	var a = new Widgetfly.Panel({append: 'abc', name: 'a', options: {}});
+	var a = new Widgetfly.Panel();
 	console.log(a);
-	var b = new Widgetfly.Panel({append: 'def', name: 'b', options: {}});
+	var b = new Widgetfly.Panel();
 	console.log(b);
 	console.log(a);
-	a.show();
+	a.getId();
 });

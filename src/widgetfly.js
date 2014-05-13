@@ -102,15 +102,12 @@
 				return true;
 			},
 
-			extend : function (obj) {
-				this.each(Array.prototype.slice.call(arguments, 1), function (source) {
-					if (source) {
-						for (var prop in source) {
-							obj[prop] = source[prop];
-						}
-					}
-				});
-				return obj;
+			extend : function (Child, Parent) {
+				var F = function(){};
+				F.prototype = Parent.prototype;
+				Child.prototype = new F();
+				Child.prototype.constructor = Child;
+				Child.uber = Parent.prototype;
 			},
 
 			parseUrl : function (URL, checkLib) {
@@ -369,6 +366,10 @@
 				this.id = Utils.genId();
 			};
 			
+			Widget.prototype.getId = function () {
+				return this.id;
+			};
+			
 			Widget.prototype.on = function (eventName, callback) {
 				Server.eventInstance[this.id] = {};
 				Server.eventInstance[this.id][eventName] = callback;
@@ -396,6 +397,8 @@
 			// -------------
 			Widgetfly.Panel = function (setting) {
 				//console.log(setting);
+				Widget.apply(this, arguments);
+				
 				if (setting === undefined) {
 					return false;
 				}
@@ -418,7 +421,7 @@
 				return this;
 			};
 			
-			Widgetfly.Panel.prototype = new Widget();
+			Utils.extend(Widgetfly.Panel,Widget);
 
 			Widgetfly.Panel.prototype.render = function (setting) {
 				var iframe = document.createElement('iFrame');
@@ -439,9 +442,6 @@
 				}
 			};
 			
-			Widgetfly.Panel.prototype.getId = function () {
-				return this.id;
-			};
 			
 			Widgetfly.Panel.prototype.show = function () {
 				if (this.setting.appendType === 'id') {
@@ -468,6 +468,7 @@
 			// Widgetfly.Modal
 			// -------------
 			Widgetfly.Modal = function (setting) {
+				Widget.apply(this, arguments);
 				if (setting === undefined) {
 					return false;
 				}
@@ -505,11 +506,7 @@
 				return this;
 			};
 	
-			Widgetfly.Modal.prototype = new Widget();
-			
-			Widgetfly.Modal.prototype.getId = function () {
-				return this.id;
-			};
+			Utils.extend(Widgetfly.Modal,Widget);
 
 			Widgetfly.Modal.prototype.render = function (setting) {
 				//console.log(setting);
@@ -543,6 +540,7 @@
 			// Widgetfly.Popover
 			// -------------
 			Widgetfly.Popover = function (setting) {
+				Widget.apply(this, arguments);
 				if (setting === undefined) {
 					return false;
 				}
@@ -561,11 +559,7 @@
 				return this;
 			};
 			
-			Widgetfly.Popover.prototype = new Widget();
-			
-			Widgetfly.Popover.prototype.getId = function () {
-				return this.id;
-			};
+			Utils.extend(Widgetfly.Popover,Widget);
 			
 			Widgetfly.Popover.prototype.render = function () {
 				return this.id;
