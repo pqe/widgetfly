@@ -15,9 +15,9 @@ require.config({
 require([
 	'widgetfly'
 ], function (Widgetfly) {
-	var a = new Widgetfly.Panel();
+	var a = new (Widgetfly.Panel.extend())();
 	console.log(a);
-	var b = new Widgetfly.Panel();
+	var b = new (Widgetfly.Panel.extend())();
 	console.log(b);
 	console.log(a);
 	a.getId();
