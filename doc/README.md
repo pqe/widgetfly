@@ -56,17 +56,18 @@ Include the Widgetfly SDK on your page once, ideally right after the opening <bo
 
 ##Using a Widgetfly programmatically
 
-following example shows how to interact between widgets.
+Following example shows how to interact between widgets.
 
 ```
 <script src="wigetfly.min.js"></script>
 <script>
 	//Creating a custom widget class. 
-	var WidgetA = Widgetfly.Panel.extend({ <<custom and override>> });
-	var WidgetB = Widgetfly.Modal.extend({ <<custom and override>> });
-	var myWidgetA = new WidgetA({ <<options>> });
+	var WidgetA = Widgetfly.Panel.extend({ 'custom' : 'and override' });
+	var WidgetB = Widgetfly.Modal.extend({ 'custom' : 'and override' });
+	//Using your widget class.
+	var myWidgetA = new WidgetA({ 'custom' : 'options' });
 	myWidgetA('widget-event',function(result){
-		var myWidgetB = new WidgetB({ <<options>> });
+		var myWidgetB = new WidgetB({ 'custom' : 'options' });
 		myWidgetB.show();
 	});
 </script>
@@ -131,9 +132,9 @@ Widgetfly.Server.close();
 ##Methods
 ###start()
 ###show()
-####hide()
-####close()
-####setSize(width,height)
+###hide()
+###close()
+###setSize(width,height)
 
 
 
