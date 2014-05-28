@@ -3,7 +3,7 @@ var Widgetfly = window.Widgetfly, test = new Widgetfly.Panel({
 	appendType : 'class',
 	options : {
 		initRender : true,
-		src : 'http://192.168.73.128/widgetfly/src/demo/qusion.html'
+		src : 'http://192.168.73.128/widgetfly/src/demo/relative.html'
 	},
 	css : {
 
@@ -12,7 +12,7 @@ var Widgetfly = window.Widgetfly, test = new Widgetfly.Panel({
 
 test.on('click', function () {
 	'use strict';
-	new Widgetfly.Model({
+	var modalTest = new Widgetfly.Modal({
 		append : 'QGPlus',
 		appendType : 'class',
 		options : {

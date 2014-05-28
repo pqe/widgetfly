@@ -43,9 +43,10 @@
 				
 			}
 		},
-		
+				
 		// Utilities
 		// -------------
+
 		Utils = {
 			has : function (obj, key) {
 				return Object.prototype.hasOwnProperty.call(obj, key);
@@ -304,8 +305,7 @@
 			    }
 			}
 		},
-		
-		
+				
 		// Events
 		// -------------
 		Events = {
@@ -324,6 +324,11 @@
 					targetOrigin = '*';
 				}
 				parent.postMessage(corsObj, targetOrigin, transfer);
+			},
+			
+			on : function (eventName, callback) {
+				Server.eventInstance[this.id] = {};
+				Server.eventInstance[this.id][eventName] = callback;
 			}
 		};
 		
@@ -356,10 +361,11 @@
 					if (msgObj.data.targetId !== undefined) {
 						intanceId = msgObj.data.targetId;
 					}
+
 					var instance = Server.instance[intanceId],
 					eventInstance = Server.eventInstance[intanceId], action = msgObj.data.action;
 					if (Utils.isFunction(instance[action])) {
-						instance[action]();
+						instance[action](msgObj.data.msg);
 					}
 					else {
 						if (!Utils.isEmpty(eventInstance) && Utils.isFunction(eventInstance[action])) {
@@ -381,17 +387,14 @@
 				return this.id;
 			};
 			
-			Widget.prototype.on = function (eventName, callback) {
-				Server.eventInstance[this.id] = {};
-				Server.eventInstance[this.id][eventName] = callback;
-			};
-			
 			Widget.prototype.off = function () {
 					
 			};
 			
 			Widget.prototype.register = function () {
+				var cScript = nowScripts[nowScripts.length-1];
 				Server.instance[this.id] = this;
+				cScript.setAttribute('data-id', this.id);
 			};
 			
 			Widget.prototype.setMap = function (setting) {
@@ -508,7 +511,7 @@
 				this.setting = setting;
 				this.setMap(setting);
 				this.register(this.id);
-				
+
 				if (setting.options.initRender) {
 					//console.log(123);
 					this.render(setting);
@@ -539,7 +542,7 @@
 				viewTop.appendChild(aClose);
 	
 				iframe.setAttribute('src', setting.options.src);
-				iframe.setAttribute('id', setting.id);
+				iframe.setAttribute('name', setting.id);
 	
 				contentView.setAttribute('class', 'QT content');
 				contentView.appendChild(viewTop);
@@ -547,7 +550,11 @@
 	
 				Utils.getElementsByClassName('QT modal')[0].appendChild(contentView);
 			};
-								
+			
+			Widgetfly.Modal.prototype.sizeChange = function(size){
+				document.getElementsByName(this.id)[0].height = size+'px';
+			};
+							
 			// Widgetfly.Popover
 			// -------------
 			Widgetfly.Popover = function (setting) {
@@ -645,6 +652,11 @@
 				
 				hide : function () {
 					Events.send(window.name, 'hide');
+				},
+				
+				sizeChange : function(size){
+					//console.log(size);
+					Events.send(window.name, 'sizeChange', size);
 				}
 			};
 		}
