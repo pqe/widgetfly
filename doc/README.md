@@ -25,7 +25,11 @@ require.config({
 ...
 	
 define(["widgetfly"], function (Widgetfly) {
-	new Widgetfly.Modal({...});
+	var WidgetA = new Widgetfly.Modal.extend({ 'custom' : 'and override' });
+	var myWidgetA = new WidgetA({ 'custom' : 'options' });
+	myWidgetA.onStart(function(){
+		myWidgetA.show();
+	});
 });
 
 ```
