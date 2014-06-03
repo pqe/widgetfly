@@ -8,5 +8,8 @@ var Widgetfly = window.Widgetfly, test = new Widgetfly.Panel({
 
 	}
 });
-//test.close();
+test.on('click', function(){
+	test.close();
+});
+//
 //test.on('click', function(){});

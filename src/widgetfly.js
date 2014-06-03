@@ -354,13 +354,10 @@
 					var self = this;
 					Widgetfly.Utils.each(this.eventInstance[id], function(key){
 						delete self.eventInstance[id][key];
-					});			
-					delete this.instance[id];
-					callback(true);
+					});
 				}
-				else{
-					callback(true);
-				}	
+				delete this.instance[id];
+				callback(true);
 			},
 
 			send : function(id, action, data, targetId, targetOrigin, transfer){
@@ -398,6 +395,7 @@
 			},
 			
 			receive : function(msgObj) {
+				console.log('Mediator.receive');
 				var intanceId = msgObj.data.id;
 				if (msgObj.data.targetId !== undefined) {
 					intanceId = msgObj.data.targetId;
@@ -441,7 +439,7 @@
 			if (targetOrigin === undefined) {
 				targetOrigin = '*';
 			}
-			console.log(corsObj);
+			//console.log(corsObj);
 			parent.postMessage(corsObj, targetOrigin, transfer);			
 		};
 
@@ -515,7 +513,7 @@
 		};
 
 		Widget.prototype.onBeforeClose = function(callback){
-			Mediator.unregister(self.id, function(){
+			Mediator.unregister(this.id, function(){
 				callback();
 			});			
 		};
