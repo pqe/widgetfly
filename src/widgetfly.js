@@ -142,13 +142,13 @@
 
 						if (parameter[1] !== undefined && parameter[1].split('=', 2).length > 0) {
 							if (parameter[1].split('=', 2)[1] !== '') {
-								createParam.append = parameter[1].split('=', 2)[1];
+								createParam.container = parameter[1].split('=', 2)[1];
 								if (parameter[1].split('=', 2)[0] === 'appendClass') {
 									createParam.appendType = 'class';
-									createParam.dom = '.' + createParam.append;
+									createParam.dom = '.' + createParam.container;
 								} else {
 									createParam.appendType = 'id';
-									createParam.dom = '#' + createParam.append;
+									createParam.dom = '#' + createParam.container;
 								}
 							}
 						}
@@ -396,12 +396,12 @@
 			
 			receive : function(msgObj) {
 				console.log('Mediator.receive');
-				var intanceId = msgObj.data.id;
+				var instanceId = msgObj.data.id;
 				if (msgObj.data.targetId !== undefined) {
-					intanceId = msgObj.data.targetId;
+					instanceId = msgObj.data.targetId;
 				}
 
-				var instance = Mediator.instance[intanceId], eventInstance = Mediator.eventInstance[intanceId], action = msgObj.data.action;
+				var instance = Mediator.instance[instanceId], eventInstance = Mediator.eventInstance[instanceId], action = msgObj.data.action;
 				if (Widgetfly.Utils.isFunction(instance[action])) {
 					instance[action](msgObj.data.msg);
 				} else {
@@ -413,13 +413,13 @@
 		};
 
 		var Server = function() {
-
+			//console.log(this);
 		};
 		
 		Widgetfly.Utils.inherit(Server, Events);
 		
 		Server.prototype.init = function() {
-			parent.window.addEventListener('message', function(msgObj) {
+			window.addEventListener('message', function(msgObj) {
 				console.log(msgObj);
 			}, false);
 		};
@@ -444,16 +444,40 @@
 		};
 
 		Server.prototype.show = function() {
-			this.trigger(window.name, 'show');
+			this.trigger('show');	
 		};
 
 		Server.prototype.hide = function() {
-			this.trigger(window.name, 'hide');
+			this.trigger('hide');
+		};
+		
+		Server.prototype.start = function(){
+			this.trigger('onStart');
 		};
 
-		Server.prototype.sizeChange = function(size) {
+		Server.prototype.onClose = function(callback){
+			console.log('Server onClose action');
+			callback();
+		};
+		
+		Server.prototype.close = function(){
+			console.log('Prepare server close action');
+			var self = this;
+			this.onClose(function(){
+				console.log('Server close action');
+				self.trigger('close');
+			});
+		};
+		
+		/*
+		Server.prototype.setAutoGrow = function(width, height) {
 			//console.log(size);
-			Events.trigger(window.name, 'sizeChange', size);
+			Events.trigger(window.name, 'sizeChange', width, height);
+		};
+		*/
+		Server.prototype.setSize = function(width, height) {
+			//console.log(size);
+			Events.trigger(window.name, 'sizeChange', width, height);
 		};
 
 		var extend = function(protoProps, staticProps) {
@@ -502,14 +526,52 @@
 
 		Widgetfly.Utils.inherit(Widget, Events);
 
+		Widget.prototype.onStart = function(){
+			console.log('onStart');
+		};
+
 		Widget.prototype.getId = function() {
 			return this.id;
 		};
+		
+		Widget.prototype.onHide = function(callback){
+			console.log('action onHide');
+			callback();
+		};
+		
+		Widget.prototype.hide = function(){
+			console.log('prepare action hide');
+			var self = this;
+			this.onHide(function(){
+				console.log('action hide');
+				if (self.setting.appendType === 'id') {
+					window.document.getElementById(self.setting.container).hide();
+				} else {
+					window.document.getElementsByClassName(self.setting.container)[0].hide();
+				}					
+			});		
+		};
+		
+		Widget.prototype.onShow = function(callback){
+			console.log('action onShow');
+			callback();
+		};
 
-		Widget.prototype.register = function() {
-			var cScript = nowScripts[nowScripts.length - 1];
-			Mediator.register(this);
-			cScript.setAttribute('data-id', this.id);
+		Widget.prototype.show = function(){
+			console.log('prepare action show');
+			var self = this;
+			this.onShow(function(){
+				console.log('action show');
+				if (self.setting.appendType === 'id') {
+					if (window.document.getElementById(self.setting.container) !== undefined) {
+						window.document.getElementById(self.setting.container).show();
+					}
+				} else {
+					if (window.document.getElementsByClassName(self.setting.container)[0] !== undefined) {
+						window.document.getElementsByClassName(self.setting.container)[0].show();
+					}
+				}				
+			});			
 		};
 
 		Widget.prototype.onBeforeClose = function(callback){
@@ -524,31 +586,38 @@
 				//console.log(self);
 				var removeDom;
 				if(self.setting.appendType === 'class'){
-					removeDom = document.getElementsByClassName(self.setting.append)[0];
+					removeDom = document.getElementsByClassName(self.setting.container)[0];
 				}
 				else{
-					removeDom = document.getElementById(self.setting.append);
+					removeDom = document.getElementById(self.setting.container);
 				}				
 				removeDom.parentNode.removeChild(removeDom);
 			});
 		};
 
 		Widget.prototype.setMap = function(setting) {
-			var append = setting.dom;
-			Mediator.mapping[append] = setting.id;
+			var container = setting.dom;
+			Mediator.mapping[container] = setting.id;
+		};
+
+		Widget.prototype.register = function() {
+			var cScript = nowScripts[nowScripts.length - 1];
+			//console.log(this);
+			Mediator.register(this);
+			cScript.setAttribute('data-id', this.id);
 		};
 
 		// Widgetfly.Panel
 		// -------------
 		Widgetfly.Panel = function(setting) {
 			//console.log(setting);
-			setting.dom = setting.append;
-			if (setting.append.substr(0, 1) === '.') {
+			setting.dom = setting.container;
+			if (setting.container.substr(0, 1) === '.') {
 				setting.appendType = 'class';
-				setting.append = setting.append.replace('.', '');
-			} else if(setting.append.substr(0, 1) === '#') {
+				setting.container = setting.container.replace('.', '');
+			} else if(setting.container.substr(0, 1) === '#') {
 				setting.appendType = 'id';
-				setting.append = setting.append.replace('#', '');
+				setting.container = setting.container.replace('#', '');
 			}
 			Widget.apply(this, arguments);
 
@@ -557,10 +626,10 @@
 			}
 
 			if (setting.options.src !== undefined) {
-				if (setting.append === undefined && setting.appendClass !== undefined) {
+				if (setting.container === undefined && setting.appendClass !== undefined) {
 					setting.appendType = 'class';
 					setting.dom = '.' + setting.appendClass;
-					setting.append = setting.appendClass;
+					setting.container = setting.appendClass;
 				}
 			}
 
@@ -582,37 +651,17 @@
 			iframe.setAttribute('src', setting.options.src.toString());
 			iframe.setAttribute('name', setting.id);
 			//console.log(document.getElementsByTagName('iFrame').item(0));
-			if (setting.append === undefined || setting.append === null) {
+			if (setting.container === undefined || setting.container === null) {
 				Widgetfly.Utils.getElementsByClassName('QT')[0].appendChild(iframe);
 			} else {
 				//console.log(append.substr(1, append.length));
 				if (setting.appendType === 'id') {
-					if (window.document.getElementById(setting.append).length > 0) {
-						window.document.getElementById(setting.append).appendChild(iframe);
+					if (window.document.getElementById(setting.container).length > 0) {
+						window.document.getElementById(setting.container).appendChild(iframe);
 					}
 				} else {
-					Widgetfly.Utils.getElementsByClassName(setting.append)[0].appendChild(iframe);
+					Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(iframe);
 				}
-			}
-		};
-
-		Widgetfly.Panel.prototype.show = function() {
-			if (this.setting.appendType === 'id') {
-				if (window.document.getElementById(this.setting.append) !== undefined) {
-					window.document.getElementById(this.setting.append).show();
-				}
-			} else {
-				if (window.document.getElementsByClassName(this.setting.append)[0] !== undefined) {
-					window.document.getElementsByClassName(this.setting.append)[0].show();
-				}
-			}
-		};
-
-		Widgetfly.Panel.prototype.hide = function() {
-			if (this.setting.appendType === 'id') {
-				window.document.getElementById(this.setting.append).hide();
-			} else {
-				window.document.getElementsByClassName(this.setting.append)[0].hide();
 			}
 		};
 
@@ -638,6 +687,7 @@
 			// widget
 			Widgetfly.Server = new Server();
 			Widgetfly.Server.id = window.name;
+			Widgetfly.Server.init();
 		}
 
 		Widgetfly.testlib = Mediator;
