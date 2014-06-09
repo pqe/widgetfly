@@ -375,7 +375,8 @@
 				if (targetOrigin === undefined) {
 					targetOrigin = '*';
 				}
-				parent.postMessage(corsObj, targetOrigin, transfer);				
+				window.frames[id].postMessage(corsObj, targetOrigin, transfer);
+				//window.postMessage(corsObj, targetOrigin, transfer);				
 			},
 			
 			bind : function(id, eventName, callback){
@@ -413,15 +414,33 @@
 		};
 
 		var Server = function() {
-			//console.log(this);
+			this.events = {};
 		};
 		
 		Widgetfly.Utils.inherit(Server, Events);
 		
 		Server.prototype.init = function() {
+			var self = this;
+			this.trigger('start');
 			window.addEventListener('message', function(msgObj) {
-				console.log(msgObj);
+				//console.log(msgObj);
+				var action = msgObj.data.action;
+				if (Widgetfly.Utils.isFunction(self[action])) {
+					self[action](msgObj.data.msg);
+				} else {
+					if (!Widgetfly.Utils.isEmpty(self.events) && Widgetfly.Utils.isFunction(self.events[action])) {
+						self.events[action](msgObj.data.msg);
+					}
+				}
 			}, false);
+		};
+
+		Server.prototype.on = function(key, callback){
+			this.events[key] = callback;
+		};
+		
+		Server.prototype.off = function(key){
+			delete this.events[key];
 		};
 
 		Server.prototype.trigger = function(action, data, targetId, targetOrigin, transfer) {
@@ -444,15 +463,11 @@
 		};
 
 		Server.prototype.show = function() {
-			this.trigger('show');	
+			this.trigger('_show');	
 		};
 
 		Server.prototype.hide = function() {
 			this.trigger('hide');
-		};
-		
-		Server.prototype.start = function(){
-			this.trigger('onStart');
 		};
 
 		Server.prototype.onClose = function(callback){
@@ -463,9 +478,13 @@
 		Server.prototype.close = function(){
 			console.log('Prepare server close action');
 			var self = this;
+			Widgetfly.Utils.each(this.events, function(key){
+				delete self.events[key];
+			});
+			
 			this.onClose(function(){
 				console.log('Server close action');
-				self.trigger('close');
+				self.trigger('_close');
 			});
 		};
 		
@@ -526,64 +545,77 @@
 
 		Widgetfly.Utils.inherit(Widget, Events);
 
-		Widget.prototype.onStart = function(){
-			console.log('onStart');
+		Widget.prototype.onStart = function(callback){
+			if(Widgetfly.Utils.isFunction(callback)){
+				this.on('_onStart', callback);
+			}			
+		};
+
+		Widget.prototype.start = function(){
+			console.log('action onStart');
+			if(Widgetfly.Utils.isFunction(Mediator.eventInstance[this.id]._onStart)){
+				Mediator.eventInstance[this.id]._onStart();
+			}			
 		};
 
 		Widget.prototype.getId = function() {
 			return this.id;
 		};
-		
+
 		Widget.prototype.onHide = function(callback){
-			console.log('action onHide');
-			callback();
+			if(Widgetfly.Utils.isFunction(callback)){
+				this.on('_onHide', callback);
+			}
 		};
 		
 		Widget.prototype.hide = function(){
-			console.log('prepare action hide');
-			var self = this;
-			this.onHide(function(){
-				console.log('action hide');
-				if (self.setting.appendType === 'id') {
-					window.document.getElementById(self.setting.container).hide();
-				} else {
-					window.document.getElementsByClassName(self.setting.container)[0].hide();
-				}					
-			});		
+			console.log('action hide');
+			if (this.setting.appendType === 'id') {
+				window.document.getElementById(this.setting.container).hide();
+			} else {
+				window.document.getElementsByClassName(this.setting.container)[0].hide();
+			}
+			console.log('action onHide');
+			if(Widgetfly.Utils.isFunction(Mediator.eventInstance[this.id]._onHide)){
+				Mediator.eventInstance[this.id]._onHide();
+			}
 		};
 		
 		Widget.prototype.onShow = function(callback){
-			console.log('action onShow');
-			callback();
+			if(Widgetfly.Utils.isFunction(callback)){
+				this.on('_onShow', callback);
+			}
 		};
 
 		Widget.prototype.show = function(){
-			console.log('prepare action show');
 			var self = this;
-			this.onShow(function(){
-				console.log('action show');
-				if (self.setting.appendType === 'id') {
-					if (window.document.getElementById(self.setting.container) !== undefined) {
-						window.document.getElementById(self.setting.container).show();
-					}
-				} else {
-					if (window.document.getElementsByClassName(self.setting.container)[0] !== undefined) {
-						window.document.getElementsByClassName(self.setting.container)[0].show();
-					}
-				}				
-			});			
+			console.log('action show');
+			if (self.setting.appendType === 'id') {
+				if (window.document.getElementById(self.setting.container) !== undefined) {
+					window.document.getElementById(self.setting.container).show();
+				}
+			} else {
+				if (window.document.getElementsByClassName(self.setting.container)[0] !== undefined) {
+					window.document.getElementsByClassName(self.setting.container)[0].show();
+				}
+			}	
+			console.log('action onShow');
+			if(Widgetfly.Utils.isFunction(Mediator.eventInstance[this.id].onShow)){
+				Mediator.eventInstance[this.id]._onShow();
+			}
 		};
 
 		Widget.prototype.onBeforeClose = function(callback){
-			Mediator.unregister(this.id, function(){
-				callback();
-			});			
+			if(Widgetfly.Utils.isFunction(callback)){
+				this.on('_onBeforeClose', callback);
+			}
 		};
 
 		Widget.prototype.close = function(){
-			var self = this;
-			this.onBeforeClose(function(){
-				//console.log(self);
+			if(Widgetfly.Utils.isFunction(Mediator.eventInstance[this.id]._onBeforeClose)){
+				Mediator.eventInstance[this.id]._onBeforeClose();
+			}			
+			Mediator.unregister(this.id, function(){
 				var removeDom;
 				if(self.setting.appendType === 'class'){
 					removeDom = document.getElementsByClassName(self.setting.container)[0];

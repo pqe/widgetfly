@@ -9,5 +9,11 @@ var Widgetfly = window.Widgetfly, test = new Widgetfly.Panel({
 
 	}
 });
-//
+
+test.onStart(function(){
+	console.log('start!!');
+});
+
+//setTimeout('test.trigger(test.id, "hello")', 3000);
+
 //test.on('click', function(){});
