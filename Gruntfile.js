@@ -19,6 +19,11 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		
+		clean: {
+			tmp: 'tmp'
+		},
+    
 		jshint: {
 			options: {
 				jshintrc: true,
@@ -28,9 +33,18 @@ module.exports = function (grunt) {
 				'src/**/*.js',
 				'example/app.js',
 				'Gruntfile.js',
-				'!src/prototype/**'
+				'!src/prototype/**',
+				'!src/demo/**'
 			]
 		},
+		
+		preprocess: {
+			amd: {
+				src: 'src/build/amd.core.js',
+				dest: 'tmp/widgetfly.js'
+			}
+	    },
+    
 		uglify: {
 			options: {
 				mangle: false,
@@ -39,14 +53,14 @@ module.exports = function (grunt) {
 			},
 			myTarget: {
 				files: {
-					'dist/widgetfly.min.js': ['src/widgetfly.js']
+					'dist/widgetfly.min.js': ['tmp/widgetfly.js']
 				}
 			}
 		},
 		copy: {
 			main: {
 				files: [
-					{src: ['src/widgetfly.js'], dest: 'dist/widgetfly.js'},
+					{src: ['tmp/widgetfly.js'], dest: 'dist/widgetfly.js'},
 					{src: ['dist/widgetfly.min.js'], dest: 'example/widgetfly.min.js'},
 					{src: ['dist/widgetfly.min.map'], dest: 'example/widgetfly.min.map'},
 					{src: ['bower_components/jquery/jquery.min.js'], dest: 'example/jquery.min.js'},
@@ -73,7 +87,7 @@ module.exports = function (grunt) {
 				options: {
 					prefix: '@version\\s*'
 				},
-				src: ['src/**/*.js']
+				src: ['src/build/amd.core.js']
 			},
 			json: {
 				options: {
@@ -123,10 +137,12 @@ module.exports = function (grunt) {
 
 	// Register tasks
 	grunt.registerTask('build', [
+		'clean',
 		'version:js',
 		'version:json',
 		'jshint',
 		'jscs',
+		'preprocess:amd',
 		'uglify',
 		'copy:main'
 	]);

@@ -1,6 +1,6 @@
 {
     "browser": true,
-	"esnext": true,
+    "esnext": true,
     "bitwise": true,
     "camelcase": true,
     "curly": true,
@@ -12,13 +12,13 @@
     "quotmark": "single",
     "regexp": true,
     "undef": true,
-    "unused": true,
     "strict": true,
     "trailing": true,
     "smarttabs": true,
     "globals": {
         "define": true,
         "require" : true,
-        "console": true
+        "console": true,
+	"Widgetfly" : true
     }
 }

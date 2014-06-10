@@ -48,7 +48,7 @@ Include the Widgetfly SDK on your page once, ideally right after the opening <bo
   }
   js = d.createElement(s); js.id = id;
   js.onload = function() {
-  	callback(Widgetfly.Mediator.get(id));
+  	callback(Widgetfly.Mediator.get(js.getAttribute('data-widgetfly-id'));
   };
   js.src = "//yourwebsite/wigetfly.min.js#xfbml=1&appId=430127053738244";
   fjs.parentNode.insertBefore(js, fjs);
