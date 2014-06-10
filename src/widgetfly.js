@@ -684,7 +684,7 @@
 			iframe.setAttribute('name', setting.id);
 			//console.log(document.getElementsByTagName('iFrame').item(0));
 			if (setting.container === undefined || setting.container === null) {
-				Widgetfly.Utils.getElementsByClassName('QT')[0].appendChild(iframe);
+				Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(iframe);
 			} else {
 				//console.log(append.substr(1, append.length));
 				if (setting.appendType === 'id') {
@@ -705,9 +705,9 @@
 		if (!Widgetfly.Utils.inIframe()) {
 			console.log('Now is app initialize');
 			Mediator.init();
-			if (Widgetfly.Utils.getElementsByClassName('QT').length <= 0) {
+			if (Widgetfly.Utils.getElementsByClassName('qt').length <= 0) {
 				instance = window.document.createElement('div');
-				instance.setAttribute('class', 'QT');
+				instance.setAttribute('class', 'qt');
 				window.document.getElementsByTagName('body')[0].appendChild(instance);
 			}
 			if (!Widgetfly.Utils.isEmpty(param)) {

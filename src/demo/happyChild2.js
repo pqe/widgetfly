@@ -1,6 +1,6 @@
 //window.Widgetfly.Modal.sizeChange(400);
 
-$('#testImg').animate({
+$('#testimg').animate({
 	height:300
 },30000);
 

@@ -1,5 +1,5 @@
 var Widgetfly = window.Widgetfly, test = new Widgetfly.Panel({
-	container : '.QFB',
+	container : '.qfb',
 	autoGrow : true,
 	options : {
 		initRender : true,
