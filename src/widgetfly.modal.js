@@ -6,8 +6,6 @@ Widgetfly.Modal = (function(global) {'use strict';
 	
 	Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 	
-	Modal.extend = Widgetfly.Utils.inherit;
-	
 	return Modal;
 
 })(this);

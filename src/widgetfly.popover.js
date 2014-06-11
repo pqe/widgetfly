@@ -6,8 +6,6 @@ Widgetfly.Popover = (function(global) {'use strict';
 	
 	Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
 	
-	Popover.extend = Widgetfly.Utils.inherit;
-	
 	return Popover;
 
 })(this);

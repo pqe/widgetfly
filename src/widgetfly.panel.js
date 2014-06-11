@@ -12,8 +12,6 @@ Widgetfly.Panel = (function(global) {'use strict';
 			setting.appendType = 'id';
 			setting.container = setting.container.replace('#', '');
 		}
-		
-		Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 
 		if (setting === undefined) {
 			return false;
@@ -39,7 +37,26 @@ Widgetfly.Panel = (function(global) {'use strict';
 		return this;
 	};
 	
-	Panel.extend = Widgetfly.Utils.inherit;
+	Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
+	
+	Panel.prototype.render = function(setting) {
+			var iframe = document.createElement('iFrame');
+			iframe.setAttribute('src', setting.options.src.toString());
+			iframe.setAttribute('name', setting.id);
+			//console.log(document.getElementsByTagName('iFrame').item(0));
+			if (setting.container === undefined || setting.container === null) {
+				Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(iframe);
+			} else {
+				//console.log(append.substr(1, append.length));
+				if (setting.appendType === 'id') {
+					if (window.document.getElementById(setting.container).length > 0) {
+						window.document.getElementById(setting.container).appendChild(iframe);
+					}
+				} else {
+					Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(iframe);
+				}
+			}
+		};
 	
 	return Panel;
 })(this);
