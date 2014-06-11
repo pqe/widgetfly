@@ -42,7 +42,7 @@
 			
 						if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
 							obj.forEach(iterator, context);
-						} else if (typeof obj.length === 'number') {
+						} else if ( typeof obj.length === 'number') {
 							for (var i = 0, l = obj.length; i < l; i++) {
 								if (iterator.call(context, obj[i], i, obj) === {}) {
 									return false;
@@ -97,13 +97,43 @@
 						return obj;
 					},
 			
-					inherit : function(Child, Parent) {
-						var F = function() {
+					inherit : function(protoProps, staticProps) {
+						var parent = this;
+						var child;
+			
+						// The constructor function for the new subclass is either defined by you
+						// (the "constructor" property in your `extend` definition), or defaulted
+						// by us to simply call the parent's constructor.
+						if (protoProps && (Utils.has(protoProps, 'constructor'))) {
+							child = protoProps.constructor;
+						} else {
+							child = function() {
+								return parent.apply(this, arguments);
+							};
+						}
+			
+						// Add static properties to the constructor function, if supplied.
+						Utils.extend(child, parent, staticProps);
+			
+						// Set the prototype chain to inherit from `parent`, without calling
+						// `parent`'s constructor function.
+						var Surrogate = function() {
+							this.constructor = child;
 						};
-						F.prototype = Parent.prototype;
-						Child.prototype = new F();
-						Child.prototype.constructor = Child;
-						Child.uber = Parent.prototype;
+						Surrogate.prototype = parent.prototype;
+						child.prototype = new Surrogate();
+			
+						// Add prototype properties (instance properties) to the subclass,
+						// if supplied.
+						if (protoProps) {
+							Utils.extend(child.prototype, protoProps);
+						}
+			
+						// Set a convenience property in case the parent's prototype is needed
+						// later.
+						child.__super__ = parent.prototype;
+			
+						return child;
 					},
 			
 					parseUrl : function(URL, checkLib) {
@@ -500,6 +530,8 @@
 					Widgetfly.Events.trigger(window.name, 'sizeChange', width, height);
 				};
 				
+				Server.extend = Widgetfly.Utils.inherit;
+				
 				return Server;
 				
 			})(this);
@@ -625,7 +657,7 @@
 						setting.container = setting.container.replace('#', '');
 					}
 					
-					Widgetfly.Widget.apply(this, arguments);
+					Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 			
 					if (setting === undefined) {
 						return false;
@@ -647,90 +679,71 @@
 					if (setting.options.initRender) {
 						this.render(setting);
 					}
+					
 					return this;
 				};
+				
+				Panel.extend = Widgetfly.Utils.inherit;
 				
 				return Panel;
 			})(this);
 			
-			// Widgetfly.Modal
-			// -------------
-			Widgetfly.Modal = function(setting) {
-			
-			};
-			
-			// Widgetfly.Popover
-			// -------------
-			Widgetfly.Popover = function(setting) {
-			
-			};
-			
-			
-			
-			var extend = function(protoProps, staticProps) {
-				var parent = this;
-				var child;
-		
-				// The constructor function for the new subclass is either defined by you
-				// (the "constructor" property in your `extend` definition), or defaulted
-				// by us to simply call the parent's constructor.
-				if (protoProps && (Widgetfly.Utils.has(protoProps, 'constructor'))) {
-					child = protoProps.constructor;
-				} else {
-					child = function() {
-						return parent.apply(this, arguments);
-					};
-				}
-		
-				// Add static properties to the constructor function, if supplied.
-				Widgetfly.Utils.extend(child, parent, staticProps);
-		
-				// Set the prototype chain to inherit from `parent`, without calling
-				// `parent`'s constructor function.
-				var Surrogate = function() {
-					this.constructor = child;
+			Widgetfly.Modal = (function(global) {'use strict';
+				// Widgetfly.Modal
+				// -------------
+				var Modal = function(setting) {
 				};
-				Surrogate.prototype = parent.prototype;
-				child.prototype = new Surrogate();
-					
-				// Add prototype properties (instance properties) to the subclass,
-				// if supplied.
-				if (protoProps) {
-					Widgetfly.Utils.extend(child.prototype, protoProps);
-				}
-		
-					// Set a convenience property in case the parent's prototype is needed
-					// later.
-				child.__super__ = parent.prototype;
-		
-				return child;
-			};
-		
-			Widgetfly.Panel.extend = Widgetfly.Modal.extend = Widgetfly.Popover.extend = Widgetfly.Server.extend = extend;
-		
-			// Initialize for DOM prepare
-			// -------------
-			var nowScripts = document.getElementsByTagName('script'),
-				instance,
-				param = Widgetfly.Utils.parseUrl(nowScripts);
+				
+				Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
+				
+				Modal.extend = Widgetfly.Utils.inherit;
+				
+				return Modal;
 			
-			if (!Widgetfly.Utils.inIframe()) {
-				console.log('Now is app initialize');
-				Widgetfly.Mediator.init();
-				if (Widgetfly.Utils.getElementsByClassName('qt').length <= 0) {
-					instance = window.document.createElement('div');
-					instance.setAttribute('class', 'qt');
-					window.document.getElementsByTagName('body')[0].appendChild(instance);
+			})(this);
+			
+			Widgetfly.Popover = (function(global) {'use strict';
+				// Widgetfly.Popover
+				// -------------
+				var Popover = function(setting) {
+				};
+				
+				Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
+				
+				Popover.extend = Widgetfly.Utils.inherit;
+				
+				return Popover;
+			
+			})(this);
+			
+			(function(window){
+				'use strict';
+				// Initialize for DOM prepare
+				// -------------
+				var nowScripts = document.getElementsByTagName('script'),
+					instance,
+					param = Widgetfly.Utils.parseUrl(nowScripts);
+				
+				if (!Widgetfly.Utils.inIframe()) {
+					console.log('Now is app initialize');
+					Widgetfly.Mediator.init();
+					if (Widgetfly.Utils.getElementsByClassName('qt').length <= 0) {
+						instance = window.document.createElement('div');
+						instance.setAttribute('class', 'qt');
+						window.document.getElementsByTagName('body')[0].appendChild(instance);
+					}
+					if (!Widgetfly.Utils.isEmpty(param)) {
+						//console.log(param);
+						new Widgetfly.Panel(param);
+					}
+				} else {
+					console.log('Now is widget initialize');
+					// widget
+					//var Server = new Widgetfly.Server();
 				}
-				if (!Widgetfly.Utils.isEmpty(param)) {
-					//console.log(param);
-					new Widgetfly.Panel(param);
-				}
-			} else {
-				console.log('Now is widget initialize');
-				// widget
-				//var Server = new Widgetfly.Server();
-			}
+			
+			})(this);
+			
 		
 			return Widgetfly;
 		})(this);

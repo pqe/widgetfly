@@ -89,6 +89,8 @@ Widgetfly.Server = (function(global) {'use strict';
 		Widgetfly.Events.trigger(window.name, 'sizeChange', width, height);
 	};
 	
+	Server.extend = Widgetfly.Utils.inherit;
+	
 	return Server;
 	
 })(this);

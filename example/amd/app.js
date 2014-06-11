@@ -2,7 +2,7 @@
 require.config({
 	baseUrl: '',
 	paths: {
-		widgetfly: '../dist/widgetfly'
+		widgetfly: '../../dist/widgetfly'
 	},
 	shim: {
 		widgetfly: {

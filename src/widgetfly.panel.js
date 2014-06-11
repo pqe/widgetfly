@@ -13,7 +13,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 			setting.container = setting.container.replace('#', '');
 		}
 		
-		Widgetfly.Widget.apply(this, arguments);
+		Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 
 		if (setting === undefined) {
 			return false;
@@ -35,8 +35,11 @@ Widgetfly.Panel = (function(global) {'use strict';
 		if (setting.options.initRender) {
 			this.render(setting);
 		}
+		
 		return this;
 	};
+	
+	Panel.extend = Widgetfly.Utils.inherit;
 	
 	return Panel;
 })(this);
