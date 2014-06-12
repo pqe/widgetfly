@@ -4,85 +4,113 @@ Widgetfly.Mediator = (function(global) {
 	// -------------
 	var Mediator = {
 
-		instance : {},
+		widgets : {},
 
-		eventInstance : {},
+		widgetEvents : {},
 
 		mapping : {},
 
 		init : function() {
+			var self = this;
 			window.addEventListener('message', function(msgObj) {
-				Mediator.receive(msgObj);
+				self.receive(msgObj);
 			}, false);
 		},
 
-		getWidget : function(Id) {
-			return this.instance[Id];
+		getWidget : function(id) {
+			return this.widgets[id];
+		},
+		
+		getWidgetEvents : function(id){
+			return this.widgetEvents[id];
 		},
 
-		register : function(instance) {
-			this.instance[instance.id] = instance;
+		register : function(id, widget) {
+			this.widgets[widget.id] = widget;
+			this.widgetEvents[widget.id] = {};
 		},
 
 		unregister : function(id, callback) {
-			if (this.eventInstance[id] !== undefined) {
+			if (this.widgetEvents[id] !== undefined) {
 				var self = this;
-				Widgetfly.Utils.each(this.eventInstance[id], function(key) {
-					delete self.eventInstance[id][key];
+				Widgetfly.Utils.each(this.widgetEvents[id], function(key) {
+					delete self.widgetEvents[id][key];
 				});
 			}
-			delete this.instance[id];
+			delete this.widgets[id];
 			callback(true);
 		},
-
-		send : function(id, action, data, targetId, targetOrigin, transfer) {
+		
+		send : function(id, action, data) {
 			console.log('Events.trigger');
-			var corsObj = {
+			
+			var f, i, targetOrigin, corsObj = {
 				msg : data,
 				action : action,
 				id : id
 			};
 
-			if (targetId !== undefined) {
-				corsObj.targetId = targetId;
+			for(i = 0; i < window.frames.length; i++){
+				if(window.frames[i].name === id){
+					f =  window.frames[i];
+					break;
+				}
 			}
-
-			if (targetOrigin === undefined) {
-				targetOrigin = '*';
+			
+			if(f){
+				var parser = window.document.createElement('a');
+				parser.href = f.location;
+				targetOrigin = parser.protocol + '//' + parser.host;
+				f.postMessage(corsObj, targetOrigin);
 			}
-			window.frames[id].postMessage(corsObj, targetOrigin, transfer);
-			//window.postMessage(corsObj, targetOrigin, transfer);
+			
 		},
 
 		bind : function(id, eventName, callback) {
 			console.log('Events.bind');
-			if (this.eventInstance[id] === undefined) {
-				this.eventInstance[id] = {};
+			if (this.widgetEvents[id] === undefined) {
+				this.widgetEvents[id] = {};
 			}
-			this.eventInstance[id][eventName] = callback;
+			this.widgetEvents[id][eventName] = callback;
 		},
 
 		unbind : function(id, eventName) {
 			console.log('Events.unbind');
-			delete this.eventInstance[id][eventName];
-			if (Object.keys(this.eventInstance[id]).length <= 0) {
-				delete this.eventInstance[id];
+			delete this.widgetEvents[id][eventName];
+			if (Object.keys(this.widgetEvents[id]).length <= 0) {
+				delete this.widgetEvents[id];
 			}
 		},
 
 		receive : function(msgObj) {
 			console.log('Mediator.receive');
-			var instanceId = msgObj.data.id;
-			if (msgObj.data.targetId !== undefined) {
-				instanceId = msgObj.data.targetId;
+			
+			var i, f, widgetId = msgObj.data.id;
+			
+			for(i = 0; i < window.frames.length; i++){
+				if(window.frames[i].name === widgetId){
+					f =  window.frames[i];
+					break;
+				}
 			}
-
-			var instance = Mediator.instance[instanceId], eventInstance = Mediator.eventInstance[instanceId], action = msgObj.data.action;
-			if (Widgetfly.Utils.isFunction(instance[action])) {
-				instance[action](msgObj.data.msg);
-			} else {
-				if (!Widgetfly.Utils.isEmpty(eventInstance) && Widgetfly.Utils.isFunction(eventInstance[action])) {
-					eventInstance[action](msgObj.data.msg);
+			
+			if(f){
+				var origin, parser = window.document.createElement('a');
+				parser.href = f.location;
+				origin = parser.protocol + '//' + parser.host;
+				
+				if(origin !== msgObj.origin){
+					console.log('Widget ignore message from '+ msgObj.origin);
+					return;
+				}
+	
+				var widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
+				if (widget && Widgetfly.Utils.isFunction(widget[action])) {
+					widget[action](msgObj.data.msg);
+				} else {
+					if (!Widgetfly.Utils.isEmpty(widgetEvents) && Widgetfly.Utils.isFunction(widgetEvents[action])) {
+						widgetEvents[action](msgObj.data.msg);
+					}
 				}
 			}
 		}

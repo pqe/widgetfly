@@ -9,10 +9,7 @@
 		<link rel="stylesheet" href="main.css">
 	</head>
 	<body>
-		<div class="mywidget">
-			Hello Widget
-			<br>
-		</div>
+		<div class="mywidget">Hello Server</div>
 		<script type="text/javascript" src="../../src/build/widgetfly.core.js"></script>
 		<script type="text/javascript" src="../../src/widgetfly.utils.js"></script>
 		<script type="text/javascript" src="../../src/widgetfly.events.js"></script>
@@ -24,23 +21,10 @@
 		<script type="text/javascript" src="../../src/widgetfly.popover.js"></script>
 		<script type="text/javascript" src="../../src/widgetfly.bootstrap.js"></script>
 		<script>
-			var MyWidget = Widgetfly.Panel.extend({/** overwrite **/});
-			var widgetA = new MyWidget({
-				container : '.mywidget',
-				autoGrow : true,
-				options : {
-					initRender : true,
-					src : 'widget.html'
-				},
-				css : {
-
-				}
+			var server = new Widgetfly.Server({});
+			server.on('hello', function(name){
+				console.log('Server: hello from ' + name);
 			});
-			widgetA.onStart(function(){
-				console.log('widgetA is started');
-				widgetA.trigger('hello','widgetA');
-			});
-			console.log(widgetA);
 		</script>
 	</body>
 </html>

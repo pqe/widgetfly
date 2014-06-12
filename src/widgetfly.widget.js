@@ -9,14 +9,15 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 	Widget.prototype.onStart = function(callback) {
 		if (Widgetfly.Utils.isFunction(callback)) {
-			this.on('_onStart', callback);
+			this.on('onStart', callback);
 		}
 	};
 
 	Widget.prototype.start = function() {
-		console.log('action onStart');
-		if (Widgetfly.Utils.isFunction(Widgetfly.Mediator.eventInstance[this.id]._onStart)) {
-			Widgetfly.Mediator.eventInstance[this.id]._onStart();
+		console.log('Action onStart');
+		var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+		if (events && Widgetfly.Utils.isFunction(events.onStart)) {
+			events.onStart();
 		}
 	};
 
@@ -26,7 +27,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 	Widget.prototype.onHide = function(callback) {
 		if (Widgetfly.Utils.isFunction(callback)) {
-			this.on('_onHide', callback);
+			this.on('onHide', callback);
 		}
 	};
 
@@ -38,14 +39,15 @@ Widgetfly.Widget = (function(global) {'use strict';
 			window.document.getElementsByClassName(this.setting.container)[0].hide();
 		}
 		console.log('action onHide');
-		if (Widgetfly.Utils.isFunction(Widgetfly.Mediator.eventInstance[this.id]._onHide)) {
-			Widgetfly.Mediator.eventInstance[this.id]._onHide();
+		var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+		if (events && Widgetfly.Utils.isFunction(events.onHide)) {
+			events.onHide();
 		}
 	};
 
 	Widget.prototype.onShow = function(callback) {
 		if (Widgetfly.Utils.isFunction(callback)) {
-			this.on('_onShow', callback);
+			this.on('onShow', callback);
 		}
 	};
 
@@ -62,21 +64,23 @@ Widgetfly.Widget = (function(global) {'use strict';
 			}
 		}
 		console.log('action onShow');
-		if (Widgetfly.Utils.isFunction(Widgetfly.Mediator.eventInstance[this.id].onShow)) {
-			Widgetfly.Mediator.eventInstance[this.id]._onShow();
+		var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+		if (events && Widgetfly.Utils.isFunction(events.onShow)) {
+			events.onShow();
 		}
 	};
 
 	Widget.prototype.onBeforeClose = function(callback) {
 		if (Widgetfly.Utils.isFunction(callback)) {
-			this.on('_onBeforeClose', callback);
+			this.on('onBeforeClose', callback);
 		}
 	};
 
 	Widget.prototype.close = function() {
 		var self = this;
-		if (Widgetfly.Utils.isFunction(Widgetfly.Mediator.eventInstance[this.id]._onBeforeClose)) {
-			Widgetfly.Mediator.eventInstance[this.id]._onBeforeClose();
+		var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+		if (events && Widgetfly.Utils.isFunction(events.onBeforeClose)) {
+			events.onBeforeClose();
 		}
 		Widgetfly.Mediator.unregister(this.id, function() {
 			var removeDom;
@@ -97,7 +101,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 	Widget.prototype.register = function() {
 		var nowScripts = document.getElementsByTagName('script'), cScript = nowScripts[nowScripts.length - 1];
 		//console.log(this);
-		Widgetfly.Mediator.register(this);
+		Widgetfly.Mediator.register(this.id, this);
 		cScript.setAttribute('data-id', this.id);
 	};
 

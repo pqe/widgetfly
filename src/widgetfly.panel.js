@@ -4,6 +4,9 @@ Widgetfly.Panel = (function(global) {'use strict';
 	// -------------
 	var Panel = function(setting) {
 		//console.log(setting);
+		
+		Widgetfly.Widget.apply(this, arguments);
+		
 		setting.dom = setting.container;
 		if (setting.container.substr(0, 1) === '.') {
 			setting.appendType = 'class';

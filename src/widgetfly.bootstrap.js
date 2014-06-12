@@ -46,7 +46,7 @@
 	var nowScripts = document.getElementsByTagName('script'), instance, param = Widgetfly.Utils.parseUrl(nowScripts);
 
 	if (!Widgetfly.Utils.inIframe()) {
-		console.log('Now is app initialize');
+		console.log('Now is Widgets initialize');
 		Widgetfly.Mediator.init();
 		if (Widgetfly.Utils.getElementsByClassName('qt').length <= 0) {
 			instance = window.document.createElement('div');
@@ -58,7 +58,7 @@
 			new Widgetfly.Panel(param);
 		}
 	} else {
-		console.log('Now is widget initialize');
+		console.log('Now is Server initialize');
 		// widget
 		//var Server = new Widgetfly.Server();
 	}

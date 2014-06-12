@@ -4,8 +4,8 @@ Widgetfly.Events = (function(global){
 	// -------------
 	var Events = function() {};
 
-	Events.prototype.trigger = function(id, action, data, targetId, targetOrigin, transfer) {
-		Widgetfly.Mediator.send(id, action, data, targetId, targetOrigin, transfer);
+	Events.prototype.trigger = function(action, data, targetId, targetOrigin, transfer) {
+		Widgetfly.Mediator.send(this.id, action, data, targetId, targetOrigin, transfer);
 	};
 
 	Events.prototype.on = function(eventName, callback) {

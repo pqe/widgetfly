@@ -9,11 +9,20 @@ Widgetfly.Server = (function(global) {'use strict';
 
 	Widgetfly.Utils.inherit(Server, Widgetfly.Events);
 
-	Server.init = function() {
+	Server.prototype.init = function() {
 		var self = this;
 		this.trigger('start');
 		window.addEventListener('message', function(msgObj) {
-			//console.log(msgObj);
+			
+			var origin, parser = window.document.createElement('a');
+			parser.href = window.parent.location;
+			origin = parser.protocol + '//' + parser.host;
+			
+			if(origin !== msgObj.origin){
+				console.log('Server ignore message from '+ msgObj.origin);
+				return;
+			}
+			
 			var action = msgObj.data.action;
 			if (Widgetfly.Utils.isFunction(self[action])) {
 				self[action](msgObj.data.msg);
@@ -33,27 +42,24 @@ Widgetfly.Server = (function(global) {'use strict';
 		delete this.events[key];
 	};
 
-	Server.prototype.trigger = function(action, data, targetId, targetOrigin, transfer) {
+	Server.prototype.trigger = function(action, data) {
 		console.log('Server.trigger');
-		var corsObj = {
+		var targetOrigin, corsObj = {
 			msg : data,
 			action : action,
 			id : this.id
 		};
-
-		if (targetId !== undefined) {
-			corsObj.targetId = targetId;
-		}
-
-		if (targetOrigin === undefined) {
-			targetOrigin = '*';
-		}
+		
+		var parser = window.document.createElement('a');
+		parser.href = window.parent.location;
+		targetOrigin = parser.protocol + '//' + parser.host;
+				
 		//console.log(corsObj);
-		parent.postMessage(corsObj, targetOrigin, transfer);
+		parent.postMessage(corsObj, targetOrigin);
 	};
 
 	Server.prototype.show = function() {
-		this.trigger('_show');
+		this.trigger('show');
 	};
 
 	Server.prototype.hide = function() {
@@ -74,7 +80,7 @@ Widgetfly.Server = (function(global) {'use strict';
 
 		this.onClose(function() {
 			console.log('Server close action');
-			self.trigger('_close');
+			self.trigger('close');
 		});
 	};
 
