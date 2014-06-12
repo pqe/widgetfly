@@ -100,7 +100,7 @@ Widgetfly.Mediator = (function(global) {
 				origin = parser.protocol + '//' + parser.host;
 				
 				if(origin !== msgObj.origin){
-					console.log('Widget ignore message from '+ msgObj.origin);
+					console.log('Widget ignore message from ' + msgObj.origin);
 					return;
 				}
 	

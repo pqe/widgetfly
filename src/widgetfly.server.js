@@ -13,22 +13,23 @@ Widgetfly.Server = (function(global) {'use strict';
 		var self = this;
 		this.trigger('start');
 		window.addEventListener('message', function(msgObj) {
-			
-			var origin, parser = window.document.createElement('a');
-			parser.href = window.parent.location;
-			origin = parser.protocol + '//' + parser.host;
-			
-			if(origin !== msgObj.origin){
-				console.log('Server ignore message from '+ msgObj.origin);
-				return;
-			}
-			
-			var action = msgObj.data.action;
-			if (Widgetfly.Utils.isFunction(self[action])) {
-				self[action](msgObj.data.msg);
-			} else {
-				if (!Widgetfly.Utils.isEmpty(self.events) && Widgetfly.Utils.isFunction(self.events[action])) {
-					self.events[action](msgObj.data.msg);
+			if(window.parent){
+				var origin, parser = window.document.createElement('a');
+				parser.href = window.parent.location;
+				origin = parser.protocol + '//' + parser.host;
+				
+				if(origin !== msgObj.origin){
+					console.log('Server ignore message from ' + msgObj.origin);
+					return;
+				}
+				
+				var action = msgObj.data.action;
+				if (Widgetfly.Utils.isFunction(self[action])) {
+					self[action](msgObj.data.msg);
+				} else {
+					if (!Widgetfly.Utils.isEmpty(self.events) && Widgetfly.Utils.isFunction(self.events[action])) {
+						self.events[action](msgObj.data.msg);
+					}
 				}
 			}
 		}, false);

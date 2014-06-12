@@ -301,8 +301,8 @@
 				// -------------
 				var Events = function() {};
 			
-				Events.prototype.trigger = function(id, action, data, targetId, targetOrigin, transfer) {
-					Widgetfly.Mediator.send(id, action, data, targetId, targetOrigin, transfer);
+				Events.prototype.trigger = function(action, data, targetId, targetOrigin, transfer) {
+					Widgetfly.Mediator.send(this.id, action, data, targetId, targetOrigin, transfer);
 				};
 			
 				Events.prototype.on = function(eventName, callback) {
@@ -322,85 +322,113 @@
 				// -------------
 				var Mediator = {
 			
-					instance : {},
+					widgets : {},
 			
-					eventInstance : {},
+					widgetEvents : {},
 			
 					mapping : {},
 			
 					init : function() {
+						var self = this;
 						window.addEventListener('message', function(msgObj) {
-							Mediator.receive(msgObj);
+							self.receive(msgObj);
 						}, false);
 					},
 			
-					getWidget : function(Id) {
-						return this.instance[Id];
+					getWidget : function(id) {
+						return this.widgets[id];
+					},
+					
+					getWidgetEvents : function(id){
+						return this.widgetEvents[id];
 					},
 			
-					register : function(instance) {
-						this.instance[instance.id] = instance;
+					register : function(id, widget) {
+						this.widgets[widget.id] = widget;
+						this.widgetEvents[widget.id] = {};
 					},
 			
 					unregister : function(id, callback) {
-						if (this.eventInstance[id] !== undefined) {
+						if (this.widgetEvents[id] !== undefined) {
 							var self = this;
-							Widgetfly.Utils.each(this.eventInstance[id], function(key) {
-								delete self.eventInstance[id][key];
+							Widgetfly.Utils.each(this.widgetEvents[id], function(key) {
+								delete self.widgetEvents[id][key];
 							});
 						}
-						delete this.instance[id];
+						delete this.widgets[id];
 						callback(true);
 					},
-			
-					send : function(id, action, data, targetId, targetOrigin, transfer) {
+					
+					send : function(id, action, data) {
 						console.log('Events.trigger');
-						var corsObj = {
+						
+						var f, i, targetOrigin, corsObj = {
 							msg : data,
 							action : action,
 							id : id
 						};
 			
-						if (targetId !== undefined) {
-							corsObj.targetId = targetId;
+						for(i = 0; i < window.frames.length; i++){
+							if(window.frames[i].name === id){
+								f =  window.frames[i];
+								break;
+							}
 						}
-			
-						if (targetOrigin === undefined) {
-							targetOrigin = '*';
+						
+						if(f){
+							var parser = window.document.createElement('a');
+							parser.href = f.location;
+							targetOrigin = parser.protocol + '//' + parser.host;
+							f.postMessage(corsObj, targetOrigin);
 						}
-						window.frames[id].postMessage(corsObj, targetOrigin, transfer);
-						//window.postMessage(corsObj, targetOrigin, transfer);
+						
 					},
 			
 					bind : function(id, eventName, callback) {
 						console.log('Events.bind');
-						if (this.eventInstance[id] === undefined) {
-							this.eventInstance[id] = {};
+						if (this.widgetEvents[id] === undefined) {
+							this.widgetEvents[id] = {};
 						}
-						this.eventInstance[id][eventName] = callback;
+						this.widgetEvents[id][eventName] = callback;
 					},
 			
 					unbind : function(id, eventName) {
 						console.log('Events.unbind');
-						delete this.eventInstance[id][eventName];
-						if (Object.keys(this.eventInstance[id]).length <= 0) {
-							delete this.eventInstance[id];
+						delete this.widgetEvents[id][eventName];
+						if (Object.keys(this.widgetEvents[id]).length <= 0) {
+							delete this.widgetEvents[id];
 						}
 					},
 			
 					receive : function(msgObj) {
 						console.log('Mediator.receive');
-						var instanceId = msgObj.data.id;
-						if (msgObj.data.targetId !== undefined) {
-							instanceId = msgObj.data.targetId;
+						
+						var i, f, widgetId = msgObj.data.id;
+						
+						for(i = 0; i < window.frames.length; i++){
+							if(window.frames[i].name === widgetId){
+								f =  window.frames[i];
+								break;
+							}
 						}
-			
-						var instance = Mediator.instance[instanceId], eventInstance = Mediator.eventInstance[instanceId], action = msgObj.data.action;
-						if (Widgetfly.Utils.isFunction(instance[action])) {
-							instance[action](msgObj.data.msg);
-						} else {
-							if (!Widgetfly.Utils.isEmpty(eventInstance) && Widgetfly.Utils.isFunction(eventInstance[action])) {
-								eventInstance[action](msgObj.data.msg);
+						
+						if(f){
+							var origin, parser = window.document.createElement('a');
+							parser.href = f.location;
+							origin = parser.protocol + '//' + parser.host;
+							
+							if(origin !== msgObj.origin){
+								console.log('Widget ignore message from ' + msgObj.origin);
+								return;
+							}
+				
+							var widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
+							if (widget && Widgetfly.Utils.isFunction(widget[action])) {
+								widget[action](msgObj.data.msg);
+							} else {
+								if (!Widgetfly.Utils.isEmpty(widgetEvents) && Widgetfly.Utils.isFunction(widgetEvents[action])) {
+									widgetEvents[action](msgObj.data.msg);
+								}
 							}
 						}
 					}
@@ -420,17 +448,27 @@
 			
 				Widgetfly.Utils.inherit(Server, Widgetfly.Events);
 			
-				Server.init = function() {
+				Server.prototype.init = function() {
 					var self = this;
 					this.trigger('start');
 					window.addEventListener('message', function(msgObj) {
-						//console.log(msgObj);
-						var action = msgObj.data.action;
-						if (Widgetfly.Utils.isFunction(self[action])) {
-							self[action](msgObj.data.msg);
-						} else {
-							if (!Widgetfly.Utils.isEmpty(self.events) && Widgetfly.Utils.isFunction(self.events[action])) {
-								self.events[action](msgObj.data.msg);
+						if(window.parent){
+							var origin, parser = window.document.createElement('a');
+							parser.href = window.parent.location;
+							origin = parser.protocol + '//' + parser.host;
+							
+							if(origin !== msgObj.origin){
+								console.log('Server ignore message from ' + msgObj.origin);
+								return;
+							}
+							
+							var action = msgObj.data.action;
+							if (Widgetfly.Utils.isFunction(self[action])) {
+								self[action](msgObj.data.msg);
+							} else {
+								if (!Widgetfly.Utils.isEmpty(self.events) && Widgetfly.Utils.isFunction(self.events[action])) {
+									self.events[action](msgObj.data.msg);
+								}
 							}
 						}
 					}, false);
@@ -444,27 +482,24 @@
 					delete this.events[key];
 				};
 			
-				Server.prototype.trigger = function(action, data, targetId, targetOrigin, transfer) {
+				Server.prototype.trigger = function(action, data) {
 					console.log('Server.trigger');
-					var corsObj = {
+					var targetOrigin, corsObj = {
 						msg : data,
 						action : action,
 						id : this.id
 					};
-			
-					if (targetId !== undefined) {
-						corsObj.targetId = targetId;
-					}
-			
-					if (targetOrigin === undefined) {
-						targetOrigin = '*';
-					}
+					
+					var parser = window.document.createElement('a');
+					parser.href = window.parent.location;
+					targetOrigin = parser.protocol + '//' + parser.host;
+							
 					//console.log(corsObj);
-					parent.postMessage(corsObj, targetOrigin, transfer);
+					parent.postMessage(corsObj, targetOrigin);
 				};
 			
 				Server.prototype.show = function() {
-					this.trigger('_show');
+					this.trigger('show');
 				};
 			
 				Server.prototype.hide = function() {
@@ -485,7 +520,7 @@
 			
 					this.onClose(function() {
 						console.log('Server close action');
-						self.trigger('_close');
+						self.trigger('close');
 					});
 				};
 			
@@ -515,14 +550,15 @@
 			
 				Widget.prototype.onStart = function(callback) {
 					if (Widgetfly.Utils.isFunction(callback)) {
-						this.on('_onStart', callback);
+						this.on('onStart', callback);
 					}
 				};
 			
 				Widget.prototype.start = function() {
-					console.log('action onStart');
-					if (Widgetfly.Utils.isFunction(Widgetfly.Mediator.eventInstance[this.id]._onStart)) {
-						Widgetfly.Mediator.eventInstance[this.id]._onStart();
+					console.log('Action onStart');
+					var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+					if (events && Widgetfly.Utils.isFunction(events.onStart)) {
+						events.onStart();
 					}
 				};
 			
@@ -532,7 +568,7 @@
 			
 				Widget.prototype.onHide = function(callback) {
 					if (Widgetfly.Utils.isFunction(callback)) {
-						this.on('_onHide', callback);
+						this.on('onHide', callback);
 					}
 				};
 			
@@ -544,14 +580,15 @@
 						window.document.getElementsByClassName(this.setting.container)[0].hide();
 					}
 					console.log('action onHide');
-					if (Widgetfly.Utils.isFunction(Widgetfly.Mediator.eventInstance[this.id]._onHide)) {
-						Widgetfly.Mediator.eventInstance[this.id]._onHide();
+					var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+					if (events && Widgetfly.Utils.isFunction(events.onHide)) {
+						events.onHide();
 					}
 				};
 			
 				Widget.prototype.onShow = function(callback) {
 					if (Widgetfly.Utils.isFunction(callback)) {
-						this.on('_onShow', callback);
+						this.on('onShow', callback);
 					}
 				};
 			
@@ -568,21 +605,23 @@
 						}
 					}
 					console.log('action onShow');
-					if (Widgetfly.Utils.isFunction(Widgetfly.Mediator.eventInstance[this.id].onShow)) {
-						Widgetfly.Mediator.eventInstance[this.id]._onShow();
+					var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+					if (events && Widgetfly.Utils.isFunction(events.onShow)) {
+						events.onShow();
 					}
 				};
 			
 				Widget.prototype.onBeforeClose = function(callback) {
 					if (Widgetfly.Utils.isFunction(callback)) {
-						this.on('_onBeforeClose', callback);
+						this.on('onBeforeClose', callback);
 					}
 				};
 			
 				Widget.prototype.close = function() {
 					var self = this;
-					if (Widgetfly.Utils.isFunction(Widgetfly.Mediator.eventInstance[this.id]._onBeforeClose)) {
-						Widgetfly.Mediator.eventInstance[this.id]._onBeforeClose();
+					var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+					if (events && Widgetfly.Utils.isFunction(events.onBeforeClose)) {
+						events.onBeforeClose();
 					}
 					Widgetfly.Mediator.unregister(this.id, function() {
 						var removeDom;
@@ -603,7 +642,7 @@
 				Widget.prototype.register = function() {
 					var nowScripts = document.getElementsByTagName('script'), cScript = nowScripts[nowScripts.length - 1];
 					//console.log(this);
-					Widgetfly.Mediator.register(this);
+					Widgetfly.Mediator.register(this.id, this);
 					cScript.setAttribute('data-id', this.id);
 				};
 			
@@ -616,6 +655,9 @@
 				// -------------
 				var Panel = function(setting) {
 					//console.log(setting);
+					
+					Widgetfly.Widget.apply(this, arguments);
+					
 					setting.dom = setting.container;
 					if (setting.container.substr(0, 1) === '.') {
 						setting.appendType = 'class';
@@ -745,7 +787,7 @@
 				var nowScripts = document.getElementsByTagName('script'), instance, param = Widgetfly.Utils.parseUrl(nowScripts);
 			
 				if (!Widgetfly.Utils.inIframe()) {
-					console.log('Now is app initialize');
+					console.log('Now is Widgets initialize');
 					Widgetfly.Mediator.init();
 					if (Widgetfly.Utils.getElementsByClassName('qt').length <= 0) {
 						instance = window.document.createElement('div');
@@ -757,7 +799,7 @@
 						new Widgetfly.Panel(param);
 					}
 				} else {
-					console.log('Now is widget initialize');
+					console.log('Now is Server initialize');
 					// widget
 					//var Server = new Widgetfly.Server();
 				}
