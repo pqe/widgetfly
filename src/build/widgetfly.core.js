@@ -1,4 +1,4 @@
-var Widgetfly = (function(window){
+var Widgetfly = (function(global){
 	'use strict';
 	var Widgetfly = {};
 		

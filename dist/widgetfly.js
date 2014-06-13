@@ -22,7 +22,7 @@
 		}
 	}(this, function() {
 		'use strict';
-		var Widgetfly = (function(window){
+		var Widgetfly = (function(global){
 			'use strict';
 			var Widgetfly = {};
 				
@@ -125,10 +125,10 @@
 						} else {
 							nowSrc = URL;
 						}
-						parameter = nowSrc.split('#', 2);
+						parameter = nowSrc.split('?', 2);
 						if (parameter.length > 1) {
 							parameter = parameter[1];
-							parameter = parameter.split('#');
+							parameter = parameter.split('?');
 							if (parameter.length > 0) {
 								if (parameter[0].split('=', 2).length > 0) {
 									createParam.type = parameter[0].split('=', 2)[1];
@@ -838,7 +838,7 @@
 			
 			})(this);
 			
-			(function(window) {'use strict';
+			(function(global) {'use strict';
 			
 				var extend = function(protoProps, staticProps) {
 					var child,parent = this, Surrogate;

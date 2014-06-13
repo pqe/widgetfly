@@ -61,8 +61,6 @@ module.exports = function (grunt) {
 			main: {
 				files: [
 					{src: ['tmp/widgetfly.js'], dest: 'dist/widgetfly.js'},
-					{src: ['dist/widgetfly.min.js'], dest: 'example/widgetfly.min.js'},
-					{src: ['dist/widgetfly.min.map'], dest: 'example/widgetfly.min.map'},
 					{src: ['bower_components/jquery/jquery.min.js'], dest: 'example/jquery.min.js'},
 					{src: ['bower_components/jquery/jquery.min.map'], dest: 'example/jquery.min.map'}
 				]

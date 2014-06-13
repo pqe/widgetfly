@@ -1,4 +1,4 @@
-(function(window) {'use strict';
+(function(global) {'use strict';
 
 	var extend = function(protoProps, staticProps) {
 		var child,parent = this, Surrogate;
