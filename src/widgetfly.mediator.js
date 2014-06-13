@@ -1,5 +1,4 @@
-Widgetfly.Mediator = (function(global) {
-	'use strict';
+Widgetfly.Mediator = (function(global) {'use strict';
 	// Mediator
 	// -------------
 	var Mediator = {
@@ -20,8 +19,8 @@ Widgetfly.Mediator = (function(global) {
 		getWidget : function(id) {
 			return this.widgets[id];
 		},
-		
-		getWidgetEvents : function(id){
+
+		getWidgetEvents : function(id) {
 			return this.widgetEvents[id];
 		},
 
@@ -40,30 +39,22 @@ Widgetfly.Mediator = (function(global) {
 			delete this.widgets[id];
 			callback(true);
 		},
-		
+
 		send : function(id, action, data) {
 			console.log('Events.trigger');
-			
-			var f, i, targetOrigin, corsObj = {
+
+			var parser, targetOrigin, corsObj = {
 				msg : data,
 				action : action,
 				id : id
-			};
+			}, widget = this.widgets[id];
 
-			for(i = 0; i < window.frames.length; i++){
-				if(window.frames[i].name === id){
-					f =  window.frames[i];
-					break;
-				}
-			}
-			
-			if(f){
-				var parser = window.document.createElement('a');
-				parser.href = f.location;
+			if (widget) {
+				parser = window.document.createElement('a');
+				parser.href = widget.iframe.src;
 				targetOrigin = parser.protocol + '//' + parser.host;
-				f.postMessage(corsObj, targetOrigin);
+				widget.iframe.contentWindow.postMessage(corsObj, targetOrigin);
 			}
-			
 		},
 
 		bind : function(id, eventName, callback) {
@@ -84,27 +75,19 @@ Widgetfly.Mediator = (function(global) {
 
 		receive : function(msgObj) {
 			console.log('Mediator.receive');
-			
-			var i, f, widgetId = msgObj.data.id;
-			
-			for(i = 0; i < window.frames.length; i++){
-				if(window.frames[i].name === widgetId){
-					f =  window.frames[i];
-					break;
-				}
-			}
-			
-			if(f){
-				var origin, parser = window.document.createElement('a');
-				parser.href = f.location;
+
+			var origin, parser, widgetId = msgObj.data.id, widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
+
+			if (widget) {
+				parser = window.document.createElement('a');
+				parser.href = widget.iframe.src;
 				origin = parser.protocol + '//' + parser.host;
-				
-				if(origin !== msgObj.origin){
+
+				if (origin !== msgObj.origin) {
 					console.log('Widget ignore message from ' + msgObj.origin);
 					return;
 				}
-	
-				var widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
+
 				if (widget && Widgetfly.Utils.isFunction(widget[action])) {
 					widget[action](msgObj.data.msg);
 				} else {
@@ -115,6 +98,6 @@ Widgetfly.Mediator = (function(global) {
 			}
 		}
 	};
-	
+
 	return Mediator;
 })(this);

@@ -14,16 +14,19 @@ Widgetfly.Server = (function(global) {'use strict';
 		this.trigger('start');
 		window.addEventListener('message', function(msgObj) {
 			if(window.parent){
-				var origin, parser = window.document.createElement('a');
-				parser.href = window.parent.location;
+				var action, origin, parser, params,paramData = Widgetfly.Utils.getParameterByName('wo');
+				params = JSON.parse(paramData);
+				
+				parser = window.document.createElement('a');
+				parser.href = params.origin;
 				origin = parser.protocol + '//' + parser.host;
 				
-				if(origin !== msgObj.origin){
+				if(origin !== 'file://' && origin !== msgObj.origin){
 					console.log('Server ignore message from ' + msgObj.origin);
 					return;
 				}
 				
-				var action = msgObj.data.action;
+				action = msgObj.data.action;
 				if (Widgetfly.Utils.isFunction(self[action])) {
 					self[action](msgObj.data.msg);
 				} else {
@@ -45,18 +48,14 @@ Widgetfly.Server = (function(global) {'use strict';
 
 	Server.prototype.trigger = function(action, data) {
 		console.log('Server.trigger');
-		var targetOrigin, corsObj = {
+		var corsObj = {
 			msg : data,
 			action : action,
 			id : this.id
-		};
+		}, params = JSON.parse(Widgetfly.Utils.getParameterByName('wo'));
 		
-		var parser = window.document.createElement('a');
-		parser.href = window.parent.location;
-		targetOrigin = parser.protocol + '//' + parser.host;
-				
 		//console.log(corsObj);
-		parent.postMessage(corsObj, targetOrigin);
+		parent.postMessage(corsObj, params.origin);
 	};
 
 	Server.prototype.show = function() {

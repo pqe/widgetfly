@@ -105,6 +105,13 @@
 						Child.prototype.constructor = Child;
 						Child.uber = Parent.prototype;
 					},
+					
+					getParameterByName : function (name) {
+					    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+					    var regex = new RegExp('[\\#&]' + name + '=([^&#]*)'),
+					        results = regex.exec(window.location.hash);
+					    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+					},
 			
 					parseUrl : function(URL, checkLib) {
 						var nowSrc, parameter, createParam = {}, i, tmpStr, tmpParam;
@@ -116,10 +123,10 @@
 						} else {
 							nowSrc = URL;
 						}
-						parameter = nowSrc.split('?', 2);
+						parameter = nowSrc.split('#', 2);
 						if (parameter.length > 1) {
 							parameter = parameter[1];
-							parameter = parameter.split('&');
+							parameter = parameter.split('#');
 							if (parameter.length > 0) {
 								if (parameter[0].split('=', 2).length > 0) {
 									createParam.type = parameter[0].split('=', 2)[1];
@@ -362,26 +369,18 @@
 					send : function(id, action, data) {
 						console.log('Events.trigger');
 						
-						var f, i, targetOrigin, corsObj = {
+						var targetOrigin, corsObj = {
 							msg : data,
 							action : action,
 							id : id
-						};
-			
-						for(i = 0; i < window.frames.length; i++){
-							if(window.frames[i].name === id){
-								f =  window.frames[i];
-								break;
-							}
-						}
+						}, widget = this.widgets[id];
 						
-						if(f){
+						if(widget){
 							var parser = window.document.createElement('a');
-							parser.href = f.location;
+							parser.href = widget.iframe.src;
 							targetOrigin = parser.protocol + '//' + parser.host;
-							f.postMessage(corsObj, targetOrigin);
+							widget.iframe.contentWindow.postMessage(corsObj, targetOrigin);
 						}
-						
 					},
 			
 					bind : function(id, eventName, callback) {
@@ -403,26 +402,20 @@
 					receive : function(msgObj) {
 						console.log('Mediator.receive');
 						
-						var i, f, widgetId = msgObj.data.id;
+						var widgetId = msgObj.data.id;
 						
-						for(i = 0; i < window.frames.length; i++){
-							if(window.frames[i].name === widgetId){
-								f =  window.frames[i];
-								break;
-							}
-						}
+						var widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
 						
-						if(f){
+						if(widget){
 							var origin, parser = window.document.createElement('a');
-							parser.href = f.location;
+							parser.href = widget.iframe.src;
 							origin = parser.protocol + '//' + parser.host;
 							
 							if(origin !== msgObj.origin){
 								console.log('Widget ignore message from ' + msgObj.origin);
 								return;
 							}
-				
-							var widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
+							
 							if (widget && Widgetfly.Utils.isFunction(widget[action])) {
 								widget[action](msgObj.data.msg);
 							} else {
@@ -453,11 +446,14 @@
 					this.trigger('start');
 					window.addEventListener('message', function(msgObj) {
 						if(window.parent){
+							var params,paramData = Widgetfly.Utils.getParameterByName('wo');
+							params = JSON.parse(paramData);
+							
 							var origin, parser = window.document.createElement('a');
-							parser.href = window.parent.location;
+							parser.href = params.origin;
 							origin = parser.protocol + '//' + parser.host;
 							
-							if(origin !== msgObj.origin){
+							if(origin !== 'file://' && origin !== msgObj.origin){
 								console.log('Server ignore message from ' + msgObj.origin);
 								return;
 							}
@@ -484,18 +480,14 @@
 			
 				Server.prototype.trigger = function(action, data) {
 					console.log('Server.trigger');
-					var targetOrigin, corsObj = {
+					var corsObj = {
 						msg : data,
 						action : action,
 						id : this.id
-					};
+					}, params = JSON.parse(Widgetfly.Utils.getParameterByName('wo'));
 					
-					var parser = window.document.createElement('a');
-					parser.href = window.parent.location;
-					targetOrigin = parser.protocol + '//' + parser.host;
-							
 					//console.log(corsObj);
-					parent.postMessage(corsObj, targetOrigin);
+					parent.postMessage(corsObj, params.origin);
 				};
 			
 				Server.prototype.show = function() {
@@ -694,9 +686,29 @@
 				Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 				
 				Panel.prototype.render = function(setting) {
-						var iframe = document.createElement('iFrame');
-						iframe.setAttribute('src', setting.options.src.toString());
+						var src, iframe = document.createElement('iFrame'), origin, urlOptions;
+						if(window.location.protocol === 'file:'){
+							origin = window.location.href;
+						}else{
+							origin = window.location.protocol + '//' + window.location.host;
+						}
+						
+						urlOptions = {
+							origin : origin
+						};
+						
 						iframe.setAttribute('name', setting.id);
+						
+						if(setting.options.src.indexOf('#') === -1){
+							src = setting.options.src + '#';
+						}else{
+							src = setting.options.src + '&';
+						}
+						
+						src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
+						
+						iframe.setAttribute('src', src);
+						
 						//console.log(document.getElementsByTagName('iFrame').item(0));
 						if (setting.container === undefined || setting.container === null) {
 							Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(iframe);
@@ -710,6 +722,8 @@
 								Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(iframe);
 							}
 						}
+						
+						this.iframe = iframe;
 					};
 				
 				return Panel;

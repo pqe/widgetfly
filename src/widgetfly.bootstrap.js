@@ -1,8 +1,7 @@
 (function(window) {'use strict';
 
 	var extend = function(protoProps, staticProps) {
-		var parent = this;
-		var child;
+		var child,parent = this, Surrogate;
 
 		// The constructor function for the new subclass is either defined by you
 		// (the "constructor" property in your `extend` definition), or defaulted
@@ -20,7 +19,7 @@
 
 		// Set the prototype chain to inherit from `parent`, without calling
 		// `parent`'s constructor function.
-		var Surrogate = function() {
+		Surrogate = function() {
 			this.constructor = child;
 		};
 		Surrogate.prototype = parent.prototype;
@@ -37,13 +36,14 @@
 		child.__super__ = parent.prototype;
 
 		return child;
-	};
+	},nowScripts, instance, param;
 	
 	Widgetfly.Panel.extend = Widgetfly.Modal.extend = Widgetfly.Popover.extend = Widgetfly.Server.extend = extend;
 
 	// Initialize for DOM prepare
 	// -------------
-	var nowScripts = document.getElementsByTagName('script'), instance, param = Widgetfly.Utils.parseUrl(nowScripts);
+	nowScripts = document.getElementsByTagName('script');
+	param  = Widgetfly.Utils.parseUrl(nowScripts);
 
 	if (!Widgetfly.Utils.inIframe()) {
 		console.log('Now is Widgets initialize');

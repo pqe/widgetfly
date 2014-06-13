@@ -52,7 +52,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.show = function() {
-		var self = this;
+		var self = this,events;
 		console.log('action show');
 		if (self.setting.appendType === 'id') {
 			if (window.document.getElementById(self.setting.container) !== undefined) {
@@ -64,7 +64,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 			}
 		}
 		console.log('action onShow');
-		var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+		events = Widgetfly.Mediator.getWidgetEvents(this.id);
 		if (events && Widgetfly.Utils.isFunction(events.onShow)) {
 			events.onShow();
 		}
@@ -77,8 +77,8 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.close = function() {
-		var self = this;
-		var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+		var self = this, events;
+		events = Widgetfly.Mediator.getWidgetEvents(this.id);
 		if (events && Widgetfly.Utils.isFunction(events.onBeforeClose)) {
 			events.onBeforeClose();
 		}
