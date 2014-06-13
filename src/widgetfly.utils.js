@@ -97,10 +97,10 @@ Widgetfly.Utils = (function(global) {'use strict';
 			} else {
 				nowSrc = URL;
 			}
-			parameter = nowSrc.split('#', 2);
+			parameter = nowSrc.split('?', 2);
 			if (parameter.length > 1) {
 				parameter = parameter[1];
-				parameter = parameter.split('#');
+				parameter = parameter.split('?');
 				if (parameter.length > 0) {
 					if (parameter[0].split('=', 2).length > 0) {
 						createParam.type = parameter[0].split('=', 2)[1];
