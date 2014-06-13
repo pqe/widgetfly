@@ -36,6 +36,8 @@
 					},
 			
 					each : function(obj, iterator, context) {
+						var i, l, key;
+						
 						if (obj === null) {
 							return false;
 						}
@@ -43,13 +45,13 @@
 						if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
 							obj.forEach(iterator, context);
 						} else if ( typeof obj.length === 'number') {
-							for (var i = 0, l = obj.length; i < l; i++) {
+							for (i = 0, l = obj.length; i < l; i++) {
 								if (iterator.call(context, obj[i], i, obj) === {}) {
 									return false;
 								}
 							}
 						} else {
-							for (var key in obj) {
+							for (key in obj) {
 								if (Widgetfly.Utils.has(obj, key)) {
 									if (iterator.call(context, obj[key], key, obj) === {}) {
 										return false;
@@ -323,8 +325,7 @@
 				return Events;
 			})(this);
 			
-			Widgetfly.Mediator = (function(global) {
-				'use strict';
+			Widgetfly.Mediator = (function(global) {'use strict';
 				// Mediator
 				// -------------
 				var Mediator = {
@@ -345,8 +346,8 @@
 					getWidget : function(id) {
 						return this.widgets[id];
 					},
-					
-					getWidgetEvents : function(id){
+			
+					getWidgetEvents : function(id) {
 						return this.widgetEvents[id];
 					},
 			
@@ -365,18 +366,18 @@
 						delete this.widgets[id];
 						callback(true);
 					},
-					
+			
 					send : function(id, action, data) {
 						console.log('Events.trigger');
-						
-						var targetOrigin, corsObj = {
+			
+						var parser, targetOrigin, corsObj = {
 							msg : data,
 							action : action,
 							id : id
 						}, widget = this.widgets[id];
-						
-						if(widget){
-							var parser = window.document.createElement('a');
+			
+						if (widget) {
+							parser = window.document.createElement('a');
 							parser.href = widget.iframe.src;
 							targetOrigin = parser.protocol + '//' + parser.host;
 							widget.iframe.contentWindow.postMessage(corsObj, targetOrigin);
@@ -401,21 +402,19 @@
 			
 					receive : function(msgObj) {
 						console.log('Mediator.receive');
-						
-						var widgetId = msgObj.data.id;
-						
-						var widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
-						
-						if(widget){
-							var origin, parser = window.document.createElement('a');
+			
+						var origin, parser, widgetId = msgObj.data.id, widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
+			
+						if (widget) {
+							parser = window.document.createElement('a');
 							parser.href = widget.iframe.src;
 							origin = parser.protocol + '//' + parser.host;
-							
-							if(origin !== msgObj.origin){
+			
+							if (origin !== msgObj.origin) {
 								console.log('Widget ignore message from ' + msgObj.origin);
 								return;
 							}
-							
+			
 							if (widget && Widgetfly.Utils.isFunction(widget[action])) {
 								widget[action](msgObj.data.msg);
 							} else {
@@ -426,7 +425,7 @@
 						}
 					}
 				};
-				
+			
 				return Mediator;
 			})(this);
 			
@@ -446,10 +445,10 @@
 					this.trigger('start');
 					window.addEventListener('message', function(msgObj) {
 						if(window.parent){
-							var params,paramData = Widgetfly.Utils.getParameterByName('wo');
+							var action, origin, parser, params,paramData = Widgetfly.Utils.getParameterByName('wo');
 							params = JSON.parse(paramData);
 							
-							var origin, parser = window.document.createElement('a');
+							parser = window.document.createElement('a');
 							parser.href = params.origin;
 							origin = parser.protocol + '//' + parser.host;
 							
@@ -458,7 +457,7 @@
 								return;
 							}
 							
-							var action = msgObj.data.action;
+							action = msgObj.data.action;
 							if (Widgetfly.Utils.isFunction(self[action])) {
 								self[action](msgObj.data.msg);
 							} else {
@@ -585,7 +584,7 @@
 				};
 			
 				Widget.prototype.show = function() {
-					var self = this;
+					var self = this,events;
 					console.log('action show');
 					if (self.setting.appendType === 'id') {
 						if (window.document.getElementById(self.setting.container) !== undefined) {
@@ -597,7 +596,7 @@
 						}
 					}
 					console.log('action onShow');
-					var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+					events = Widgetfly.Mediator.getWidgetEvents(this.id);
 					if (events && Widgetfly.Utils.isFunction(events.onShow)) {
 						events.onShow();
 					}
@@ -610,8 +609,8 @@
 				};
 			
 				Widget.prototype.close = function() {
-					var self = this;
-					var events = Widgetfly.Mediator.getWidgetEvents(this.id);
+					var self = this, events;
+					events = Widgetfly.Mediator.getWidgetEvents(this.id);
 					if (events && Widgetfly.Utils.isFunction(events.onBeforeClose)) {
 						events.onBeforeClose();
 					}
@@ -637,19 +636,45 @@
 					Widgetfly.Mediator.register(this.id, this);
 					cScript.setAttribute('data-id', this.id);
 				};
+				
+				Widget.prototype.helpRender = function(setting){
+					var src, iframe = document.createElement('iFrame'), origin, urlOptions;
+					if (window.location.protocol === 'file:') {
+						origin = window.location.href;
+					} else {
+						origin = window.location.protocol + '//' + window.location.host;
+					}
+			
+					urlOptions = {
+						origin : origin
+					};
+			
+					iframe.setAttribute('name', setting.id);
+			
+					if (setting.options.src.indexOf('#') === -1) {
+						src = setting.options.src + '#';
+					} else {
+						src = setting.options.src + '&';
+					}
+			
+					src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
+			
+					iframe.setAttribute('src', src);
+					return iframe;
+				};
 			
 				return Widget;
 			})(this);
 			
 			Widgetfly.Panel = (function(global) {'use strict';
-				
+			
 				// Widgetfly.Panel
 				// -------------
 				var Panel = function(setting) {
 					//console.log(setting);
-					
+			
 					Widgetfly.Widget.apply(this, arguments);
-					
+			
 					setting.dom = setting.container;
 					if (setting.container.substr(0, 1) === '.') {
 						setting.appendType = 'class';
@@ -679,53 +704,33 @@
 					if (setting.options.initRender) {
 						this.render(setting);
 					}
-					
+			
 					return this;
 				};
-				
+			
 				Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
-				
+			
 				Panel.prototype.render = function(setting) {
-						var src, iframe = document.createElement('iFrame'), origin, urlOptions;
-						if(window.location.protocol === 'file:'){
-							origin = window.location.href;
-						}else{
-							origin = window.location.protocol + '//' + window.location.host;
-						}
-						
-						urlOptions = {
-							origin : origin
-						};
-						
-						iframe.setAttribute('name', setting.id);
-						
-						if(setting.options.src.indexOf('#') === -1){
-							src = setting.options.src + '#';
-						}else{
-							src = setting.options.src + '&';
-						}
-						
-						src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
-						
-						iframe.setAttribute('src', src);
-						
-						//console.log(document.getElementsByTagName('iFrame').item(0));
-						if (setting.container === undefined || setting.container === null) {
-							Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(iframe);
-						} else {
-							//console.log(append.substr(1, append.length));
-							if (setting.appendType === 'id') {
-								if (window.document.getElementById(setting.container).length > 0) {
-									window.document.getElementById(setting.container).appendChild(iframe);
-								}
-							} else {
-								Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(iframe);
+					//Widgetfly.Widget.apply(this, arguments);
+					var iframe = this.helpRender(setting);
+			
+					//console.log(document.getElementsByTagName('iFrame').item(0));
+					if (setting.container === undefined || setting.container === null) {
+						Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(iframe);
+					} else {
+						//console.log(append.substr(1, append.length));
+						if (setting.appendType === 'id') {
+							if (window.document.getElementById(setting.container).length > 0) {
+								window.document.getElementById(setting.container).appendChild(iframe);
 							}
+						} else {
+							Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(iframe);
 						}
-						
-						this.iframe = iframe;
-					};
-				
+					}
+			
+					this.iframe = iframe;
+				};
+			
 				return Panel;
 			})(this);
 			
@@ -733,10 +738,90 @@
 				// Widgetfly.Modal
 				// -------------
 				var Modal = function(setting) {
+					//console.log(setting);
+			
+					Widgetfly.Widget.apply(this, arguments);
+			
+					setting.dom = setting.container;
+					if (setting.container.substr(0, 1) === '.') {
+						setting.appendType = 'class';
+						setting.container = setting.container.replace('.', '');
+					} else if (setting.container.substr(0, 1) === '#') {
+						setting.appendType = 'id';
+						setting.container = setting.container.replace('#', '');
+					}
+			
+					if (setting === undefined) {
+						return false;
+					}
+			
+					if (Widgetfly.Utils.getElementsByClassName('qt modal').length <= 0) {
+						var modalDiv = window.document.createElement('div');
+						if (setting.appendType === 'class') {
+							modalDiv.setAttribute('class', 'qt modal ' + setting.container);
+						} else {
+							modalDiv.setAttribute('class', 'qt modal');
+							modalDiv.setAttribute('id', setting.container);
+						}
+						Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(modalDiv);
+					}
+			
+					if (Widgetfly.Utils.getElementsByClassName('qt modal')[0].childNodes.length > 0) {
+						Widgetfly.Utils.getElementsByClassName('qt modal')[0].removeChild(Widgetfly.Utils.getElementsByClassName('qt content')[0]);
+						if (setting.appendType === 'class') {
+							Widgetfly.Utils.getElementsByClassName('qt modal')[0].setAttribute('class', 'qt modal ' + setting.container);
+						} else {
+							Widgetfly.Utils.getElementsByClassName('qt modal')[0].setAttribute('class', 'qt modal');
+							Widgetfly.Utils.getElementsByClassName('qt modal')[0].setAttribute('id', setting.container);
+						}
+					}
+			
+					setting.id = this.id;
+					this.setting = setting;
+					this.setMap(setting);
+					this.register(this.id);
+			
+					if (setting.options.initRender) {
+						//console.log(123);
+						this.render(setting);
+						Widgetfly.Utils.addClass(Widgetfly.Utils.getElementsByClassName('qt modal')[0], 'active');
+					}
+					return this;
 				};
-				
+			
 				Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
-				
+			
+				Modal.prototype.render = function(setting) {
+					//console.log(setting);
+					var contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = this.helpRender(setting);
+			
+					if (setting.options !== undefined && setting.options !== null && setting.options !== {}) {
+						spanTitle.textContent = setting.options.title;
+					}
+			
+					aClose.setAttribute('href', '###');
+					aClose.setAttribute('class', 'close');
+					aClose.textContent = 'x';
+					aClose.onclick = function() {
+						Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
+					};
+			
+					viewTop.setAttribute('class', 'qt view-top');
+					viewTop.appendChild(spanTitle);
+					viewTop.appendChild(aClose);
+			
+					contentView.setAttribute('class', 'qt content');
+					contentView.appendChild(viewTop);
+					contentView.appendChild(iframe);
+			
+					Widgetfly.Utils.getElementsByClassName('qt modal')[0].appendChild(contentView);
+					this.iframe = iframe;
+				};
+			
+				Modal.prototype.sizeChange = function(size) {
+					document.getElementsByName(this.id)[0].height = size + 'px';
+				};
+			
 				return Modal;
 			
 			})(this);
@@ -756,8 +841,7 @@
 			(function(window) {'use strict';
 			
 				var extend = function(protoProps, staticProps) {
-					var parent = this;
-					var child;
+					var child,parent = this, Surrogate;
 			
 					// The constructor function for the new subclass is either defined by you
 					// (the "constructor" property in your `extend` definition), or defaulted
@@ -775,7 +859,7 @@
 			
 					// Set the prototype chain to inherit from `parent`, without calling
 					// `parent`'s constructor function.
-					var Surrogate = function() {
+					Surrogate = function() {
 						this.constructor = child;
 					};
 					Surrogate.prototype = parent.prototype;
@@ -792,13 +876,14 @@
 					child.__super__ = parent.prototype;
 			
 					return child;
-				};
+				},nowScripts, instance, param;
 				
 				Widgetfly.Panel.extend = Widgetfly.Modal.extend = Widgetfly.Popover.extend = Widgetfly.Server.extend = extend;
 			
 				// Initialize for DOM prepare
 				// -------------
-				var nowScripts = document.getElementsByTagName('script'), instance, param = Widgetfly.Utils.parseUrl(nowScripts);
+				nowScripts = document.getElementsByTagName('script');
+				param  = Widgetfly.Utils.parseUrl(nowScripts);
 			
 				if (!Widgetfly.Utils.inIframe()) {
 					console.log('Now is Widgets initialize');

@@ -104,6 +104,32 @@ Widgetfly.Widget = (function(global) {'use strict';
 		Widgetfly.Mediator.register(this.id, this);
 		cScript.setAttribute('data-id', this.id);
 	};
+	
+	Widget.prototype.helpRender = function(setting){
+		var src, iframe = document.createElement('iFrame'), origin, urlOptions;
+		if (window.location.protocol === 'file:') {
+			origin = window.location.href;
+		} else {
+			origin = window.location.protocol + '//' + window.location.host;
+		}
+
+		urlOptions = {
+			origin : origin
+		};
+
+		iframe.setAttribute('name', setting.id);
+
+		if (setting.options.src.indexOf('#') === -1) {
+			src = setting.options.src + '#';
+		} else {
+			src = setting.options.src + '&';
+		}
+
+		src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
+
+		iframe.setAttribute('src', src);
+		return iframe;
+	};
 
 	return Widget;
 })(this);
