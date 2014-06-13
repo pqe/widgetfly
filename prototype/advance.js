@@ -1,19 +1,17 @@
-var Widgetfly = window.Widgetfly, test = new Widgetfly.Panel({
+var MyWidget = Widgetfly.Panel.extend({/** overwrite **/});
+var widgetA = new MyWidget({
 	container : '.qfb',
 	autoGrow : true,
 	options : {
 		initRender : true,
-		src : 'http://192.168.73.128/widgetfly/src/demo/relative.html'
+		src : 'http://192.168.73.128/widgetfly/prototype/relative.html'
 	},
 	css : {
 
 	}
 });
-
-test.onStart(function(){
-	console.log('start!!');
+widgetA.onStart(function() {
+	console.log('widgetA is started');
+	widgetA.trigger('hello', 'widgetA');
 });
-
-//setTimeout('test.trigger(test.id, "hello")', 3000);
-
-//test.on('click', function(){});
+console.log(widgetA); 
