@@ -567,10 +567,8 @@
 			
 				Widget.prototype.hide = function() {
 					console.log('Widget.Action hide');
-					if (this.setting.appendType === 'id') {
-						window.document.getElementById(this.setting.container).hide();
-					} else {
-						window.document.getElementsByClassName(this.setting.container)[0].hide();
+					if(!Widgetfly.Utils.hasClass(this.el, 'hide')){
+						Widgetfly.Utils.addClass(this.el, 'hide');
 					}
 					var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
@@ -587,14 +585,8 @@
 				Widget.prototype.show = function() {
 					console.log('Widget.Action show');
 					var self = this, handlers;
-					if (self.setting.appendType === 'id') {
-						if (window.document.getElementById(self.setting.container) !== undefined) {
-							window.document.getElementById(self.setting.container).show();
-						}
-					} else {
-						if (window.document.getElementsByClassName(self.setting.container)[0] !== undefined) {
-							window.document.getElementsByClassName(self.setting.container)[0].show();
-						}
+					if(!Widgetfly.Utils.hasClass(this.el, 'show')){
+						Widgetfly.Utils.addClass(this.el, 'show');
 					}
 					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
@@ -616,13 +608,7 @@
 						handlers.onBeforeClose();
 					}
 					Widgetfly.Mediator.unregister(this.id, function() {
-						var removeDom;
-						if (self.setting.appendType === 'class') {
-							removeDom = document.getElementsByClassName(self.setting.container)[0];
-						} else {
-							removeDom = document.getElementById(self.setting.container);
-						}
-						removeDom.parentNode.removeChild(removeDom);
+						self.el.parentNode.removeChild(self.el);
 					});
 				};
 			
