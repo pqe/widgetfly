@@ -30,14 +30,14 @@
 				// Utilities
 				// -------------
 			
-				var Utils = {
+				var idCounter = 0, Utils = {
 					has : function(obj, key) {
 						return Object.prototype.hasOwnProperty.call(obj, key);
 					},
 			
 					each : function(obj, iterator, context) {
 						var i, l, key;
-						
+			
 						if (obj === null) {
 							return false;
 						}
@@ -45,7 +45,7 @@
 						if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
 							obj.forEach(iterator, context);
 						} else if ( typeof obj.length === 'number') {
-							for (i = 0, l = obj.length; i < l; i++) {
+							for ( i = 0, l = obj.length; i < l; i++) {
 								if (iterator.call(context, obj[i], i, obj) === {}) {
 									return false;
 								}
@@ -107,12 +107,11 @@
 						Child.prototype.constructor = Child;
 						Child.uber = Parent.prototype;
 					},
-					
-					getParameterByName : function (name) {
-					    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-					    var regex = new RegExp('[\\#&]' + name + '=([^&#]*)'),
-					        results = regex.exec(window.location.hash);
-					    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+			
+					getParameterByName : function(name) {
+						name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+						var regex = new RegExp('[\\#&]' + name + '=([^&#]*)'), results = regex.exec(window.location.hash);
+						return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 					},
 			
 					parseUrl : function(URL, checkLib) {
@@ -181,6 +180,11 @@
 							id += possible2.charAt(Math.floor(Math.random() * possible2.length));
 						}
 						return (first + id);
+					},
+			
+					uniqueId : function(prefix) {
+						var id = String(++idCounter);
+						return prefix ? prefix + id : id;
 					},
 			
 					getElementsByClassName : function(testClass, startFrom) {
@@ -304,24 +308,24 @@
 				return Utils;
 			})(this);
 			
-			Widgetfly.Events = (function(global){
-				'use strict';
+			Widgetfly.Events = (function(global) {'use strict';
 				// Events
 				// -------------
-				var Events = function() {};
-			
-				Events.prototype.trigger = function(action, data, targetId, targetOrigin, transfer) {
-					Widgetfly.Mediator.send(this.id, action, data, targetId, targetOrigin, transfer);
+				var Events = function() {
 				};
 			
-				Events.prototype.on = function(eventName, callback) {
-					Widgetfly.Mediator.bind(this.id, eventName, callback);
+				Events.prototype.trigger = function(action, data) {
+					Widgetfly.Mediator.send(this.id, action, data);
 				};
 			
-				Events.prototype.off = function(eventName) {
-					Widgetfly.Mediator.unbind(this.id, eventName);
+				Events.prototype.on = function(action, callback) {
+					Widgetfly.Mediator.bind(this.id, action, callback);
 				};
-					
+			
+				Events.prototype.off = function(action) {
+					Widgetfly.Mediator.unbind(this.id, action);
+				};
+			
 				return Events;
 			})(this);
 			
@@ -332,9 +336,7 @@
 			
 					widgets : {},
 			
-					widgetEvents : {},
-			
-					mapping : {},
+					actionHandlers : {},
 			
 					init : function() {
 						var self = this;
@@ -347,20 +349,20 @@
 						return this.widgets[id];
 					},
 			
-					getWidgetEvents : function(id) {
-						return this.widgetEvents[id];
+					getActionHandlers : function(id) {
+						return this.actionHandlers[id];
 					},
 			
 					register : function(id, widget) {
 						this.widgets[widget.id] = widget;
-						this.widgetEvents[widget.id] = {};
+						this.actionHandlers[widget.id] = {};
 					},
 			
 					unregister : function(id, callback) {
-						if (this.widgetEvents[id] !== undefined) {
+						if (this.actionHandlers[id] !== undefined) {
 							var self = this;
-							Widgetfly.Utils.each(this.widgetEvents[id], function(key) {
-								delete self.widgetEvents[id][key];
+							Widgetfly.Utils.each(this.actionHandlers[id], function(key) {
+								delete self.actionHandlers[id][key];
 							});
 						}
 						delete this.widgets[id];
@@ -368,7 +370,7 @@
 					},
 			
 					send : function(id, action, data) {
-						console.log('Events.trigger');
+						console.log('Mediator.send');
 			
 						var parser, targetOrigin, corsObj = {
 							msg : data,
@@ -384,26 +386,26 @@
 						}
 					},
 			
-					bind : function(id, eventName, callback) {
-						console.log('Events.bind');
-						if (this.widgetEvents[id] === undefined) {
-							this.widgetEvents[id] = {};
+					bind : function(id, action, callback) {
+						console.log('Mediator.bind');
+						if (this.actionHandlers[id] === undefined) {
+							this.actionHandlers[id] = {};
 						}
-						this.widgetEvents[id][eventName] = callback;
+						this.actionHandlers[id][action] = callback;
 					},
 			
-					unbind : function(id, eventName) {
-						console.log('Events.unbind');
-						delete this.widgetEvents[id][eventName];
-						if (Object.keys(this.widgetEvents[id]).length <= 0) {
-							delete this.widgetEvents[id];
+					unbind : function(id, action) {
+						console.log('Mediator.unbind');
+						delete this.actionHandlers[id][action];
+						if (Object.keys(this.actionHandlers[id]).length <= 0) {
+							delete this.actionHandlers[id];
 						}
 					},
 			
 					receive : function(msgObj) {
 						console.log('Mediator.receive');
 			
-						var origin, parser, widgetId = msgObj.data.id, widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
+						var origin, parser, widgetId = msgObj.data.id, widget = this.widgets[widgetId], myActionHandlers = this.actionHandlers[widgetId], action = msgObj.data.action;
 			
 						if (widget) {
 							parser = window.document.createElement('a');
@@ -418,8 +420,8 @@
 							if (widget && Widgetfly.Utils.isFunction(widget[action])) {
 								widget[action](msgObj.data.msg);
 							} else {
-								if (!Widgetfly.Utils.isEmpty(widgetEvents) && Widgetfly.Utils.isFunction(widgetEvents[action])) {
-									widgetEvents[action](msgObj.data.msg);
+								if (!Widgetfly.Utils.isEmpty(myActionHandlers) && Widgetfly.Utils.isFunction(myActionHandlers[action])) {
+									myActionHandlers[action](msgObj.data.msg);
 								}
 							}
 						}
@@ -534,10 +536,14 @@
 				// Widget
 				// -------------
 				var Widget = function() {
-					this.id = Widgetfly.Utils.genId();
+					this.id = Widgetfly.Utils.uniqueId('widget');
 				};
 			
 				Widgetfly.Utils.inherit(Widget, Widgetfly.Events);
+			
+				Widget.prototype.getId = function() {
+					return this.id;
+				};
 			
 				Widget.prototype.onStart = function(callback) {
 					if (Widgetfly.Utils.isFunction(callback)) {
@@ -546,15 +552,11 @@
 				};
 			
 				Widget.prototype.start = function() {
-					console.log('Action onStart');
-					var events = Widgetfly.Mediator.getWidgetEvents(this.id);
-					if (events && Widgetfly.Utils.isFunction(events.onStart)) {
-						events.onStart();
+					console.log('Widget.Action start');
+					var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+					if (handlers && Widgetfly.Utils.isFunction(handlers.onStart)) {
+						handlers.onStart();
 					}
-				};
-			
-				Widget.prototype.getId = function() {
-					return this.id;
 				};
 			
 				Widget.prototype.onHide = function(callback) {
@@ -564,16 +566,15 @@
 				};
 			
 				Widget.prototype.hide = function() {
-					console.log('action hide');
+					console.log('Widget.Action hide');
 					if (this.setting.appendType === 'id') {
 						window.document.getElementById(this.setting.container).hide();
 					} else {
 						window.document.getElementsByClassName(this.setting.container)[0].hide();
 					}
-					console.log('action onHide');
-					var events = Widgetfly.Mediator.getWidgetEvents(this.id);
-					if (events && Widgetfly.Utils.isFunction(events.onHide)) {
-						events.onHide();
+					var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+					if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
+						handlers.onHide();
 					}
 				};
 			
@@ -584,8 +585,8 @@
 				};
 			
 				Widget.prototype.show = function() {
-					var self = this,events;
-					console.log('action show');
+					console.log('Widget.Action show');
+					var self = this, handlers;
 					if (self.setting.appendType === 'id') {
 						if (window.document.getElementById(self.setting.container) !== undefined) {
 							window.document.getElementById(self.setting.container).show();
@@ -595,10 +596,9 @@
 							window.document.getElementsByClassName(self.setting.container)[0].show();
 						}
 					}
-					console.log('action onShow');
-					events = Widgetfly.Mediator.getWidgetEvents(this.id);
-					if (events && Widgetfly.Utils.isFunction(events.onShow)) {
-						events.onShow();
+					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+					if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
+						handlers.onShow();
 					}
 				};
 			
@@ -609,10 +609,11 @@
 				};
 			
 				Widget.prototype.close = function() {
-					var self = this, events;
-					events = Widgetfly.Mediator.getWidgetEvents(this.id);
-					if (events && Widgetfly.Utils.isFunction(events.onBeforeClose)) {
-						events.onBeforeClose();
+					console.log('Widget.Action close');
+					var self = this, handlers;
+					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+					if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
+						handlers.onBeforeClose();
 					}
 					Widgetfly.Mediator.unregister(this.id, function() {
 						var removeDom;
@@ -625,19 +626,14 @@
 					});
 				};
 			
-				Widget.prototype.setMap = function(setting) {
-					var container = setting.dom;
-					Widgetfly.Mediator.mapping[container] = setting.id;
-				};
-			
 				Widget.prototype.register = function() {
 					var nowScripts = document.getElementsByTagName('script'), cScript = nowScripts[nowScripts.length - 1];
 					//console.log(this);
 					Widgetfly.Mediator.register(this.id, this);
 					cScript.setAttribute('data-id', this.id);
 				};
-				
-				Widget.prototype.helpRender = function(setting){
+			
+				Widget.prototype.render = function() {
 					var src, iframe = document.createElement('iFrame'), origin, urlOptions;
 					if (window.location.protocol === 'file:') {
 						origin = window.location.href;
@@ -649,12 +645,12 @@
 						origin : origin
 					};
 			
-					iframe.setAttribute('name', setting.id);
+					iframe.setAttribute('name', this.id);
 			
-					if (setting.options.src.indexOf('#') === -1) {
-						src = setting.options.src + '#';
+					if (this.setting.options.src.indexOf('#') === -1) {
+						src = this.setting.options.src + '#';
 					} else {
-						src = setting.options.src + '&';
+						src = this.etting.options.src + '&';
 					}
 			
 					src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
@@ -672,7 +668,7 @@
 				// -------------
 				var Panel = function(setting) {
 					//console.log(setting);
-			
+					var el;
 					Widgetfly.Widget.apply(this, arguments);
 			
 					setting.dom = setting.container;
@@ -696,13 +692,22 @@
 						}
 					}
 			
-					setting.id = this.id;
 					this.setting = setting;
-					this.setMap(setting);
 					this.register(this.id);
 			
 					if (setting.options.initRender) {
-						this.render(setting);
+						this.iframe = this.el = this.render();
+						if (setting.container === undefined || setting.container === null) {
+							Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(this.el);
+						} else {
+							if (setting.appendType === 'id') {
+								if (window.document.getElementById(setting.container).length > 0) {
+									window.document.getElementById(setting.container).appendChild(this.el);
+								}
+							} else {
+								Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(this.el);
+							}
+						}
 					}
 			
 					return this;
@@ -710,25 +715,8 @@
 			
 				Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 			
-				Panel.prototype.render = function(setting) {
-					//Widgetfly.Widget.apply(this, arguments);
-					var iframe = this.helpRender(setting);
-			
-					//console.log(document.getElementsByTagName('iFrame').item(0));
-					if (setting.container === undefined || setting.container === null) {
-						Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(iframe);
-					} else {
-						//console.log(append.substr(1, append.length));
-						if (setting.appendType === 'id') {
-							if (window.document.getElementById(setting.container).length > 0) {
-								window.document.getElementById(setting.container).appendChild(iframe);
-							}
-						} else {
-							Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(iframe);
-						}
-					}
-			
-					this.iframe = iframe;
+				Panel.prototype.render = function() {
+					return Widgetfly.Widget.prototype.render.apply(this, arguments);
 				};
 			
 				return Panel;
@@ -776,14 +764,13 @@
 						}
 					}
 			
-					setting.id = this.id;
 					this.setting = setting;
-					this.setMap(setting);
 					this.register(this.id);
 			
 					if (setting.options.initRender) {
 						//console.log(123);
-						this.render(setting);
+						this.el = this.render(setting);
+						Widgetfly.Utils.getElementsByClassName('qt modal')[0].appendChild(this.el);
 						Widgetfly.Utils.addClass(Widgetfly.Utils.getElementsByClassName('qt modal')[0], 'active');
 					}
 					return this;
@@ -791,12 +778,12 @@
 			
 				Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 			
-				Modal.prototype.render = function(setting) {
+				Modal.prototype.render = function() {
 					//console.log(setting);
-					var contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = this.helpRender(setting);
+					var contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 			
-					if (setting.options !== undefined && setting.options !== null && setting.options !== {}) {
-						spanTitle.textContent = setting.options.title;
+					if (this.setting.options !== undefined && this.setting.options !== null && this.setting.options !== {}) {
+						spanTitle.textContent = this.setting.options.title;
 					}
 			
 					aClose.setAttribute('href', '###');
@@ -813,9 +800,9 @@
 					contentView.setAttribute('class', 'qt content');
 					contentView.appendChild(viewTop);
 					contentView.appendChild(iframe);
-			
-					Widgetfly.Utils.getElementsByClassName('qt modal')[0].appendChild(contentView);
 					this.iframe = iframe;
+			
+					return contentView;
 				};
 			
 				Modal.prototype.sizeChange = function(size) {
