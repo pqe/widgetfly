@@ -1,20 +1,20 @@
-Widgetfly.Events = (function(global){
-	'use strict';
+Widgetfly.Events = (function(global) {'use strict';
 	// Events
 	// -------------
-	var Events = function() {};
-
-	Events.prototype.trigger = function(action, data, targetId, targetOrigin, transfer) {
-		Widgetfly.Mediator.send(this.id, action, data, targetId, targetOrigin, transfer);
+	var Events = function() {
 	};
 
-	Events.prototype.on = function(eventName, callback) {
-		Widgetfly.Mediator.bind(this.id, eventName, callback);
+	Events.prototype.trigger = function(action, data) {
+		Widgetfly.Mediator.send(this.id, action, data);
 	};
 
-	Events.prototype.off = function(eventName) {
-		Widgetfly.Mediator.unbind(this.id, eventName);
+	Events.prototype.on = function(action, callback) {
+		Widgetfly.Mediator.bind(this.id, action, callback);
 	};
-		
+
+	Events.prototype.off = function(action) {
+		Widgetfly.Mediator.unbind(this.id, action);
+	};
+
 	return Events;
 })(this);

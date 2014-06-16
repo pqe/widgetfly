@@ -5,9 +5,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 
 		widgets : {},
 
-		widgetEvents : {},
-
-		mapping : {},
+		actionHandlers : {},
 
 		init : function() {
 			var self = this;
@@ -20,20 +18,20 @@ Widgetfly.Mediator = (function(global) {'use strict';
 			return this.widgets[id];
 		},
 
-		getWidgetEvents : function(id) {
-			return this.widgetEvents[id];
+		getActionHandlers : function(id) {
+			return this.actionHandlers[id];
 		},
 
 		register : function(id, widget) {
 			this.widgets[widget.id] = widget;
-			this.widgetEvents[widget.id] = {};
+			this.actionHandlers[widget.id] = {};
 		},
 
 		unregister : function(id, callback) {
-			if (this.widgetEvents[id] !== undefined) {
+			if (this.actionHandlers[id] !== undefined) {
 				var self = this;
-				Widgetfly.Utils.each(this.widgetEvents[id], function(key) {
-					delete self.widgetEvents[id][key];
+				Widgetfly.Utils.each(this.actionHandlers[id], function(key) {
+					delete self.actionHandlers[id][key];
 				});
 			}
 			delete this.widgets[id];
@@ -41,7 +39,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 		},
 
 		send : function(id, action, data) {
-			console.log('Events.trigger');
+			console.log('Mediator.send');
 
 			var parser, targetOrigin, corsObj = {
 				msg : data,
@@ -57,26 +55,26 @@ Widgetfly.Mediator = (function(global) {'use strict';
 			}
 		},
 
-		bind : function(id, eventName, callback) {
-			console.log('Events.bind');
-			if (this.widgetEvents[id] === undefined) {
-				this.widgetEvents[id] = {};
+		bind : function(id, action, callback) {
+			console.log('Mediator.bind');
+			if (this.actionHandlers[id] === undefined) {
+				this.actionHandlers[id] = {};
 			}
-			this.widgetEvents[id][eventName] = callback;
+			this.actionHandlers[id][action] = callback;
 		},
 
-		unbind : function(id, eventName) {
-			console.log('Events.unbind');
-			delete this.widgetEvents[id][eventName];
-			if (Object.keys(this.widgetEvents[id]).length <= 0) {
-				delete this.widgetEvents[id];
+		unbind : function(id, action) {
+			console.log('Mediator.unbind');
+			delete this.actionHandlers[id][action];
+			if (Object.keys(this.actionHandlers[id]).length <= 0) {
+				delete this.actionHandlers[id];
 			}
 		},
 
 		receive : function(msgObj) {
 			console.log('Mediator.receive');
 
-			var origin, parser, widgetId = msgObj.data.id, widget = this.widgets[widgetId], widgetEvents = this.widgetEvents[widgetId], action = msgObj.data.action;
+			var origin, parser, widgetId = msgObj.data.id, widget = this.widgets[widgetId], myActionHandlers = this.actionHandlers[widgetId], action = msgObj.data.action;
 
 			if (widget) {
 				parser = window.document.createElement('a');
@@ -91,8 +89,8 @@ Widgetfly.Mediator = (function(global) {'use strict';
 				if (widget && Widgetfly.Utils.isFunction(widget[action])) {
 					widget[action](msgObj.data.msg);
 				} else {
-					if (!Widgetfly.Utils.isEmpty(widgetEvents) && Widgetfly.Utils.isFunction(widgetEvents[action])) {
-						widgetEvents[action](msgObj.data.msg);
+					if (!Widgetfly.Utils.isEmpty(myActionHandlers) && Widgetfly.Utils.isFunction(myActionHandlers[action])) {
+						myActionHandlers[action](msgObj.data.msg);
 					}
 				}
 			}

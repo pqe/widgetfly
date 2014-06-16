@@ -2,10 +2,14 @@ Widgetfly.Widget = (function(global) {'use strict';
 	// Widget
 	// -------------
 	var Widget = function() {
-		this.id = Widgetfly.Utils.genId();
+		this.id = Widgetfly.Utils.uniqueId('widget');
 	};
 
 	Widgetfly.Utils.inherit(Widget, Widgetfly.Events);
+
+	Widget.prototype.getId = function() {
+		return this.id;
+	};
 
 	Widget.prototype.onStart = function(callback) {
 		if (Widgetfly.Utils.isFunction(callback)) {
@@ -14,15 +18,11 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.start = function() {
-		console.log('Action onStart');
-		var events = Widgetfly.Mediator.getWidgetEvents(this.id);
-		if (events && Widgetfly.Utils.isFunction(events.onStart)) {
-			events.onStart();
+		console.log('Widget.Action start');
+		var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+		if (handlers && Widgetfly.Utils.isFunction(handlers.onStart)) {
+			handlers.onStart();
 		}
-	};
-
-	Widget.prototype.getId = function() {
-		return this.id;
 	};
 
 	Widget.prototype.onHide = function(callback) {
@@ -32,16 +32,15 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.hide = function() {
-		console.log('action hide');
+		console.log('Widget.Action hide');
 		if (this.setting.appendType === 'id') {
 			window.document.getElementById(this.setting.container).hide();
 		} else {
 			window.document.getElementsByClassName(this.setting.container)[0].hide();
 		}
-		console.log('action onHide');
-		var events = Widgetfly.Mediator.getWidgetEvents(this.id);
-		if (events && Widgetfly.Utils.isFunction(events.onHide)) {
-			events.onHide();
+		var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+		if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
+			handlers.onHide();
 		}
 	};
 
@@ -52,8 +51,8 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.show = function() {
-		var self = this,events;
-		console.log('action show');
+		console.log('Widget.Action show');
+		var self = this, handlers;
 		if (self.setting.appendType === 'id') {
 			if (window.document.getElementById(self.setting.container) !== undefined) {
 				window.document.getElementById(self.setting.container).show();
@@ -63,10 +62,9 @@ Widgetfly.Widget = (function(global) {'use strict';
 				window.document.getElementsByClassName(self.setting.container)[0].show();
 			}
 		}
-		console.log('action onShow');
-		events = Widgetfly.Mediator.getWidgetEvents(this.id);
-		if (events && Widgetfly.Utils.isFunction(events.onShow)) {
-			events.onShow();
+		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+		if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
+			handlers.onShow();
 		}
 	};
 
@@ -77,10 +75,11 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.close = function() {
-		var self = this, events;
-		events = Widgetfly.Mediator.getWidgetEvents(this.id);
-		if (events && Widgetfly.Utils.isFunction(events.onBeforeClose)) {
-			events.onBeforeClose();
+		console.log('Widget.Action close');
+		var self = this, handlers;
+		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
+			handlers.onBeforeClose();
 		}
 		Widgetfly.Mediator.unregister(this.id, function() {
 			var removeDom;
@@ -93,19 +92,14 @@ Widgetfly.Widget = (function(global) {'use strict';
 		});
 	};
 
-	Widget.prototype.setMap = function(setting) {
-		var container = setting.dom;
-		Widgetfly.Mediator.mapping[container] = setting.id;
-	};
-
 	Widget.prototype.register = function() {
 		var nowScripts = document.getElementsByTagName('script'), cScript = nowScripts[nowScripts.length - 1];
 		//console.log(this);
 		Widgetfly.Mediator.register(this.id, this);
 		cScript.setAttribute('data-id', this.id);
 	};
-	
-	Widget.prototype.helpRender = function(setting){
+
+	Widget.prototype.render = function() {
 		var src, iframe = document.createElement('iFrame'), origin, urlOptions;
 		if (window.location.protocol === 'file:') {
 			origin = window.location.href;
@@ -117,12 +111,12 @@ Widgetfly.Widget = (function(global) {'use strict';
 			origin : origin
 		};
 
-		iframe.setAttribute('name', setting.id);
+		iframe.setAttribute('name', this.id);
 
-		if (setting.options.src.indexOf('#') === -1) {
-			src = setting.options.src + '#';
+		if (this.setting.options.src.indexOf('#') === -1) {
+			src = this.setting.options.src + '#';
 		} else {
-			src = setting.options.src + '&';
+			src = this.etting.options.src + '&';
 		}
 
 		src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));

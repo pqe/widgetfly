@@ -40,7 +40,6 @@ Widgetfly.Modal = (function(global) {'use strict';
 			}
 		}
 
-		setting.id = this.id;
 		this.setting = setting;
 		this.setMap(setting);
 		this.register(this.id);
@@ -55,12 +54,12 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 	Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 
-	Modal.prototype.render = function(setting) {
+	Modal.prototype.render = function() {
 		//console.log(setting);
-		var contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = this.helpRender(setting);
+		var contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 
-		if (setting.options !== undefined && setting.options !== null && setting.options !== {}) {
-			spanTitle.textContent = setting.options.title;
+		if (this.setting.options !== undefined && this.setting.options !== null && this.setting.options !== {}) {
+			spanTitle.textContent = this.setting.options.title;
 		}
 
 		aClose.setAttribute('href', '###');
@@ -80,6 +79,8 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 		Widgetfly.Utils.getElementsByClassName('qt modal')[0].appendChild(contentView);
 		this.iframe = iframe;
+		
+		return contentView;
 	};
 
 	Modal.prototype.sizeChange = function(size) {

@@ -28,13 +28,11 @@ Widgetfly.Panel = (function(global) {'use strict';
 			}
 		}
 
-		setting.id = this.id;
 		this.setting = setting;
-		this.setMap(setting);
 		this.register(this.id);
 
 		if (setting.options.initRender) {
-			this.render(setting);
+			this.render();
 		}
 
 		return this;
@@ -42,25 +40,31 @@ Widgetfly.Panel = (function(global) {'use strict';
 
 	Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 
-	Panel.prototype.render = function(setting) {
-		//Widgetfly.Widget.apply(this, arguments);
-		var iframe = this.helpRender(setting);
+	Panel.prototype.render = function() {
+		
+		var el, iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 
 		//console.log(document.getElementsByTagName('iFrame').item(0));
-		if (setting.container === undefined || setting.container === null) {
-			Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(iframe);
+		
+		if (this.setting.container === undefined || this.setting.container === null) {
+			el = Widgetfly.Utils.getElementsByClassName('qt')[0];
+			el.appendChild(iframe);
 		} else {
 			//console.log(append.substr(1, append.length));
-			if (setting.appendType === 'id') {
-				if (window.document.getElementById(setting.container).length > 0) {
-					window.document.getElementById(setting.container).appendChild(iframe);
+			if (this.setting.appendType === 'id') {
+				if (window.document.getElementById(this.setting.container).length > 0) {
+					el = window.document.getElementById(this.setting.container);
+					el.appendChild(iframe);
 				}
 			} else {
-				Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(iframe);
+				el = Widgetfly.Utils.getElementsByClassName(this.setting.container)[0];
+				el.appendChild(iframe);
 			}
 		}
 
 		this.iframe = iframe;
+		
+		return el;
 	};
 
 	return Panel;

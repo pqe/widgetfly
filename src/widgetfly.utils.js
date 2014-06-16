@@ -2,14 +2,14 @@ Widgetfly.Utils = (function(global) {'use strict';
 	// Utilities
 	// -------------
 
-	var Utils = {
+	var idCounter = 0, Utils = {
 		has : function(obj, key) {
 			return Object.prototype.hasOwnProperty.call(obj, key);
 		},
 
 		each : function(obj, iterator, context) {
 			var i, l, key;
-			
+
 			if (obj === null) {
 				return false;
 			}
@@ -17,7 +17,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 			if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
 				obj.forEach(iterator, context);
 			} else if ( typeof obj.length === 'number') {
-				for (i = 0, l = obj.length; i < l; i++) {
+				for ( i = 0, l = obj.length; i < l; i++) {
 					if (iterator.call(context, obj[i], i, obj) === {}) {
 						return false;
 					}
@@ -79,12 +79,11 @@ Widgetfly.Utils = (function(global) {'use strict';
 			Child.prototype.constructor = Child;
 			Child.uber = Parent.prototype;
 		},
-		
-		getParameterByName : function (name) {
-		    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-		    var regex = new RegExp('[\\#&]' + name + '=([^&#]*)'),
-		        results = regex.exec(window.location.hash);
-		    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+
+		getParameterByName : function(name) {
+			name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+			var regex = new RegExp('[\\#&]' + name + '=([^&#]*)'), results = regex.exec(window.location.hash);
+			return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 		},
 
 		parseUrl : function(URL, checkLib) {
@@ -153,6 +152,11 @@ Widgetfly.Utils = (function(global) {'use strict';
 				id += possible2.charAt(Math.floor(Math.random() * possible2.length));
 			}
 			return (first + id);
+		},
+
+		uniqueId : function(prefix) {
+			var id = ++idCounter + '';
+			return prefix ? prefix + id : id;
 		},
 
 		getElementsByClassName : function(testClass, startFrom) {
