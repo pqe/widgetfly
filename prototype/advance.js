@@ -16,6 +16,7 @@ widgetA.onStart(function() {
 	widgetA.trigger('hello', 'widgetA');
 });
 //console.log(widgetA);
+
 var test = new Orz({
 	container : '.testModal',
 	autoGrow : true,

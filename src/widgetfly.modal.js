@@ -41,12 +41,12 @@ Widgetfly.Modal = (function(global) {'use strict';
 		}
 
 		this.setting = setting;
-		this.setMap(setting);
 		this.register(this.id);
 
 		if (setting.options.initRender) {
 			//console.log(123);
-			this.render(setting);
+			this.el = this.render(setting);
+			Widgetfly.Utils.getElementsByClassName('qt modal')[0].appendChild(this.el);
 			Widgetfly.Utils.addClass(Widgetfly.Utils.getElementsByClassName('qt modal')[0], 'active');
 		}
 		return this;
@@ -75,9 +75,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 		contentView.setAttribute('class', 'qt content');
 		contentView.appendChild(viewTop);
-		contentView.appendChild(iframe);
-
-		Widgetfly.Utils.getElementsByClassName('qt modal')[0].appendChild(contentView);
+		contentView.appendChild(iframe);		
 		this.iframe = iframe;
 		
 		return contentView;

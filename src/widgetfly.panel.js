@@ -4,7 +4,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 	// -------------
 	var Panel = function(setting) {
 		//console.log(setting);
-
+		var el;
 		Widgetfly.Widget.apply(this, arguments);
 
 		setting.dom = setting.container;
@@ -32,7 +32,18 @@ Widgetfly.Panel = (function(global) {'use strict';
 		this.register(this.id);
 
 		if (setting.options.initRender) {
-			this.render();
+			this.iframe = this.el = this.render();
+			if (setting.container === undefined || setting.container === null) {
+				Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(this.el);
+			} else {
+				if (setting.appendType === 'id') {
+					if (window.document.getElementById(setting.container).length > 0) {
+						window.document.getElementById(setting.container).appendChild(this.el);
+					}
+				} else {
+					Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(this.el);
+				}
+			}
 		}
 
 		return this;
@@ -40,31 +51,8 @@ Widgetfly.Panel = (function(global) {'use strict';
 
 	Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 
-	Panel.prototype.render = function() {
-		
-		var el, iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
-
-		//console.log(document.getElementsByTagName('iFrame').item(0));
-		
-		if (this.setting.container === undefined || this.setting.container === null) {
-			el = Widgetfly.Utils.getElementsByClassName('qt')[0];
-			el.appendChild(iframe);
-		} else {
-			//console.log(append.substr(1, append.length));
-			if (this.setting.appendType === 'id') {
-				if (window.document.getElementById(this.setting.container).length > 0) {
-					el = window.document.getElementById(this.setting.container);
-					el.appendChild(iframe);
-				}
-			} else {
-				el = Widgetfly.Utils.getElementsByClassName(this.setting.container)[0];
-				el.appendChild(iframe);
-			}
-		}
-
-		this.iframe = iframe;
-		
-		return el;
+	Panel.prototype.render = function() {		
+		return Widgetfly.Widget.prototype.render.apply(this, arguments);
 	};
 
 	return Panel;
