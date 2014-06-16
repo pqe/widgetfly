@@ -15,7 +15,11 @@ widgetA.onStart(function() {
 	console.log('widgetA is started');
 	widgetA.trigger('hello', 'widgetA');
 });
-//console.log(widgetA);
+console.log(widgetA);
+//widgetA.hide();
+widgetA.on('click', function(){
+	widgetA.hide();
+});
 
 var test = new Orz({
 	container : '.testModal',
