@@ -155,7 +155,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 		},
 
 		uniqueId : function(prefix) {
-			var id = ++idCounter + '';
+			var id = String(++idCounter);
 			return prefix ? prefix + id : id;
 		},
 
