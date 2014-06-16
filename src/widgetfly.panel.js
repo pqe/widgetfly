@@ -51,7 +51,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 
 	Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 
-	Panel.prototype.render = function() {		
+	Panel.prototype.render = function() {
 		return Widgetfly.Widget.prototype.render.apply(this, arguments);
 	};
 

@@ -75,9 +75,9 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 		contentView.setAttribute('class', 'qt content');
 		contentView.appendChild(viewTop);
-		contentView.appendChild(iframe);		
+		contentView.appendChild(iframe);
 		this.iframe = iframe;
-		
+
 		return contentView;
 	};
 
