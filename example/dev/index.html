@@ -7,6 +7,11 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="main.css">
+		<!--
+			<link rel="stylesheet" href="../../dist/css/widgetfly.css">
+		-->
+		<link rel="stylesheet/less" href="../../src/css/widgetfly.less">
+		<script src="../../bower_components/less.js/dist/less-1.6.1.min.js"></script>
 	</head>
 	<body>
 		<div class="mywidget">
@@ -44,8 +49,10 @@
 				}
 			});
 			widgetA.onStart(function(){
-				console.log('widgetA is started');
+				/*console.log('widgetA is started');
 				widgetA.trigger('hello','widgetA');
+				*/
+				widgetA.hide();
 			});
 			console.log(widgetA);
 		</script>

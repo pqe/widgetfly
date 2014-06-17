@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "dist/widgetfly.min.js",
   "dependencies": {
-    "jquery": "2.0.3"
+    "less.js": "~1.6.3"
   },
   "ignore": [
     "node_modules",
