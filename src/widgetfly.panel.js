@@ -45,6 +45,11 @@ Widgetfly.Panel = (function(global) {'use strict';
 		}
 			
 		if(this.container){
+			if(options.show){
+				Widgetfly.Utils.addClass(this.el, 'show');
+			}else{
+				Widgetfly.Utils.addClass(this.el, 'hide');
+			}
 			this.container.appendChild(this.el);
 		}
 
