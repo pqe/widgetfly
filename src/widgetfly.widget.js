@@ -68,14 +68,16 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 	Widget.prototype.close = function() {
 		console.log('Widget.Action close');
-		var self = this, handlers;
+		var r, self = this, handlers;
 		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
-			handlers.onBeforeClose();
+			r = handlers.onBeforeClose();
 		}
-		Widgetfly.Mediator.unregister(this.id, function() {
-			self.el.parentNode.removeChild(self.el);
-		});
+		if(r !== false){
+			Widgetfly.Mediator.unregister(this.id, function() {
+				self.container.removeChild(self.el);
+			});
+		}
 	};
 
 	Widget.prototype.register = function() {
@@ -99,10 +101,10 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 		iframe.setAttribute('name', this.id);
 
-		if (this.setting.options.src.indexOf('#') === -1) {
-			src = this.setting.options.src + '#';
+		if (this.options.src.indexOf('#') === -1) {
+			src = this.options.src + '#';
 		} else {
-			src = this.etting.options.src + '&';
+			src = this.options.src + '&';
 		}
 
 		src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
