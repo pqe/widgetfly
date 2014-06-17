@@ -602,14 +602,16 @@
 			
 				Widget.prototype.close = function() {
 					console.log('Widget.Action close');
-					var self = this, handlers;
+					var r, self = this, handlers;
 					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
-						handlers.onBeforeClose();
+						r = handlers.onBeforeClose();
 					}
-					Widgetfly.Mediator.unregister(this.id, function() {
-						self.el.parentNode.removeChild(self.el);
-					});
+					if(r !== false){
+						Widgetfly.Mediator.unregister(this.id, function() {
+							self.container.removeChild(self.el);
+						});
+					}
 				};
 			
 				Widget.prototype.register = function() {
@@ -633,10 +635,10 @@
 			
 					iframe.setAttribute('name', this.id);
 			
-					if (this.setting.options.src.indexOf('#') === -1) {
-						src = this.setting.options.src + '#';
+					if (this.options.src.indexOf('#') === -1) {
+						src = this.options.src + '#';
 					} else {
-						src = this.etting.options.src + '&';
+						src = this.options.src + '&';
 					}
 			
 					src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
@@ -652,48 +654,55 @@
 			
 				// Widgetfly.Panel
 				// -------------
-				var Panel = function(setting) {
-					//console.log(setting);
-					var el;
+				var Panel = function(options) {
+					
+					var el, appendType, selector, elms;
 					Widgetfly.Widget.apply(this, arguments);
-			
-					setting.dom = setting.container;
-					if (setting.container.substr(0, 1) === '.') {
-						setting.appendType = 'class';
-						setting.container = setting.container.replace('.', '');
-					} else if (setting.container.substr(0, 1) === '#') {
-						setting.appendType = 'id';
-						setting.container = setting.container.replace('#', '');
-					}
-			
-					if (setting === undefined) {
+					this.options = options;
+					
+					if (options === undefined) {
 						return false;
 					}
-			
-					if (setting.options.src !== undefined) {
-						if (setting.container === undefined && setting.appendClass !== undefined) {
-							setting.appendType = 'class';
-							setting.dom = '.' + setting.appendClass;
-							setting.container = setting.appendClass;
+					
+					if (options.container === undefined || options.container === null) {
+						appendType = 'tag';
+						selector = 'body';
+					}else{
+						if (options.container.substr(0, 1) === '.') {
+							appendType = 'class';
+							selector = options.container.replace('.', '');
+						} else if (options.container.substr(0, 1) === '#') {
+							appendType = 'id';
+							selector = options.container.replace('#', '');
+						} else{
+							appendType = 'tag';
+							selector = options.container;
 						}
 					}
 			
-					this.setting = setting;
 					this.register(this.id);
-			
-					if (setting.options.initRender) {
-						this.iframe = this.el = this.render();
-						if (setting.container === undefined || setting.container === null) {
-							Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(this.el);
-						} else {
-							if (setting.appendType === 'id') {
-								if (window.document.getElementById(setting.container).length > 0) {
-									window.document.getElementById(setting.container).appendChild(this.el);
-								}
-							} else {
-								Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(this.el);
-							}
+					
+					this.iframe = this.el = this.render();
+						
+					if (appendType === 'id') {
+						elms = window.document.getElementById(selector);
+					}else if (appendType === 'class') {
+						elms = Widgetfly.Utils.getElementsByClassName(selector);
+					}else{
+						elms = window.document.getElementsByTagName(selector);
+					}
+					
+					if (elms && elms.length > 0) {
+						this.container = elms[0];
+					}
+						
+					if(this.container){
+						if(options.show){
+							Widgetfly.Utils.addClass(this.el, 'show');
+						}else{
+							Widgetfly.Utils.addClass(this.el, 'hide');
 						}
+						this.container.appendChild(this.el);
 					}
 			
 					return this;
@@ -803,9 +812,64 @@
 				// Widgetfly.Popover
 				// -------------
 				var Popover = function(setting) {
+					var popContainer, content;
+					Widgetfly.Widget.apply(this, arguments);
+			
+					setting.dom = setting.container;
+					if (setting.container.substr(0, 1) === '.') {
+						setting.appendType = 'class';
+						setting.container = setting.container.replace('.', '');
+					} else if (setting.container.substr(0, 1) === '#') {
+						setting.appendType = 'id';
+						setting.container = setting.container.replace('#', '');
+					}
+			
+					if (setting === undefined) {
+						return false;
+					}
+			
+					if (setting.options.src !== undefined) {
+						if (setting.container === undefined && setting.appendClass !== undefined) {
+							setting.appendType = 'class';
+							setting.dom = '.' + setting.appendClass;
+							setting.container = setting.appendClass;
+						}
+					}
+			
+					this.setting = setting;
+					this.register(this.id);
+			
+					if (setting.options.initRender) {
+						this.el = document.createElement('div');
+						this.el.setAttribute('class', 'popover fade in ' + setting.position);
+						content = document.createElement('div');
+						content.setAttribute('class', 'popover-content');
+						
+						this.iframe = this.render();
+						content.appendChild(this.iframe);
+						this.el.appendChild(content);
+						if (setting.container === undefined || setting.container === null) {
+							Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(this.el);
+						} else {
+							if (setting.appendType === 'id') {
+								if (window.document.getElementById(setting.container).length > 0) {
+									window.document.getElementById(setting.container).appendChild(this.el);
+								}
+							} else {
+								//console.log(Widgetfly.Utils.getElementsByClassName(setting.container)[0]);
+								Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(this.el);
+							}
+						}
+					}
+			
+					return this;
 				};
 				
 				Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
+			
+				Popover.prototype.render = function() {
+					return Widgetfly.Widget.prototype.render.apply(this, arguments);
+				};
 				
 				return Popover;
 			

@@ -14,9 +14,11 @@
 		<script src="../../bower_components/less.js/dist/less-1.6.1.min.js"></script>
 	</head>
 	<body>
+		<div>
+			My Application
+		</div>
 		<div class="mywidget">
-			Hello Widget
-			<br>
+			Widget Panel
 		</div>
 		
 		<!--
@@ -40,19 +42,28 @@
 			var widgetA = new MyWidget({
 				container : '.mywidget',
 				autoGrow : true,
-				options : {
-					initRender : true,
-					src : 'http://127.0.0.1:3000/widgetfly/example/dev/widget.html'
-				},
-				css : {
-
+				show : true,
+				src : 'http://127.0.0.1:3000/widgetfly/example/dev/widget.html',
+				custom : {
+					
 				}
 			});
 			widgetA.onStart(function(){
-				/*console.log('widgetA is started');
+				console.log('widgetA is started');
 				widgetA.trigger('hello','widgetA');
-				*/
+				widgetA.onHide(function(){
+					console.log('widgetA is hidden');
+				});
 				widgetA.hide();
+				widgetA.onShow(function(){
+					console.log('widgetA is showing');
+				});
+				widgetA.show();
+				widgetA.onBeforeClose(function(){
+					console.log('widgetA is closing');
+					return false;
+				});
+				widgetA.close();
 			});
 			console.log(widgetA);
 		</script>
