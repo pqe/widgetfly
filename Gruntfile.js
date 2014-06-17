@@ -21,7 +21,9 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		
 		clean: {
-			tmp: 'tmp'
+			tmp: 'tmp',
+			bower : ['bower_components'],
+			dist: ['dist'],
 		},
     
 		jshint: {
@@ -60,10 +62,14 @@ module.exports = function (grunt) {
 		copy: {
 			main: {
 				files: [
-					{src: ['tmp/widgetfly.js'], dest: 'dist/widgetfly.js'},
-					{src: ['bower_components/jquery/jquery.min.js'], dest: 'example/jquery.min.js'},
-					{src: ['bower_components/jquery/jquery.min.map'], dest: 'example/jquery.min.map'}
+					{src: ['tmp/widgetfly.js'], dest: 'dist/widgetfly.js'}
 				]
+			},
+			images : {
+				expand: true,
+				cwd: 'src/css/img/',
+				src: ['**'],
+				dest: 'dist/css/img'
 			}
 		},
 		jsdoc : {
@@ -130,19 +136,58 @@ module.exports = function (grunt) {
 			server: {
 				path: 'http://localhost:' + SERVER_PORT
 			}
+		},
+		bower : {
+			install : {
+				options : {
+			        targetDir : './',
+					cleanTargetDir : false,
+					cleanBowerDir : false,
+					verbose : true
+				}
+			}
+		},
+		less : {
+			production : {
+				options : {
+					paths : ['src/css'],
+					compress : true,
+					yuicompress : true,
+					strictImports : true
+				},
+				
+				files : [{
+			        // no need for files, the config below should work
+			        expand: true,
+			        cwd:    'src/css',
+			        src:    ['*.less','!_*.less'],
+			        ext:    '.css',
+			        dest : 'dist/css'
+				}]
+				
+			}
 		}
 	});
+	
+	grunt.registerTask('bower-install', ['clean:bower','bower:install']);
+	
+	grunt.registerTask('release', [
+		'bower-install',
+		'default'
+	]);
 
 	// Register tasks
-	grunt.registerTask('build', [
-		'clean',
+	grunt.registerTask('default', [
+		'clean:dist',
 		'version:js',
 		'version:json',
 		'jshint',
 		'jscs',
 		'preprocess:amd',
 		'uglify',
-		'copy:main'
+		'copy:main',
+		'less:production',
+		'copy:images'
 	]);
 
 	grunt.registerTask('serve', [
