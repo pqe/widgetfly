@@ -1,66 +1,67 @@
 Widgetfly.Popover = (function(global) {'use strict';
 	// Widgetfly.Popover
 	// -------------
-	var Popover = function(setting) {
-		var popContainer, content;
+	var Popover = function(options) {
+		var el, appendType, selector, elms, content;
 		Widgetfly.Widget.apply(this, arguments);
+		this.options = options;
 
-		setting.dom = setting.container;
-		if (setting.container.substr(0, 1) === '.') {
-			setting.appendType = 'class';
-			setting.container = setting.container.replace('.', '');
-		} else if (setting.container.substr(0, 1) === '#') {
-			setting.appendType = 'id';
-			setting.container = setting.container.replace('#', '');
-		}
-
-		if (setting === undefined) {
+		if (options === undefined) {
 			return false;
 		}
 
-		if (setting.options.src !== undefined) {
-			if (setting.container === undefined && setting.appendClass !== undefined) {
-				setting.appendType = 'class';
-				setting.dom = '.' + setting.appendClass;
-				setting.container = setting.appendClass;
+		if (options.container === undefined || options.container === null) {
+			appendType = 'tag';
+			selector = 'body';
+		} else {
+			if (options.container.substr(0, 1) === '.') {
+				appendType = 'class';
+				selector = options.container.replace('.', '');
+			} else if (options.container.substr(0, 1) === '#') {
+				appendType = 'id';
+				selector = options.container.replace('#', '');
+			} else {
+				appendType = 'tag';
+				selector = options.container;
 			}
 		}
 
-		this.setting = setting;
 		this.register(this.id);
 
-		if (setting.options.initRender) {
-			this.el = document.createElement('div');
-			this.el.setAttribute('class', 'popover fade in ' + setting.position);
-			content = document.createElement('div');
-			content.setAttribute('class', 'popover-content');
-			
-			this.iframe = this.render();
-			content.appendChild(this.iframe);
-			this.el.appendChild(content);
-			if (setting.container === undefined || setting.container === null) {
-				Widgetfly.Utils.getElementsByClassName('qt')[0].appendChild(this.el);
-			} else {
-				if (setting.appendType === 'id') {
-					if (window.document.getElementById(setting.container).length > 0) {
-						window.document.getElementById(setting.container).appendChild(this.el);
-					}
-				} else {
-					//console.log(Widgetfly.Utils.getElementsByClassName(setting.container)[0]);
-					Widgetfly.Utils.getElementsByClassName(setting.container)[0].appendChild(this.el);
-				}
-			}
+		if (appendType === 'id') {
+			elms = window.document.getElementById(selector);
+		} else if (appendType === 'class') {
+			elms = Widgetfly.Utils.getElementsByClassName(selector);
+		} else {
+			elms = window.document.getElementsByTagName(selector);
+		}
+
+		if (elms && elms.length > 0) {
+			this.container = elms[0];
+		}
+
+		this.el = document.createElement('div');
+		this.el.setAttribute('class', 'popover fade in ' + options.placement);
+		content = document.createElement('div');
+		content.setAttribute('class', 'popover-content');
+
+		this.iframe = this.render();
+		content.appendChild(this.iframe);
+		this.el.appendChild(content);
+
+		if (this.container) {
+			this.container.appendChild(this.el);
 		}
 
 		return this;
 	};
-	
+
 	Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
 
 	Popover.prototype.render = function() {
 		return Widgetfly.Widget.prototype.render.apply(this, arguments);
 	};
-	
+
 	return Popover;
 
 })(this);

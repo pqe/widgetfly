@@ -100,7 +100,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		};
 
 		iframe.setAttribute('name', this.id);
-
+		console.log(this.options.src);
 		if (this.options.src.indexOf('#') === -1) {
 			src = this.options.src + '#';
 		} else {
