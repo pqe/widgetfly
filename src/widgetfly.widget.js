@@ -33,9 +33,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 	Widget.prototype.hide = function() {
 		console.log('Widget.Action hide');
-		if(Widgetfly.Utils.hasClass(this.el, 'hide')){
-			Widgetfly.Utils.removeClass(this.el, 'hide');
-		}
+		Widgetfly.Utils.removeClass(this.el, 'hide show');
 		Widgetfly.Utils.addClass(this.el, 'hide');
 		var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
@@ -52,9 +50,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 	Widget.prototype.show = function() {
 		console.log('Widget.Action show');
 		var self = this, handlers;
-		if(Widgetfly.Utils.hasClass(this.el, 'show')){
-			Widgetfly.Utils.removeClass(this.el, 'show');
-		}
+		Widgetfly.Utils.removeClass(this.el, 'show hide');
 		Widgetfly.Utils.addClass(this.el, 'show');
 		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
