@@ -3,12 +3,17 @@ Widgetfly.Widget = (function(global) {'use strict';
 	// -------------
 	var Widget = function() {
 		this.id = Widgetfly.Utils.uniqueId('widget');
+		return this;
 	};
 
 	Widgetfly.Utils.inherit(Widget, Widgetfly.Events);
 
 	Widget.prototype.getId = function() {
 		return this.id;
+	};
+	
+	Widget.prototype.css = function() {
+		Widgetfly.Utils.addClass(this.el, 'widgetfly');
 	};
 
 	Widget.prototype.onStart = function(callback) {

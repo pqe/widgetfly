@@ -47,7 +47,14 @@ Widgetfly.Popover = (function(global) {'use strict';
 		content.appendChild(this.iframe);
 		this.el.appendChild(content);
 
+		this.css();
+		
 		if (this.container) {
+			if (options.show) {
+				this.show();
+			} else {
+				this.hide();
+			}
 			this.container.appendChild(this.el);
 		}
 

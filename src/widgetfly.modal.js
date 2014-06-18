@@ -17,8 +17,15 @@ Widgetfly.Modal = (function(global) {'use strict';
 		
 		this.register(this.id);
 
+		this.css();
+		
 		if (this.container) {
 			this.el = this.render(options);
+			if (options.show) {
+				this.show();
+			} else {
+				this.hide();
+			}
 			this.container.appendChild(this.el);
 			Widgetfly.Utils.addClass(this.el, 'active');
 		}

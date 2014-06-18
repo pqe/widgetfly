@@ -3,52 +3,54 @@ Widgetfly.Panel = (function(global) {'use strict';
 	// Widgetfly.Panel
 	// -------------
 	var Panel = function(options) {
-		
+
 		var el, appendType, selector, elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
-		
+
 		if (options === undefined || options.container === undefined || options.container === null) {
 			return false;
 		}
-		
+
 		if (options.container.substr(0, 1) === '.') {
 			appendType = 'class';
 			selector = options.container.replace('.', '');
 		} else if (options.container.substr(0, 1) === '#') {
 			appendType = 'id';
 			selector = options.container.replace('#', '');
-		} else{
+		} else {
 			appendType = 'tag';
 			selector = options.container;
 		}
 
 		this.register(this.id);
-		
+
 		this.iframe = this.el = this.render();
-			
+
 		if (appendType === 'id') {
 			tmp = window.document.getElementById(selector);
-			if(tmp !== null){
+			if (tmp !== null) {
 				elms.push(tmp);
 			}
-		}else if (appendType === 'class') {
+		} else if (appendType === 'class') {
 			elms = Widgetfly.Utils.getElementsByClassName(selector);
-		}else{
+		} else {
 			elms = window.document.getElementsByTagName(selector);
 		}
-		
+
 		if (elms && elms.length > 0) {
 			this.container = elms[0];
 		}
-			
-		if(this.container){
-			if(options.show){
+		
+		this.css();
+		
+		if (this.container) {
+			if (options.show) {
 				this.show();
-			}else{
+			} else {
 				this.hide();
 			}
-			while(this.container.hasChildNodes() ){
+			while (this.container.hasChildNodes()) {
 				this.container.removeChild(this.container.lastChild);
 			}
 			this.container.appendChild(this.el);
@@ -70,7 +72,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
 			r = handlers.onBeforeClose();
 		}
-		if(r !== false){
+		if (r !== false) {
 			Widgetfly.Mediator.unregister(this.id, function() {
 				self.container.remove(0);
 			});
