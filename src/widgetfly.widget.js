@@ -33,9 +33,10 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 	Widget.prototype.hide = function() {
 		console.log('Widget.Action hide');
-		if(!Widgetfly.Utils.hasClass(this.el, 'hide')){
-			Widgetfly.Utils.addClass(this.el, 'hide');
+		if(Widgetfly.Utils.hasClass(this.el, 'hide')){
+			Widgetfly.Utils.removeClass(this.el, 'hide');
 		}
+		Widgetfly.Utils.addClass(this.el, 'hide');
 		var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
 			handlers.onHide();
@@ -51,9 +52,10 @@ Widgetfly.Widget = (function(global) {'use strict';
 	Widget.prototype.show = function() {
 		console.log('Widget.Action show');
 		var self = this, handlers;
-		if(!Widgetfly.Utils.hasClass(this.el, 'show')){
-			Widgetfly.Utils.addClass(this.el, 'show');
+		if(Widgetfly.Utils.hasClass(this.el, 'show')){
+			Widgetfly.Utils.removeClass(this.el, 'show');
 		}
+		Widgetfly.Utils.addClass(this.el, 'show');
 		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
 			handlers.onShow();
@@ -100,7 +102,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		};
 
 		iframe.setAttribute('name', this.id);
-		console.log(this.options.src);
+		//console.log(this.options.src);
 		if (this.options.src.indexOf('#') === -1) {
 			src = this.options.src + '#';
 		} else {

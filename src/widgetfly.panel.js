@@ -4,28 +4,23 @@ Widgetfly.Panel = (function(global) {'use strict';
 	// -------------
 	var Panel = function(options) {
 		
-		var el, appendType, selector, elms;
+		var el, appendType, selector, elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
 		
-		if (options === undefined) {
+		if (options === undefined || options.container === undefined || options.container === null) {
 			return false;
 		}
 		
-		if (options.container === undefined || options.container === null) {
+		if (options.container.substr(0, 1) === '.') {
+			appendType = 'class';
+			selector = options.container.replace('.', '');
+		} else if (options.container.substr(0, 1) === '#') {
+			appendType = 'id';
+			selector = options.container.replace('#', '');
+		} else{
 			appendType = 'tag';
-			selector = 'body';
-		}else{
-			if (options.container.substr(0, 1) === '.') {
-				appendType = 'class';
-				selector = options.container.replace('.', '');
-			} else if (options.container.substr(0, 1) === '#') {
-				appendType = 'id';
-				selector = options.container.replace('#', '');
-			} else{
-				appendType = 'tag';
-				selector = options.container;
-			}
+			selector = options.container;
 		}
 
 		this.register(this.id);
@@ -33,7 +28,10 @@ Widgetfly.Panel = (function(global) {'use strict';
 		this.iframe = this.el = this.render();
 			
 		if (appendType === 'id') {
-			elms = window.document.getElementById(selector);
+			tmp = window.document.getElementById(selector);
+			if(tmp !== null){
+				elms.push(tmp);
+			}
 		}else if (appendType === 'class') {
 			elms = Widgetfly.Utils.getElementsByClassName(selector);
 		}else{
@@ -50,6 +48,9 @@ Widgetfly.Panel = (function(global) {'use strict';
 			}else{
 				Widgetfly.Utils.addClass(this.el, 'hide');
 			}
+			while(this.container.hasChildNodes() ){
+    			this.container.removeChild(this.container.lastChild);
+			}			
 			this.container.appendChild(this.el);
 		}
 
