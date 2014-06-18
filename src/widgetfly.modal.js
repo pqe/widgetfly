@@ -29,7 +29,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 	Modal.prototype.render = function() {
 		//console.log(setting);
-		var modalContent = window.document.createElement('div'), contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
+		var self = this, modalContent = window.document.createElement('div'), contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 
 		modalContent.setAttribute('class', 'modal');
 
@@ -39,7 +39,8 @@ Widgetfly.Modal = (function(global) {'use strict';
 		aClose.setAttribute('class', 'close');
 		aClose.textContent = 'x';
 		aClose.onclick = function() {
-			Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
+			//Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
+			self.close();
 		};
 
 		viewTop.setAttribute('class', 'view-top');

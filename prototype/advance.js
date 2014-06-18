@@ -1,6 +1,6 @@
 var MyWidget = Widgetfly.Panel.extend({/** overwrite **/});
 //var Orz = Widgetfly.Modal.extend({/** overwrite **/});
-var test = Widgetfly.Popover.extend({/** overwrite **/});
+//var test = Widgetfly.Popover.extend({/** overwrite **/});
 
 var widgetA = new MyWidget({
 	container : '.qfb',
@@ -15,8 +15,9 @@ widgetA.onStart(function() {
 console.log(widgetA);
 //widgetA.hide();
 widgetA.on('click', function(){
-	widgetA.hide();
+	widgetA.close();
 });
+
 /*
 var test = new Orz({
 	container : '.testModal',
@@ -28,7 +29,7 @@ test.onStart(function(){
 	console.log('test is started');
 });
 */
-
+/*
 function OrzClick(){
 	var zz = new test({
 		target : '#test',
@@ -41,3 +42,4 @@ function OrzClick(){
 		}
 	});
 }
+*/

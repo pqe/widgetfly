@@ -63,5 +63,19 @@ Widgetfly.Panel = (function(global) {'use strict';
 		return Widgetfly.Widget.prototype.render.apply(this, arguments);
 	};
 
+	Panel.prototype.close = function() {
+		console.log('Widget.Action close');
+		var r, self = this, handlers;
+		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
+			r = handlers.onBeforeClose();
+		}
+		if(r !== false){
+			Widgetfly.Mediator.unregister(this.id, function() {
+				self.container.remove(0);
+			});
+		}		
+	};
+
 	return Panel;
 })(this);
