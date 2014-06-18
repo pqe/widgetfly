@@ -44,13 +44,13 @@ Widgetfly.Panel = (function(global) {'use strict';
 			
 		if(this.container){
 			if(options.show){
-				Widgetfly.Utils.addClass(this.el, 'show');
+				this.show();
 			}else{
-				Widgetfly.Utils.addClass(this.el, 'hide');
+				this.hide();
 			}
 			while(this.container.hasChildNodes() ){
-    			this.container.removeChild(this.container.lastChild);
-			}			
+				this.container.removeChild(this.container.lastChild);
+			}
 			this.container.appendChild(this.el);
 		}
 
@@ -74,7 +74,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 			Widgetfly.Mediator.unregister(this.id, function() {
 				self.container.remove(0);
 			});
-		}		
+		}
 	};
 
 	return Panel;

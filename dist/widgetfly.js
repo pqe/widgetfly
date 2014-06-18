@@ -387,7 +387,7 @@
 					},
 			
 					bind : function(id, action, callback) {
-						console.log('Mediator.bind');
+						console.log('Mediator.bind: ' + action);
 						if (this.actionHandlers[id] === undefined) {
 							this.actionHandlers[id] = {};
 						}
@@ -567,9 +567,8 @@
 			
 				Widget.prototype.hide = function() {
 					console.log('Widget.Action hide');
-					if(!Widgetfly.Utils.hasClass(this.el, 'hide')){
-						Widgetfly.Utils.addClass(this.el, 'hide');
-					}
+					Widgetfly.Utils.removeClass(this.el, 'hide show');
+					Widgetfly.Utils.addClass(this.el, 'hide');
 					var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
 						handlers.onHide();
@@ -585,9 +584,8 @@
 				Widget.prototype.show = function() {
 					console.log('Widget.Action show');
 					var self = this, handlers;
-					if(!Widgetfly.Utils.hasClass(this.el, 'show')){
-						Widgetfly.Utils.addClass(this.el, 'show');
-					}
+					Widgetfly.Utils.removeClass(this.el, 'show hide');
+					Widgetfly.Utils.addClass(this.el, 'show');
 					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
 						handlers.onShow();
@@ -634,7 +632,7 @@
 					};
 			
 					iframe.setAttribute('name', this.id);
-					console.log(this.options.src);
+					//console.log(this.options.src);
 					if (this.options.src.indexOf('#') === -1) {
 						src = this.options.src + '#';
 					} else {
@@ -656,28 +654,23 @@
 				// -------------
 				var Panel = function(options) {
 					
-					var el, appendType, selector, elms;
+					var el, appendType, selector, elms = [], tmp;
 					Widgetfly.Widget.apply(this, arguments);
 					this.options = options;
 					
-					if (options === undefined) {
+					if (options === undefined || options.container === undefined || options.container === null) {
 						return false;
 					}
 					
-					if (options.container === undefined || options.container === null) {
+					if (options.container.substr(0, 1) === '.') {
+						appendType = 'class';
+						selector = options.container.replace('.', '');
+					} else if (options.container.substr(0, 1) === '#') {
+						appendType = 'id';
+						selector = options.container.replace('#', '');
+					} else{
 						appendType = 'tag';
-						selector = 'body';
-					}else{
-						if (options.container.substr(0, 1) === '.') {
-							appendType = 'class';
-							selector = options.container.replace('.', '');
-						} else if (options.container.substr(0, 1) === '#') {
-							appendType = 'id';
-							selector = options.container.replace('#', '');
-						} else{
-							appendType = 'tag';
-							selector = options.container;
-						}
+						selector = options.container;
 					}
 			
 					this.register(this.id);
@@ -685,7 +678,10 @@
 					this.iframe = this.el = this.render();
 						
 					if (appendType === 'id') {
-						elms = window.document.getElementById(selector);
+						tmp = window.document.getElementById(selector);
+						if(tmp !== null){
+							elms.push(tmp);
+						}
 					}else if (appendType === 'class') {
 						elms = Widgetfly.Utils.getElementsByClassName(selector);
 					}else{
@@ -698,9 +694,12 @@
 						
 					if(this.container){
 						if(options.show){
-							Widgetfly.Utils.addClass(this.el, 'show');
+							this.show();
 						}else{
-							Widgetfly.Utils.addClass(this.el, 'hide');
+							this.hide();
+						}
+						while(this.container.hasChildNodes() ){
+							this.container.removeChild(this.container.lastChild);
 						}
 						this.container.appendChild(this.el);
 					}
@@ -712,6 +711,20 @@
 			
 				Panel.prototype.render = function() {
 					return Widgetfly.Widget.prototype.render.apply(this, arguments);
+				};
+			
+				Panel.prototype.close = function() {
+					console.log('Widget.Action close');
+					var r, self = this, handlers;
+					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+					if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
+						r = handlers.onBeforeClose();
+					}
+					if(r !== false){
+						Widgetfly.Mediator.unregister(this.id, function() {
+							self.container.remove(0);
+						});
+					}
 				};
 			
 				return Panel;
@@ -748,7 +761,7 @@
 			
 				Modal.prototype.render = function() {
 					//console.log(setting);
-					var modalContent = window.document.createElement('div'), contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
+					var self = this, modalContent = window.document.createElement('div'), contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 			
 					modalContent.setAttribute('class', 'modal');
 			
@@ -758,7 +771,8 @@
 					aClose.setAttribute('class', 'close');
 					aClose.textContent = 'x';
 					aClose.onclick = function() {
-						Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
+						//Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
+						self.close();
 					};
 			
 					viewTop.setAttribute('class', 'view-top');
@@ -786,44 +800,42 @@
 				// Widgetfly.Popover
 				// -------------
 				var Popover = function(options) {
-					var el, appendType, selector, elms, content;
+					var el, appendType, selector, elms = [], content, tmp;
 					Widgetfly.Widget.apply(this, arguments);
 					this.options = options;
 			
-					if (options === undefined) {
+					if (options === undefined || options.target === undefined || options.target === null) {
 						return false;
 					}
-			
-					if (options.container === undefined || options.container === null) {
+					
+					if (options.target.substr(0, 1) === '.') {
+						appendType = 'class';
+						selector = options.target.replace('.', '');
+					} else if (options.target.substr(0, 1) === '#') {
+						appendType = 'id';
+						selector = options.target.replace('#', '');
+					} else{
 						appendType = 'tag';
-						selector = 'body';
-					} else {
-						if (options.container.substr(0, 1) === '.') {
-							appendType = 'class';
-							selector = options.container.replace('.', '');
-						} else if (options.container.substr(0, 1) === '#') {
-							appendType = 'id';
-							selector = options.container.replace('#', '');
-						} else {
-							appendType = 'tag';
-							selector = options.container;
-						}
+						selector = options.target;
 					}
 			
 					this.register(this.id);
 			
 					if (appendType === 'id') {
-						elms = window.document.getElementById(selector);
+						tmp = window.document.getElementById(selector);
+						if(tmp !== null){
+							elms.push(tmp);
+						}
 					} else if (appendType === 'class') {
 						elms = Widgetfly.Utils.getElementsByClassName(selector);
 					} else {
 						elms = window.document.getElementsByTagName(selector);
 					}
-			
+					
 					if (elms && elms.length > 0) {
-						this.container = elms[0];
+						this.container = elms[0].parentNode;
 					}
-			
+					
 					this.el = document.createElement('div');
 					this.el.setAttribute('class', 'popover fade in ' + options.placement);
 					content = document.createElement('div');
