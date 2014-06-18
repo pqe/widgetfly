@@ -56,7 +56,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 		},
 
 		bind : function(id, action, callback) {
-			console.log('Mediator.bind');
+			console.log('Mediator.bind: ' + action);
 			if (this.actionHandlers[id] === undefined) {
 				this.actionHandlers[id] = {};
 			}

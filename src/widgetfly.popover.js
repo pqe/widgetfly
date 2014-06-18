@@ -34,7 +34,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 			elms = window.document.getElementsByTagName(selector);
 		}
 		
-		if (elms && elms.length > 0) {			
+		if (elms && elms.length > 0) {
 			this.container = elms[0].parentNode;
 		}
 		
