@@ -15,7 +15,7 @@ widgetA.onStart(function() {
 console.log(widgetA);
 //widgetA.hide();
 widgetA.on('click', function(){
-	widgetA.close();
+	widgetA.hide();
 });
 
 /*
