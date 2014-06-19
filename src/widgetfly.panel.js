@@ -4,7 +4,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 	// -------------
 	var Panel = function(options) {
 
-		var el, appendType, selector, elms = [], tmp;
+		var el, appendType, elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
 
@@ -12,35 +12,14 @@ Widgetfly.Panel = (function(global) {'use strict';
 			return false;
 		}
 
-		if (options.container.substr(0, 1) === '.') {
-			appendType = 'class';
-			selector = options.container.replace('.', '');
-		} else if (options.container.substr(0, 1) === '#') {
-			appendType = 'id';
-			selector = options.container.replace('#', '');
-		} else {
-			appendType = 'tag';
-			selector = options.container;
+		this.container = window.document.querySelector(options.container);
+		if (this.container && this.container.length <= 0) {
+			return false;
 		}
-
+		
 		this.register(this.id);
 
-		this.iframe = this.el = this.render();
-
-		if (appendType === 'id') {
-			tmp = window.document.getElementById(selector);
-			if (tmp !== null) {
-				elms.push(tmp);
-			}
-		} else if (appendType === 'class') {
-			elms = Widgetfly.Utils.getElementsByClassName(selector);
-		} else {
-			elms = window.document.getElementsByTagName(selector);
-		}
-
-		if (elms && elms.length > 0) {
-			this.container = elms[0];
-		}
+		this.iframe = this.el = this.render();		
 		
 		this.style();
 		

@@ -2,17 +2,17 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var el, appendType = 'tag', selector = 'body', elms = window.document.getElementsByTagName(selector);
+		var el, appendType = 'tag', selector = 'body', elms = window.document.querySelector('.modal');
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
-		this.container = elms[0];
+		this.container = window.document.querySelector(selector);
 		
 		if (options === undefined) {
 			return false;
 		}
-	
-		if(Widgetfly.Utils.getElementsByClassName('modal').length > 0){
-			this.container.removChild(Widgetfly.Utils.getElementsByClassName('modal'));
+
+		if(elms !== null){
+			this.container.removChild(window.document.querySelector('.modal'));
 		}
 		
 		this.register(this.id);

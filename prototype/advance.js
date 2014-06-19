@@ -20,7 +20,6 @@ widgetA.on('click', function(){
 
 /*
 var test = new Orz({
-	container : '.testModal',
 	autoGrow : true,
 	show : true,
 	src : 'http://192.168.73.128/widgetfly/prototype/relative.html'

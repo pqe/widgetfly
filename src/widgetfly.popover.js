@@ -2,40 +2,19 @@ Widgetfly.Popover = (function(global) {'use strict';
 	// Widgetfly.Popover
 	// -------------
 	var Popover = function(options) {
-		var el, appendType, selector, elms = [], content, tmp;
+		var el, appendType, selector = options.target, elms = [], content, tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
 
 		if (options === undefined || options.target === undefined || options.target === null) {
 			return false;
 		}
-		
-		if (options.target.substr(0, 1) === '.') {
-			appendType = 'class';
-			selector = options.target.replace('.', '');
-		} else if (options.target.substr(0, 1) === '#') {
-			appendType = 'id';
-			selector = options.target.replace('#', '');
-		} else{
-			appendType = 'tag';
-			selector = options.target;
-		}
 
-		this.register(this.id);
-
-		if (appendType === 'id') {
-			tmp = window.document.getElementById(selector);
-			if(tmp !== null){
-				elms.push(tmp);
-			}
-		} else if (appendType === 'class') {
-			elms = Widgetfly.Utils.getElementsByClassName(selector);
-		} else {
-			elms = window.document.getElementsByTagName(selector);
-		}
+		this.register(this.id);		
 		
-		if (elms && elms.length > 0) {
-			this.container = elms[0].parentNode;
+		this.container = window.document.querySelector(selector);
+		if (this.container && this.container.length <= 0) {
+			return false;
 		}
 		
 		this.el = document.createElement('div');
