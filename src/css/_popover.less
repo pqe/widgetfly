@@ -1,15 +1,5 @@
-.widgetfly {
-  .fade {
-    opacity: 0;
-    -webkit-transition: opacity .15s linear;
-    transition: opacity .15s linear;
-    &.in {
-      display:block;
-      opacity: 1;
-    }
-  }
-  
-  .popover {
+.widgetfly { 
+  .wf_popover {
     position: absolute;
     top: 0;
     left: 0;
@@ -28,6 +18,16 @@
     white-space: normal;
     &.right {
       margin-left: 10px;
+    }
+    
+    .fade {
+      opacity: 0;
+      -webkit-transition: opacity .15s linear;
+      transition: opacity .15s linear;
+      &.in {
+        display:block;
+        opacity: 1;
+      }
     }
   }
 }

@@ -546,7 +546,7 @@
 					return this.id;
 				};
 				
-				Widget.prototype.css = function() {
+				Widget.prototype.style = function() {
 					Widgetfly.Utils.addClass(this.el, 'widgetfly');
 				};
 			
@@ -699,7 +699,7 @@
 						this.container = elms[0];
 					}
 					
-					this.css();
+					this.style();
 					
 					if (this.container) {
 						if (options.show) {
@@ -720,6 +720,11 @@
 			
 				Panel.prototype.render = function() {
 					return Widgetfly.Widget.prototype.render.apply(this, arguments);
+				};
+				
+				Panel.prototype.style = function() {
+					Widgetfly.Widget.prototype.style.apply(this, arguments);
+					Widgetfly.Utils.addClass(this.el, 'wf_panel');
 				};
 			
 				Panel.prototype.close = function() {
@@ -803,6 +808,11 @@
 			
 					return modalContent;
 				};
+				
+				Modal.prototype.style = function() {
+					Widgetfly.Widget.prototype.style.apply(this, arguments);
+					Widgetfly.Utils.addClass(this.el, 'wf_modal');
+				};
 			
 				Modal.prototype.sizeChange = function(size) {
 					document.getElementsByName(this.id)[0].height = size + 'px';
@@ -879,6 +889,11 @@
 			
 				Popover.prototype.render = function() {
 					return Widgetfly.Widget.prototype.render.apply(this, arguments);
+				};
+				
+				Popover.prototype.style = function() {
+					Widgetfly.Widget.prototype.style.apply(this, arguments);
+					Widgetfly.Utils.addClass(this.el, 'wf_popover');
 				};
 			
 				return Popover;

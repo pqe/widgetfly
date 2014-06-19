@@ -62,6 +62,11 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 		return modalContent;
 	};
+	
+	Modal.prototype.style = function() {
+		Widgetfly.Widget.prototype.style.apply(this, arguments);
+		Widgetfly.Utils.addClass(this.el, 'wf_modal');
+	};
 
 	Modal.prototype.sizeChange = function(size) {
 		document.getElementsByName(this.id)[0].height = size + 'px';

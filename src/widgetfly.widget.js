@@ -12,7 +12,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		return this.id;
 	};
 	
-	Widget.prototype.css = function() {
+	Widget.prototype.style = function() {
 		Widgetfly.Utils.addClass(this.el, 'widgetfly');
 	};
 

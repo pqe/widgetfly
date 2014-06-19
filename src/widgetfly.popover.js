@@ -66,6 +66,11 @@ Widgetfly.Popover = (function(global) {'use strict';
 	Popover.prototype.render = function() {
 		return Widgetfly.Widget.prototype.render.apply(this, arguments);
 	};
+	
+	Popover.prototype.style = function() {
+		Widgetfly.Widget.prototype.style.apply(this, arguments);
+		Widgetfly.Utils.addClass(this.el, 'wf_popover');
+	};
 
 	return Popover;
 

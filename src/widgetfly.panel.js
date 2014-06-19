@@ -42,7 +42,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 			this.container = elms[0];
 		}
 		
-		this.css();
+		this.style();
 		
 		if (this.container) {
 			if (options.show) {
@@ -63,6 +63,11 @@ Widgetfly.Panel = (function(global) {'use strict';
 
 	Panel.prototype.render = function() {
 		return Widgetfly.Widget.prototype.render.apply(this, arguments);
+	};
+	
+	Panel.prototype.style = function() {
+		Widgetfly.Widget.prototype.style.apply(this, arguments);
+		Widgetfly.Utils.addClass(this.el, 'wf_panel');
 	};
 
 	Panel.prototype.close = function() {
