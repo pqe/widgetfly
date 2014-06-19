@@ -649,6 +649,15 @@
 					src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
 			
 					iframe.setAttribute('src', src);
+					iframe.setAttribute('allowtransparency', 'true');
+					iframe.setAttribute('frameborder','0');
+					iframe.setAttribute('tabindex','0');
+					iframe.setAttribute('title','Widgetfly Widget');
+					iframe.setAttribute('width','100%');
+					iframe.setAttribute('verticalscrolling','no');
+					iframe.setAttribute('scrolling','no');
+					iframe.setAttribute('horizontalscrolling','no');
+			
 					return iframe;
 				};
 			
