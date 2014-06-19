@@ -16,11 +16,10 @@ Widgetfly.Modal = (function(global) {'use strict';
 		}
 		
 		this.register(this.id);
-
-		this.style();
 		
 		if (this.container) {
 			this.el = this.render(options);
+			this.style();
 			if (options.show) {
 				this.show();
 			} else {
