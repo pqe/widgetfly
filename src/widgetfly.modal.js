@@ -2,10 +2,10 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var el, appendType = 'tag', selector = 'body', elms = window.document.querySelector('.modal');
+		var el, elms = window.document.querySelector('.modal');
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
-		this.container = window.document.querySelector(selector);
+		this.container = window.document.querySelector('body');
 		
 		if (options === undefined) {
 			return false;
@@ -17,7 +17,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		
 		this.register(this.id);
 
-		this.css();
+		this.style();
 		
 		if (this.container) {
 			this.el = this.render(options);

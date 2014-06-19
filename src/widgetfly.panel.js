@@ -4,7 +4,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 	// -------------
 	var Panel = function(options) {
 
-		var el, appendType, elms = [], tmp;
+		var el, elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
 
