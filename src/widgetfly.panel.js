@@ -19,7 +19,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 		
 		this.register(this.id);
 
-		this.iframe = this.el = this.render();		
+		this.iframe = this.el = this.render();
 		
 		this.style();
 		

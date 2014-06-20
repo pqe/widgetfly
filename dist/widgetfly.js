@@ -670,7 +670,7 @@
 				// -------------
 				var Panel = function(options) {
 			
-					var el, appendType, selector, elms = [], tmp;
+					var el, elms = [], tmp;
 					Widgetfly.Widget.apply(this, arguments);
 					this.options = options;
 			
@@ -678,35 +678,14 @@
 						return false;
 					}
 			
-					if (options.container.substr(0, 1) === '.') {
-						appendType = 'class';
-						selector = options.container.replace('.', '');
-					} else if (options.container.substr(0, 1) === '#') {
-						appendType = 'id';
-						selector = options.container.replace('#', '');
-					} else {
-						appendType = 'tag';
-						selector = options.container;
+					this.container = window.document.querySelector(options.container);
+					if (this.container && this.container.length <= 0) {
+						return false;
 					}
-			
+					
 					this.register(this.id);
 			
 					this.iframe = this.el = this.render();
-			
-					if (appendType === 'id') {
-						tmp = window.document.getElementById(selector);
-						if (tmp !== null) {
-							elms.push(tmp);
-						}
-					} else if (appendType === 'class') {
-						elms = Widgetfly.Utils.getElementsByClassName(selector);
-					} else {
-						elms = window.document.getElementsByTagName(selector);
-					}
-			
-					if (elms && elms.length > 0) {
-						this.container = elms[0];
-					}
 					
 					this.style();
 					
@@ -757,32 +736,30 @@
 				// Widgetfly.Modal
 				// -------------
 				var Modal = function(options) {
-					var el, appendType = 'tag', selector = 'body', elms = window.document.getElementsByTagName(selector);
+					var el, elms = window.document.querySelector('.wf_modal');
 					Widgetfly.Widget.apply(this, arguments);
 					this.options = options;
-					this.container = elms[0];
+					this.container = window.document.querySelector('body');
 					
 					if (options === undefined) {
 						return false;
 					}
-				
-					if(Widgetfly.Utils.getElementsByClassName('modal').length > 0){
-						this.container.removChild(Widgetfly.Utils.getElementsByClassName('modal'));
+			
+					if(elms !== null){
+						this.container.removChild(window.document.querySelector('.wf_modal'));
 					}
 					
 					this.register(this.id);
-			
-					this.css();
 					
 					if (this.container) {
 						this.el = this.render(options);
+						this.style();
 						if (options.show) {
 							this.show();
 						} else {
 							this.hide();
 						}
 						this.container.appendChild(this.el);
-						Widgetfly.Utils.addClass(this.el, 'active');
 					}
 					return this;
 				};
@@ -791,11 +768,9 @@
 			
 				Modal.prototype.render = function() {
 					//console.log(setting);
-					var self = this, modalContent = window.document.createElement('div'), contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
+					var self = this, modalContent = window.document.createElement('div'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 			
-					modalContent.setAttribute('class', 'modal');
-			
-					spanTitle.textContent = 'Orz';
+					Widgetfly.Utils.addClass(modalContent, 'wf_modal');
 			
 					aClose.setAttribute('href', '###');
 					aClose.setAttribute('class', 'close');
@@ -805,14 +780,9 @@
 						self.close();
 					};
 			
-					viewTop.setAttribute('class', 'view-top');
-					viewTop.appendChild(spanTitle);
-					viewTop.appendChild(aClose);
-			
-					contentView.setAttribute('class', 'content');
-					contentView.appendChild(viewTop);
-					contentView.appendChild(iframe);
-					modalContent.appendChild(contentView);
+					Widgetfly.Utils.addClass(iframe, 'content');
+					modalContent.appendChild(aClose);
+					modalContent.appendChild(iframe);
 					this.iframe = iframe;
 			
 					return modalContent;
@@ -835,52 +805,28 @@
 				// Widgetfly.Popover
 				// -------------
 				var Popover = function(options) {
-					var el, appendType, selector, elms = [], content, tmp;
+					var el, appendType, elms = [], tmp;
 					Widgetfly.Widget.apply(this, arguments);
 					this.options = options;
 			
 					if (options === undefined || options.target === undefined || options.target === null) {
 						return false;
 					}
-					
-					if (options.target.substr(0, 1) === '.') {
-						appendType = 'class';
-						selector = options.target.replace('.', '');
-					} else if (options.target.substr(0, 1) === '#') {
-						appendType = 'id';
-						selector = options.target.replace('#', '');
-					} else{
-						appendType = 'tag';
-						selector = options.target;
-					}
 			
 					this.register(this.id);
-			
-					if (appendType === 'id') {
-						tmp = window.document.getElementById(selector);
-						if(tmp !== null){
-							elms.push(tmp);
-						}
-					} else if (appendType === 'class') {
-						elms = Widgetfly.Utils.getElementsByClassName(selector);
-					} else {
-						elms = window.document.getElementsByTagName(selector);
-					}
 					
-					if (elms && elms.length > 0) {
-						this.container = elms[0].parentNode;
+					this.container = window.document.querySelector(options.target);
+					if (this.container && this.container.length <= 0) {
+						return false;
 					}
 					
 					this.el = document.createElement('div');
-					this.el.setAttribute('class', 'popover fade in ' + options.placement);
-					content = document.createElement('div');
-					content.setAttribute('class', 'popover-content');
+					this.el.setAttribute('class', 'wf_popover ' + options.placement);
 			
 					this.iframe = this.render();
-					content.appendChild(this.iframe);
-					this.el.appendChild(content);
+					this.el.appendChild(this.iframe);
 			
-					this.css();
+					this.style();
 					
 					if (this.container) {
 						if (options.show) {
@@ -959,13 +905,6 @@
 				if (!Widgetfly.Utils.inIframe()) {
 					console.log('Now is Widgets initialize');
 					Widgetfly.Mediator.init();
-					/*
-					if (Widgetfly.Utils.getElementsByClassName('qt').length <= 0) {
-						instance = window.document.createElement('div');
-						instance.setAttribute('class', 'qt');
-						window.document.getElementsByTagName('body')[0].appendChild(instance);
-					}
-					*/
 					if (!Widgetfly.Utils.isEmpty(param)) {
 						//console.log(param);
 						new Widgetfly.Panel(param);
