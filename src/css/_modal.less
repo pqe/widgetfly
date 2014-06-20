@@ -1,7 +1,5 @@
 .widgetfly {
   .wf_modal {
-    display:none;
-    &.active {
       position:fixed;
       z-index:1045;
       margin:0;
@@ -15,7 +13,6 @@
       overflow:auto;
       display:block;
       background:rgba(0,0,0,.7);
-    }
     .content {
       width:605px; 
       background:#fff;
@@ -24,36 +21,12 @@
       //.box-sizing(border-box);
       //.border-radius(4px);
       //.box-shadow(~"inset 0 0 0 rgba(0,0,0,.1), 0 1px 10px rgba(0,0,0,.1)");
-      .view-top {
-          text-align:left;
-          padding:0 0 0 15px;
-          background: #306088;
-          color:#fff;
-          height:40px;    
-          font-size:14px;
-          font-weight:bold;
-          line-height:2.8em;
-          //.border-radius(4px 4px 0 0);
-         .close {
-            color:#FFFFFF;
-            text-decoration:none;
-            text-shadow:0 0 0 rgba(0,0,0,0);
-            font-family:arial;
-            margin : 10px 10px 0 0;
-            opacity : 0.8;
-        }
-      }
+    }
+    .close {
+      
     }
   }
-  
-  .close {
-      float: right;
-      font-size: 20px;
-      font-weight: bold;
-      line-height: 18px;
-      color: #000000;
-      text-shadow: 0 1px 0 #ffffff;
-      opacity: 0.2;
-      filter: alpha(opacity=20);
+  .wf_overlay {
+    
   }
 }

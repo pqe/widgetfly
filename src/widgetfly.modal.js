@@ -2,7 +2,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var el, elms = window.document.querySelector('.modal');
+		var el, elms = window.document.querySelector('.wf_modal');
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
 		this.container = window.document.querySelector('body');
@@ -12,7 +12,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		}
 
 		if(elms !== null){
-			this.container.removChild(window.document.querySelector('.modal'));
+			this.container.removChild(window.document.querySelector('.wf_modal'));
 		}
 		
 		this.register(this.id);
@@ -26,7 +26,6 @@ Widgetfly.Modal = (function(global) {'use strict';
 				this.hide();
 			}
 			this.container.appendChild(this.el);
-			Widgetfly.Utils.addClass(this.el, 'active');
 		}
 		return this;
 	};
@@ -35,11 +34,9 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 	Modal.prototype.render = function() {
 		//console.log(setting);
-		var self = this, modalContent = window.document.createElement('div'), contentView = window.document.createElement('div'), viewTop = window.document.createElement('div'), spanTitle = document.createElement('span'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
+		var self = this, modalContent = window.document.createElement('div'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 
-		modalContent.setAttribute('class', 'modal');
-
-		spanTitle.textContent = 'Orz';
+		Widgetfly.Utils.addClass(modalContent, 'wf_modal');
 
 		aClose.setAttribute('href', '###');
 		aClose.setAttribute('class', 'close');
@@ -49,14 +46,9 @@ Widgetfly.Modal = (function(global) {'use strict';
 			self.close();
 		};
 
-		viewTop.setAttribute('class', 'view-top');
-		viewTop.appendChild(spanTitle);
-		viewTop.appendChild(aClose);
-
-		contentView.setAttribute('class', 'content');
-		contentView.appendChild(viewTop);
-		contentView.appendChild(iframe);
-		modalContent.appendChild(contentView);
+		Widgetfly.Utils.addClass(iframe, 'content');
+		modalContent.appendChild(aClose);
+		modalContent.appendChild(iframe);
 		this.iframe = iframe;
 
 		return modalContent;

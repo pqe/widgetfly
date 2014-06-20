@@ -16,18 +16,23 @@
     -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
     white-space: normal;
+    &.top {
+      //:before {
+      //  
+      //}
+      margin-left: 10px;
+    }
+    &.left {
+      margin-left: 10px;
+    }
+    &.bottom {
+      margin-left: 10px;
+    }
     &.right {
       margin-left: 10px;
     }
-    
-    .fade {
-      opacity: 0;
-      -webkit-transition: opacity .15s linear;
-      transition: opacity .15s linear;
-      &.in {
-        display:block;
-        opacity: 1;
-      }
-    }
+    .arrow {
+      // :before is ok, too
+    }    
   }
 }

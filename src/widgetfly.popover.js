@@ -2,7 +2,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 	// Widgetfly.Popover
 	// -------------
 	var Popover = function(options) {
-		var el, appendType, elms = [], content, tmp;
+		var el, appendType, elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
 
@@ -10,7 +10,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 			return false;
 		}
 
-		this.register(this.id);		
+		this.register(this.id);
 		
 		this.container = window.document.querySelector(options.target);
 		if (this.container && this.container.length <= 0) {
@@ -18,13 +18,10 @@ Widgetfly.Popover = (function(global) {'use strict';
 		}
 		
 		this.el = document.createElement('div');
-		this.el.setAttribute('class', 'popover fade in ' + options.placement);
-		content = document.createElement('div');
-		content.setAttribute('class', 'popover-content');
+		this.el.setAttribute('class', 'wf_popover ' + options.placement);
 
 		this.iframe = this.render();
-		content.appendChild(this.iframe);
-		this.el.appendChild(content);
+		this.el.appendChild(this.iframe);
 
 		this.style();
 		
