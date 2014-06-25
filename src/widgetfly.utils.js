@@ -227,18 +227,20 @@ Widgetfly.Utils = (function(global) {'use strict';
 		hasClass : function(element, cls) {
 			return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 		},
-
+		
 		addClass : function(element, className, startFrom) {
 			var target;
 			if (startFrom === undefined) {
 				startFrom = document;
 			}
 			target = this.trans2Elem(element, startFrom);
+			
 			if (!this.hasClass(target, className)) {
 				target.className += ' ' + className;
 			}
+			this.innerStyle(target);
 		},
-
+	
 		removeClass : function(element, rmClass, startFrom) {
 			var target, newClass;
 			if (startFrom === undefined) {
@@ -255,6 +257,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 					target.className = newClass.replace(/^\s+|\s+$/g, '');
 				}
 			}
+			this.innerStyle(target);
 		},
 
 		toggleClass : function(element, className, startFrom) {
@@ -274,7 +277,32 @@ Widgetfly.Utils = (function(global) {'use strict';
 					target.className += ' ' + className;
 				}
 			}
+			this.innerStyle(target);
+		},
+		
+		innerStyle : function css(a) {
+		    var i,r, match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [];
+		    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
+		    for (i in sheets) {
+		        rules = sheets[i].rules || sheets[i].cssRules;
+		        for (r in rules) {
+		            if (a.matches(rules[r].selectorText)) {
+		                o.push(rules[r].cssText);
+		            }
+		        }
+		    }
+		    for (i in o){
+				r = o[i];
+				ruleExp = /\{\s*([^\}]+)\s\}/g;
+				match = ruleExp.exec(r);
+				if(match){
+					styles.push(match[1]);
+				}
+		    }
+		    result = styles.join(' ');
+		    a.style.cssText = result;
 		}
+		
 	};
 
 	return Utils;

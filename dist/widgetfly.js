@@ -255,18 +255,20 @@
 					hasClass : function(element, cls) {
 						return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 					},
-			
+					
 					addClass : function(element, className, startFrom) {
 						var target;
 						if (startFrom === undefined) {
 							startFrom = document;
 						}
 						target = this.trans2Elem(element, startFrom);
+						
 						if (!this.hasClass(target, className)) {
 							target.className += ' ' + className;
 						}
+						this.innerStyle(target);
 					},
-			
+				
 					removeClass : function(element, rmClass, startFrom) {
 						var target, newClass;
 						if (startFrom === undefined) {
@@ -283,6 +285,7 @@
 								target.className = newClass.replace(/^\s+|\s+$/g, '');
 							}
 						}
+						this.innerStyle(target);
 					},
 			
 					toggleClass : function(element, className, startFrom) {
@@ -302,7 +305,32 @@
 								target.className += ' ' + className;
 							}
 						}
+						this.innerStyle(target);
+					},
+					
+					innerStyle : function css(a) {
+					    var i,r, match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [];
+					    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
+					    for (i in sheets) {
+					        rules = sheets[i].rules || sheets[i].cssRules;
+					        for (r in rules) {
+					            if (a.matches(rules[r].selectorText)) {
+					                o.push(rules[r].cssText);
+					            }
+					        }
+					    }
+					    for (i in o){
+							r = o[i];
+							ruleExp = /\{\s*([^\}]+)\s\}/g;
+							match = ruleExp.exec(r);
+							if(match){
+								styles.push(match[1]);
+							}
+					    }
+					    result = styles.join(' ');
+					    a.style.cssText = result;
 					}
+					
 				};
 			
 				return Utils;
@@ -572,9 +600,9 @@
 			
 				Widget.prototype.hide = function() {
 					console.log('Widget.Action hide');
-					Widgetfly.Utils.removeClass(this.el, 'show');
-					Widgetfly.Utils.removeClass(this.el, 'hide');
-					Widgetfly.Utils.addClass(this.el, 'hide');
+					Widgetfly.Utils.removeClass(this.el, 'wf_show');
+					Widgetfly.Utils.removeClass(this.el, 'wf_hide');
+					Widgetfly.Utils.addClass(this.el, 'wf_hide');
 					var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
 						handlers.onHide();
@@ -590,9 +618,9 @@
 				Widget.prototype.show = function() {
 					console.log('Widget.Action show');
 					var self = this, handlers;
-					Widgetfly.Utils.removeClass(this.el, 'show');
-					Widgetfly.Utils.removeClass(this.el, 'hide');
-					Widgetfly.Utils.addClass(this.el, 'show');
+					Widgetfly.Utils.removeClass(this.el, 'wf_show');
+					Widgetfly.Utils.removeClass(this.el, 'wf_hide');
+					Widgetfly.Utils.addClass(this.el, 'wf_show');
 					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
 						handlers.onShow();
@@ -773,12 +801,12 @@
 					Widgetfly.Utils.addClass(modalContent, 'wf_modal');
 			
 					aClose.setAttribute('href', '###');
-					aClose.setAttribute('class', 'close');
 					aClose.textContent = 'x';
 					aClose.onclick = function() {
 						//Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
 						self.close();
 					};
+					Widgetfly.Utils.addClass(aClose,'close');
 			
 					Widgetfly.Utils.addClass(iframe, 'content');
 					modalContent.appendChild(aClose);
@@ -821,8 +849,9 @@
 					}
 					
 					this.el = document.createElement('div');
-					this.el.setAttribute('class', 'wf_popover ' + options.placement);
-			
+					Widgetfly.Utils.addClass(this.el,'wf_popover');
+					Widgetfly.Utils.addClass(this.el, options.placement);
+					
 					this.iframe = this.render();
 					this.el.appendChild(this.iframe);
 			

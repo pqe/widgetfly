@@ -18,8 +18,9 @@ Widgetfly.Popover = (function(global) {'use strict';
 		}
 		
 		this.el = document.createElement('div');
-		this.el.setAttribute('class', 'wf_popover ' + options.placement);
-
+		Widgetfly.Utils.addClass(this.el,'wf_popover');
+		Widgetfly.Utils.addClass(this.el, options.placement);
+		
 		this.iframe = this.render();
 		this.el.appendChild(this.iframe);
 

@@ -39,12 +39,12 @@ Widgetfly.Modal = (function(global) {'use strict';
 		Widgetfly.Utils.addClass(modalContent, 'wf_modal');
 
 		aClose.setAttribute('href', '###');
-		aClose.setAttribute('class', 'close');
 		aClose.textContent = 'x';
 		aClose.onclick = function() {
 			//Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
 			self.close();
 		};
+		Widgetfly.Utils.addClass(aClose,'close');
 
 		Widgetfly.Utils.addClass(iframe, 'content');
 		modalContent.appendChild(aClose);
