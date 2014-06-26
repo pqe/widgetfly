@@ -293,10 +293,12 @@ Widgetfly.Utils = (function(global) {'use strict';
 		    }
 		    for (i in o){
 				r = o[i];
-				ruleExp = /\{\s*([^\}]+)\s\}/g;
-				match = ruleExp.exec(r);
-				if(match){
-					styles.push(match[1]);
+				if(r.indexOf('.widgetfly') === 0){
+					ruleExp = /\{\s*([^\}]+)\s\}/g;
+					match = ruleExp.exec(r);
+					if(match){
+						styles.push(match[1]);
+					}
 				}
 		    }
 		    result = styles.join(' ');

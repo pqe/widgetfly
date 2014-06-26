@@ -1,7 +1,8 @@
 var Widgetfly = (function(global){
 	'use strict';
 	var Widgetfly = {};
-		
+	
+	// @include ../../tmp/widgetfly.css.js
 	// @include ../widgetfly.utils.js
 	// @include ../widgetfly.events.js
 	// @include ../widgetfly.mediator.js

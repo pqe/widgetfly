@@ -64,12 +64,6 @@ module.exports = function (grunt) {
 				files: [
 					{src: ['tmp/widgetfly.js'], dest: 'dist/widgetfly.js'}
 				]
-			},
-			images : {
-				expand: true,
-				cwd: 'src/css/img/',
-				src: ['**'],
-				dest: 'dist/css/img'
 			}
 		},
 		jsdoc : {
@@ -162,10 +156,16 @@ module.exports = function (grunt) {
 			        cwd:    'src/css',
 			        src:    ['*.less','!_*.less'],
 			        ext:    '.css',
-			        dest : 'dist/css'
+			        dest : 'tmp'
 				}]
 				
 			}
+		},
+		css2js: {
+	        main: {
+	            src: 'tmp/widgetfly.css',
+	            dest: 'tmp/widgetfly.css.js'
+	        }
 		}
 	});
 	
@@ -181,13 +181,13 @@ module.exports = function (grunt) {
 		'clean:dist',
 		'version:js',
 		'version:json',
+		'less:production',
+		'css2js',
 		'jshint',
 		'jscs',
 		'preprocess:amd',
 		'uglify',
-		'copy:main',
-		'less:production',
-		'copy:images'
+		'copy:main'
 	]);
 
 	grunt.registerTask('serve', [
