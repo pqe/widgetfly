@@ -29,7 +29,7 @@
 			(function () {
 			    // widgetfly.css
 			    var cssText = "" +
-			".widgetfly .wf_show,.widgetfly.wf_show{display:block !important}.widgetfly .wf_hide,.widgetfly.wf_hide{display:none !important}.widgetfly.wf_panel{width:100% !important;border:none !important;overflow:hidden !important;height:321px !important}.widgetfly .wf_modal,.widgetfly.wf_modal{position:fixed;z-index:1045;margin:0;padding:0;top:0;right:0;bottom:0;left:0;width:100%;height:100%;overflow:auto;display:block;background:rgba(0,0,0,0.7)}.widgetfly .wf_modal .content,.widgetfly.wf_modal .content{width:605px;background:#fff;z-index:1020;margin:50px auto}.widgetfly .wf_popover{position:absolute;top:0;left:0;z-index:1010;display:none;max-width:276px;padding:1px;text-align:left;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);white-space:normal}.widgetfly .wf_popover.top{margin-left:10px}.widgetfly .wf_popover.left{margin-left:10px}.widgetfly .wf_popover.bottom{margin-left:10px}.widgetfly .wf_popover.right{margin-left:10px}";
+			".widgetfly .wf-show,.widgetfly.wf-show{display:block !important}.widgetfly .wf-hide,.widgetfly.wf-hide{display:none !important}.widgetfly .wf-panel,.widgetfly.wf-panel{width:100% !important;border:none !important;overflow:hidden !important}.widgetfly .wf-modal,.widgetfly.wf-modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;display:none;overflow:auto;overflow-y:scroll;-webkit-overflow-scrolling:touch;outline:0}.widgetfly .wf-modal .wf-modal-body,.widgetfly.wf-modal .wf-modal-body{width:605px;background:#fff;z-index:1020;margin:50px auto}.widgetfly .wf-modal .wf-close,.widgetfly.wf-modal .wf-close{margin-top:-2px}.wf-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000}.widgetfly .wf-popover,.widgetfly.wf-popover{top:0;left:0;z-index:1010;display:none;max-width:276px;padding:1px;text-align:left;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);white-space:normal;position:relative;display:block;float:left;width:260px;margin:20px}.widgetfly .wf-popover .wf-popover-content,.widgetfly.wf-popover .wf-popover-content{padding:9px 14px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow{border-width:11px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow,.widgetfly .wf-popover .wf-arrow:after,.widgetfly.wf-popover .wf-arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;content:\"\";border-width:10px}.widgetfly .wf-popover.wf-top,.widgetfly.wf-popover.wf-top{margin-left:10px}.widgetfly .wf-popover.wf-top .wf-arrow,.widgetfly.wf-popover.wf-top .wf-arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,0.25);border-bottom-width:0}.widgetfly .wf-popover.wf-top .wf-arrow:after,.widgetfly.wf-popover.wf-top .wf-arrow:after{bottom:1px;margin-left:-10px;content:\" \";border-top-color:#fff;border-bottom-width:0}.widgetfly .wf-popover.wf-left,.widgetfly.wf-popover.wf-left{margin-left:10px}.widgetfly .wf-popover.wf-left .wf-arrow,.widgetfly.wf-popover.wf-left .wf-arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-left .wf-arrow:after,.widgetfly.wf-popover.wf-left .wf-arrow:after{right:1px;bottom:-10px;content:\" \";border-right-width:0;border-left-color:#fff}.widgetfly .wf-popover.wf-bottom,.widgetfly.wf-popover.wf-bottom{margin-left:10px}.widgetfly .wf-popover.wf-bottom .wf-arrow,.widgetfly.wf-popover.wf-bottom .wf-arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-bottom .wf-arrow:after,.widgetfly.wf-popover.wf-bottom .wf-arrow:after{top:1px;margin-left:-10px;content:\" \";border-top-width:0;border-bottom-color:#fff}.widgetfly .wf-popover.wf-right,.widgetfly.wf-popover.wf-right{margin-left:10px}.widgetfly .wf-popover.wf-right .wf-arrow,.widgetfly.wf-popover.wf-right .wf-arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,0.25);border-left-width:0}.widgetfly .wf-popover.wf-right .wf-arrow:after,.widgetfly.wf-popover.wf-right .wf-arrow:after{bottom:-10px;left:1px;content:\" \";border-right-color:#fff;border-left-width:0}";
 			    // cssText end
 			
 			    var styleEl = document.createElement("style");
@@ -623,9 +623,9 @@
 			
 				Widget.prototype.hide = function() {
 					console.log('Widget.Action hide');
-					Widgetfly.Utils.removeClass(this.el, 'wf_show');
-					Widgetfly.Utils.removeClass(this.el, 'wf_hide');
-					Widgetfly.Utils.addClass(this.el, 'wf_hide');
+					Widgetfly.Utils.removeClass(this.el, 'wf-show');
+					Widgetfly.Utils.removeClass(this.el, 'wf-hide');
+					Widgetfly.Utils.addClass(this.el, 'wf-hide');
 					var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
 						handlers.onHide();
@@ -641,9 +641,9 @@
 				Widget.prototype.show = function() {
 					console.log('Widget.Action show');
 					var self = this, handlers;
-					Widgetfly.Utils.removeClass(this.el, 'wf_show');
-					Widgetfly.Utils.removeClass(this.el, 'wf_hide');
-					Widgetfly.Utils.addClass(this.el, 'wf_show');
+					Widgetfly.Utils.removeClass(this.el, 'wf-show');
+					Widgetfly.Utils.removeClass(this.el, 'wf-hide');
+					Widgetfly.Utils.addClass(this.el, 'wf-show');
 					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
 						handlers.onShow();
@@ -763,7 +763,7 @@
 				
 				Panel.prototype.style = function() {
 					Widgetfly.Widget.prototype.style.apply(this, arguments);
-					Widgetfly.Utils.addClass(this.el, 'wf_panel');
+					Widgetfly.Utils.addClass(this.el, 'wf-panel');
 				};
 			
 				Panel.prototype.close = function() {
@@ -787,7 +787,7 @@
 				// Widgetfly.Modal
 				// -------------
 				var Modal = function(options) {
-					var el, elms = window.document.querySelector('.wf_modal');
+					var el, elms = window.document.querySelector('.wf-modal');
 					Widgetfly.Widget.apply(this, arguments);
 					this.options = options;
 					this.container = window.document.querySelector('body');
@@ -797,7 +797,7 @@
 					}
 			
 					if(elms !== null){
-						this.container.removChild(window.document.querySelector('.wf_modal'));
+						this.container.removChild(window.document.querySelector('.wf-modal'));
 					}
 					
 					this.register(this.id);
@@ -821,7 +821,7 @@
 					//console.log(setting);
 					var self = this, modalContent = window.document.createElement('div'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 			
-					Widgetfly.Utils.addClass(modalContent, 'wf_modal');
+					Widgetfly.Utils.addClass(modalContent, 'wf-modal');
 			
 					aClose.setAttribute('href', '###');
 					aClose.textContent = 'x';
@@ -829,9 +829,9 @@
 						//Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
 						self.close();
 					};
-					Widgetfly.Utils.addClass(aClose,'close');
+					Widgetfly.Utils.addClass(aClose,'wf-close');
 			
-					Widgetfly.Utils.addClass(iframe, 'content');
+					Widgetfly.Utils.addClass(iframe, 'wf-modal-body');
 					modalContent.appendChild(aClose);
 					modalContent.appendChild(iframe);
 					this.iframe = iframe;
@@ -841,7 +841,7 @@
 				
 				Modal.prototype.style = function() {
 					Widgetfly.Widget.prototype.style.apply(this, arguments);
-					Widgetfly.Utils.addClass(this.el, 'wf_modal');
+					Widgetfly.Utils.addClass(this.el, 'wf-modal');
 				};
 			
 				Modal.prototype.sizeChange = function(size) {
@@ -856,7 +856,7 @@
 				// Widgetfly.Popover
 				// -------------
 				var Popover = function(options) {
-					var el, appendType, elms = [], tmp;
+					var arrow;
 					Widgetfly.Widget.apply(this, arguments);
 					this.options = options;
 			
@@ -866,18 +866,22 @@
 			
 					this.register(this.id);
 					
-					this.container = window.document.querySelector(options.target);
-					if (this.container && this.container.length <= 0) {
+					this.target = window.document.querySelector(options.target);
+					if (this.target && this.target.length <= 0) {
 						return false;
 					}
 					
+					this.container = this.target.parentNode;
+					
 					this.el = document.createElement('div');
-					Widgetfly.Utils.addClass(this.el,'wf_popover');
-					Widgetfly.Utils.addClass(this.el, options.placement);
+					
+					arrow = document.createElement('div');
+					Widgetfly.Utils.addClass(arrow, 'wf-arrow');
+					this.el.appendChild(arrow);
 					
 					this.iframe = this.render();
 					this.el.appendChild(this.iframe);
-			
+					
 					this.style();
 					
 					if (this.container) {
@@ -900,7 +904,14 @@
 				
 				Popover.prototype.style = function() {
 					Widgetfly.Widget.prototype.style.apply(this, arguments);
-					Widgetfly.Utils.addClass(this.el, 'wf_popover');
+					Widgetfly.Utils.addClass(this.el, 'wf-popover');
+					Widgetfly.Utils.addClass(this.iframe, 'wf-popover-content');
+					
+					var placement = this.options.placement;
+					if(!placement){
+						placement = 'right';
+					}
+					Widgetfly.Utils.addClass(this.el, 'wf-' + placement);
 				};
 			
 				return Popover;

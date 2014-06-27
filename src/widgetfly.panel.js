@@ -46,7 +46,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 	
 	Panel.prototype.style = function() {
 		Widgetfly.Widget.prototype.style.apply(this, arguments);
-		Widgetfly.Utils.addClass(this.el, 'wf_panel');
+		Widgetfly.Utils.addClass(this.el, 'wf-panel');
 	};
 
 	Panel.prototype.close = function() {

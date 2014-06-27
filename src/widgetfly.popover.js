@@ -2,7 +2,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 	// Widgetfly.Popover
 	// -------------
 	var Popover = function(options) {
-		var el, appendType, elms = [], tmp;
+		var arrow;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
 
@@ -12,18 +12,22 @@ Widgetfly.Popover = (function(global) {'use strict';
 
 		this.register(this.id);
 		
-		this.container = window.document.querySelector(options.target);
-		if (this.container && this.container.length <= 0) {
+		this.target = window.document.querySelector(options.target);
+		if (this.target && this.target.length <= 0) {
 			return false;
 		}
 		
+		this.container = this.target.parentNode;
+		
 		this.el = document.createElement('div');
-		Widgetfly.Utils.addClass(this.el,'wf_popover');
-		Widgetfly.Utils.addClass(this.el, options.placement);
+		
+		arrow = document.createElement('div');
+		Widgetfly.Utils.addClass(arrow, 'wf-arrow');
+		this.el.appendChild(arrow);
 		
 		this.iframe = this.render();
 		this.el.appendChild(this.iframe);
-
+		
 		this.style();
 		
 		if (this.container) {
@@ -46,7 +50,14 @@ Widgetfly.Popover = (function(global) {'use strict';
 	
 	Popover.prototype.style = function() {
 		Widgetfly.Widget.prototype.style.apply(this, arguments);
-		Widgetfly.Utils.addClass(this.el, 'wf_popover');
+		Widgetfly.Utils.addClass(this.el, 'wf-popover');
+		Widgetfly.Utils.addClass(this.iframe, 'wf-popover-content');
+		
+		var placement = this.options.placement;
+		if(!placement){
+			placement = 'right';
+		}
+		Widgetfly.Utils.addClass(this.el, 'wf-' + placement);
 	};
 
 	return Popover;

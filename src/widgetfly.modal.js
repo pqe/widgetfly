@@ -2,7 +2,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var el, elms = window.document.querySelector('.wf_modal');
+		var el, elms = window.document.querySelector('.wf-modal');
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = options;
 		this.container = window.document.querySelector('body');
@@ -12,7 +12,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		}
 
 		if(elms !== null){
-			this.container.removChild(window.document.querySelector('.wf_modal'));
+			this.container.removChild(window.document.querySelector('.wf-modal'));
 		}
 		
 		this.register(this.id);
@@ -36,7 +36,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		//console.log(setting);
 		var self = this, modalContent = window.document.createElement('div'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
 
-		Widgetfly.Utils.addClass(modalContent, 'wf_modal');
+		Widgetfly.Utils.addClass(modalContent, 'wf-modal');
 
 		aClose.setAttribute('href', '###');
 		aClose.textContent = 'x';
@@ -44,9 +44,9 @@ Widgetfly.Modal = (function(global) {'use strict';
 			//Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
 			self.close();
 		};
-		Widgetfly.Utils.addClass(aClose,'close');
+		Widgetfly.Utils.addClass(aClose,'wf-close');
 
-		Widgetfly.Utils.addClass(iframe, 'content');
+		Widgetfly.Utils.addClass(iframe, 'wf-modal-body');
 		modalContent.appendChild(aClose);
 		modalContent.appendChild(iframe);
 		this.iframe = iframe;
@@ -56,7 +56,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	
 	Modal.prototype.style = function() {
 		Widgetfly.Widget.prototype.style.apply(this, arguments);
-		Widgetfly.Utils.addClass(this.el, 'wf_modal');
+		Widgetfly.Utils.addClass(this.el, 'wf-modal');
 	};
 
 	Modal.prototype.sizeChange = function(size) {
