@@ -4,7 +4,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 	var Popover = function(options) {
 		var arrow;
 		Widgetfly.Widget.apply(this, arguments);
-		this.options = options;
+		this.options = Widgetfly.Utils.extend(Popover.DEFAULTS,options);
 
 		if (options === undefined || options.target === undefined || options.target === null) {
 			return false;
@@ -41,6 +41,15 @@ Widgetfly.Popover = (function(global) {'use strict';
 
 		return this;
 	};
+	
+	Popover.DEFAULTS = Widgetfly.Utils.extend({},{
+		autoGrow : false,
+		show : true,
+		placement : 'right',
+		options : {
+					
+		}
+	});
 
 	Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
 

@@ -6,7 +6,8 @@ Widgetfly.Panel = (function(global) {'use strict';
 
 		var el, elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
-		this.options = options;
+		
+		this.options = Widgetfly.Utils.extend(Panel.DEFAULTS,options);
 
 		if (options === undefined || options.container === undefined || options.container === null) {
 			return false;
@@ -37,6 +38,14 @@ Widgetfly.Panel = (function(global) {'use strict';
 
 		return this;
 	};
+	
+	Panel.DEFAULTS = Widgetfly.Utils.extend({},{
+		autoGrow : false,
+		show : true,
+		options : {
+					
+		}
+	});
 
 	Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 

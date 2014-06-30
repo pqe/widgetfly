@@ -4,7 +4,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	var Modal = function(options) {
 		var el, elms = window.document.querySelector('.wf-modal');
 		Widgetfly.Widget.apply(this, arguments);
-		this.options = options;
+		this.options = Widgetfly.Utils.extend(Modal.DEFAULTS,options);
 		this.container = window.document.querySelector('body');
 		
 		if (options === undefined) {
@@ -29,6 +29,14 @@ Widgetfly.Modal = (function(global) {'use strict';
 		}
 		return this;
 	};
+	
+	Modal.DEFAULTS = Widgetfly.Utils.extend({},{
+		autoGrow : false,
+		show : true,
+		options : {
+					
+		}
+	});
 
 	Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 

@@ -101,7 +101,8 @@ Widgetfly.Widget = (function(global) {'use strict';
 		}
 
 		urlOptions = {
-			origin : origin
+			origin : origin,
+			options : this.options.options
 		};
 
 		iframe.setAttribute('name', this.id);

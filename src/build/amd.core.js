@@ -14,13 +14,13 @@
 				// Also create a global in case some scripts
 				// that are loaded still are looking for
 				// a global even when an AMD loader is in use.
-				return (root.Widgetfly = factory());
+				return (root.Widgetfly = factory(root));
 			});
 		} else {
 			// Browser globals
 			root.Widgetfly = factory(root);
 		}
-	}(this, function() {
+	}(this, function(global) {
 		'use strict';
 		// @include widgetfly.core.js
 		return Widgetfly;

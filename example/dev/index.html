@@ -10,7 +10,7 @@
 		<!--
 			<link rel="stylesheet" href="../../dist/css/widgetfly.css">
 		-->
-		
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 		
 		<link rel="stylesheet/less" href="../../src/css/widgetfly.less">
 		<script src="../../bower_components/less.js/dist/less-1.6.2.min.js"></script>
@@ -55,8 +55,8 @@
 				autoGrow : true,
 				show : true,
 				src : 'http://127.0.0.1:3000/widgetfly/example/dev/panel.html',
-				custom : {
-					
+				options : {
+					hello: 'world'
 				}
 			});
 			widgetA.onStart(function(){
@@ -82,11 +82,7 @@
 			var widgetB = new MyPopoverWidget({
 				target : '.mytarget',
 				show : true,
-				placement: 'right',
-				src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html',
-				custom : {
-					
-				}
+				src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 			});
 			console.log(widgetB);
 		</script>
