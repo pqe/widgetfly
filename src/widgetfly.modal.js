@@ -2,7 +2,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var el, elms = window.document.querySelector('.wf-modal');
+		var self = this;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = Widgetfly.Utils.extend(Modal.DEFAULTS,options);
 		this.container = window.document.querySelector('body');
@@ -10,15 +10,29 @@ Widgetfly.Modal = (function(global) {'use strict';
 		if (options === undefined) {
 			return false;
 		}
-
-		if(elms !== null){
-			this.container.removChild(window.document.querySelector('.wf-modal'));
+		
+		if(document.querySelector('.wf-modal')){
+			this.container.removChild(document.querySelector('.wf-modal'));
+		}
+		if(document.querySelector('.wf-modal-backdrop')){
+			this.container.removChild(document.querySelector('.wf-modal-backdrop'));
 		}
 		
 		this.register(this.id);
 		
 		if (this.container) {
-			this.el = this.render(options);
+			this.render();
+			
+			this.iframe = this.getIframe();
+			
+			this.backdrop = window.document.createElement('div');
+			this.el.querySelector('.wf-close').onclick = function() {
+				self.close();
+			};
+		
+			Widgetfly.Utils.addClass(this.backdrop,'widgetfly wf-modal-backdrop in');
+			this.container.appendChild(this.backdrop);
+			
 			this.style();
 			if (options.show) {
 				this.show();
@@ -27,12 +41,15 @@ Widgetfly.Modal = (function(global) {'use strict';
 			}
 			this.container.appendChild(this.el);
 		}
+		
 		return this;
 	};
 	
 	Modal.DEFAULTS = Widgetfly.Utils.extend({},{
 		autoGrow : false,
 		show : true,
+		backdrop : true,
+		template : '<div class="widgetfly wf-modal"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="###">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body"></iframe></div></div></div>',
 		options : {
 					
 		}
@@ -40,35 +57,35 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 	Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 
-	Modal.prototype.render = function() {
-		//console.log(setting);
-		var self = this, modalContent = window.document.createElement('div'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
-
-		Widgetfly.Utils.addClass(modalContent, 'wf-modal');
-
-		aClose.setAttribute('href', '###');
-		aClose.textContent = 'x';
-		aClose.onclick = function() {
-			//Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
-			self.close();
-		};
-		Widgetfly.Utils.addClass(aClose,'wf-close');
-
-		Widgetfly.Utils.addClass(iframe, 'wf-modal-body');
-		modalContent.appendChild(aClose);
-		modalContent.appendChild(iframe);
-		this.iframe = iframe;
-
-		return modalContent;
-	};
-	
-	Modal.prototype.style = function() {
-		Widgetfly.Widget.prototype.style.apply(this, arguments);
-		Widgetfly.Utils.addClass(this.el, 'wf-modal');
-	};
-
 	Modal.prototype.sizeChange = function(size) {
 		document.getElementsByName(this.id)[0].height = size + 'px';
+	};
+	
+	Modal.prototype.show = function() {
+		Widgetfly.Widget.prototype.show.apply(this, arguments);
+		Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
+		Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
+	};
+	
+	Modal.prototype.hide = function() {
+		Widgetfly.Widget.prototype.hide.apply(this, arguments);
+		Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
+		Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
+	};
+	
+	Modal.prototype.close = function() {
+		console.log('Widget.Action close');
+		var r, self = this, handlers;
+		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
+			r = handlers.onBeforeClose();
+		}
+		if(r !== false){
+			Widgetfly.Mediator.unregister(this.id, function() {
+				self.container.removeChild(self.el);
+				self.container.removeChild(self.backdrop);
+			});
+		}
 	};
 
 	return Modal;

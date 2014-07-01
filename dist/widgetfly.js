@@ -14,13 +14,13 @@
 				// Also create a global in case some scripts
 				// that are loaded still are looking for
 				// a global even when an AMD loader is in use.
-				return (root.Widgetfly = factory());
+				return (root.Widgetfly = factory(root));
 			});
 		} else {
 			// Browser globals
 			root.Widgetfly = factory(root);
 		}
-	}(this, function() {
+	}(this, function(global) {
 		'use strict';
 		var Widgetfly = (function(global){
 			'use strict';
@@ -29,7 +29,7 @@
 			(function () {
 			    // widgetfly.css
 			    var cssText = "" +
-			".widgetfly .wf-show,.widgetfly.wf-show{display:block !important}.widgetfly .wf-hide,.widgetfly.wf-hide{display:none !important}.widgetfly .wf-panel,.widgetfly.wf-panel{width:100% !important;border:none !important;overflow:hidden !important}.widgetfly .wf-modal,.widgetfly.wf-modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;display:none;overflow:auto;overflow-y:scroll;-webkit-overflow-scrolling:touch;outline:0}.widgetfly .wf-modal .wf-modal-body,.widgetfly.wf-modal .wf-modal-body{width:605px;background:#fff;z-index:1020;margin:50px auto}.widgetfly .wf-modal .wf-close,.widgetfly.wf-modal .wf-close{margin-top:-2px}.wf-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000}.widgetfly .wf-popover,.widgetfly.wf-popover{top:0;left:0;z-index:1010;display:none;max-width:276px;padding:1px;text-align:left;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);white-space:normal;position:relative;display:block;float:left;width:260px;margin:20px}.widgetfly .wf-popover .wf-popover-content,.widgetfly.wf-popover .wf-popover-content{padding:9px 14px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow{border-width:11px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow,.widgetfly .wf-popover .wf-arrow:after,.widgetfly.wf-popover .wf-arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;content:\"\";border-width:10px}.widgetfly .wf-popover.wf-top,.widgetfly.wf-popover.wf-top{margin-left:10px}.widgetfly .wf-popover.wf-top .wf-arrow,.widgetfly.wf-popover.wf-top .wf-arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,0.25);border-bottom-width:0}.widgetfly .wf-popover.wf-top .wf-arrow:after,.widgetfly.wf-popover.wf-top .wf-arrow:after{bottom:1px;margin-left:-10px;content:\" \";border-top-color:#fff;border-bottom-width:0}.widgetfly .wf-popover.wf-left,.widgetfly.wf-popover.wf-left{margin-left:10px}.widgetfly .wf-popover.wf-left .wf-arrow,.widgetfly.wf-popover.wf-left .wf-arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-left .wf-arrow:after,.widgetfly.wf-popover.wf-left .wf-arrow:after{right:1px;bottom:-10px;content:\" \";border-right-width:0;border-left-color:#fff}.widgetfly .wf-popover.wf-bottom,.widgetfly.wf-popover.wf-bottom{margin-left:10px}.widgetfly .wf-popover.wf-bottom .wf-arrow,.widgetfly.wf-popover.wf-bottom .wf-arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-bottom .wf-arrow:after,.widgetfly.wf-popover.wf-bottom .wf-arrow:after{top:1px;margin-left:-10px;content:\" \";border-top-width:0;border-bottom-color:#fff}.widgetfly .wf-popover.wf-right,.widgetfly.wf-popover.wf-right{margin-left:10px}.widgetfly .wf-popover.wf-right .wf-arrow,.widgetfly.wf-popover.wf-right .wf-arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,0.25);border-left-width:0}.widgetfly .wf-popover.wf-right .wf-arrow:after,.widgetfly.wf-popover.wf-right .wf-arrow:after{bottom:-10px;left:1px;content:\" \";border-right-color:#fff;border-left-width:0}";
+			".widgetfly .wf-show,.widgetfly.wf-show{display:block !important}.widgetfly .wf-hide,.widgetfly.wf-hide{display:none !important}.widgetfly .wf-panel,.widgetfly.wf-panel{width:100% !important;border:none !important;overflow:hidden !important}.widgetfly .wf-modal,.widgetfly.wf-modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;outline:0;opacity:1}.widgetfly .wf-modal .wf-modal-dialog,.widgetfly.wf-modal .wf-modal-dialog{-webkit-transform:translate3d(0, 0, 0);-o-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);position:relative;width:auto;margin:30px auto;width:600px}.widgetfly .wf-modal .wf-modal-content,.widgetfly.wf-modal .wf-modal-content{position:relative;background-color:#fff;border:1px solid #999;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 15px rgba(0,0,0,0.5);box-shadow:0 5px 15px rgba(0,0,0,0.5);background-clip:padding-box;outline:0}.widgetfly .wf-modal .wf-modal-body,.widgetfly.wf-modal .wf-modal-body{position:relative;padding:15px}.widgetfly .wf-modal .wf-close,.widgetfly.wf-modal .wf-close{float:right;margin-top:-2px;margin-right:5px;text-decoration:none;font-size:21px;font-weight:500;line-height:1;color:#000;text-shadow:0 1px 0 #fff;cursor:pointer;filter:alpha(opacity=50);opacity:.5;font-family:\"Helvetica Neue\",Helvetica,Arial,sans-serif}.wf-modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000;filter:alpha(opacity=50);opacity:.5}.widgetfly .wf-popover,.widgetfly.wf-popover{top:0;left:0;z-index:1010;display:none;max-width:276px;padding:1px;text-align:left;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);white-space:normal;position:relative;display:block;float:left;width:260px;margin:20px}.widgetfly .wf-popover .wf-popover-content,.widgetfly.wf-popover .wf-popover-content{padding:9px 14px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow{border-width:11px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow,.widgetfly .wf-popover .wf-arrow:after,.widgetfly.wf-popover .wf-arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;content:\"\";border-width:10px}.widgetfly .wf-popover.wf-top,.widgetfly.wf-popover.wf-top{margin-left:10px}.widgetfly .wf-popover.wf-top .wf-arrow,.widgetfly.wf-popover.wf-top .wf-arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,0.25);border-bottom-width:0}.widgetfly .wf-popover.wf-top .wf-arrow:after,.widgetfly.wf-popover.wf-top .wf-arrow:after{bottom:1px;margin-left:-10px;content:\" \";border-top-color:#fff;border-bottom-width:0}.widgetfly .wf-popover.wf-left,.widgetfly.wf-popover.wf-left{margin-left:10px}.widgetfly .wf-popover.wf-left .wf-arrow,.widgetfly.wf-popover.wf-left .wf-arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-left .wf-arrow:after,.widgetfly.wf-popover.wf-left .wf-arrow:after{right:1px;bottom:-10px;content:\" \";border-right-width:0;border-left-color:#fff}.widgetfly .wf-popover.wf-bottom,.widgetfly.wf-popover.wf-bottom{margin-left:10px}.widgetfly .wf-popover.wf-bottom .wf-arrow,.widgetfly.wf-popover.wf-bottom .wf-arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-bottom .wf-arrow:after,.widgetfly.wf-popover.wf-bottom .wf-arrow:after{top:1px;margin-left:-10px;content:\" \";border-top-width:0;border-bottom-color:#fff}.widgetfly .wf-popover.wf-right,.widgetfly.wf-popover.wf-right{margin-left:10px}.widgetfly .wf-popover.wf-right .wf-arrow,.widgetfly.wf-popover.wf-right .wf-arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,0.25);border-left-width:0}.widgetfly .wf-popover.wf-right .wf-arrow:after,.widgetfly.wf-popover.wf-right .wf-arrow:after{bottom:-10px;left:1px;content:\" \";border-right-color:#fff;border-left-width:0}";
 			    // cssText end
 			
 			    var styleEl = document.createElement("style");
@@ -352,6 +352,12 @@
 					    }
 					    result = styles.join(' ');
 					    a.style.cssText = result;
+					},
+					
+					toElement : function(content){
+						var el = document.createElement('div');
+						el.innerHTML = content;
+						return el.firstChild;
 					}
 					
 				};
@@ -498,7 +504,7 @@
 					this.trigger('start');
 					window.addEventListener('message', function(msgObj) {
 						if(window.parent){
-							var action, origin, parser, params,paramData = Widgetfly.Utils.getParameterByName('wo');
+							var action, origin, parser, params,paramData = decodeURIComponent(window.location.hash.substring(1));
 							params = JSON.parse(paramData);
 							
 							parser = window.document.createElement('a');
@@ -536,7 +542,7 @@
 						msg : data,
 						action : action,
 						id : this.id
-					}, params = JSON.parse(Widgetfly.Utils.getParameterByName('wo'));
+					}, params = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
 					
 					//console.log(corsObj);
 					parent.postMessage(corsObj, params.origin);
@@ -598,7 +604,33 @@
 				};
 				
 				Widget.prototype.style = function() {
-					Widgetfly.Utils.addClass(this.el, 'widgetfly');
+					Widgetfly.Utils.addClass(this.el, this.el.className);
+					var r = function(el){
+						var i,j, nodes = el.childNodes;
+						for(i in nodes){
+							if(nodes[i].className && (nodes[i].className.indexOf('wf-') === 0 || nodes[i].className.indexOf('widgetfly') === 0)){
+								console.log(nodes[i].className);
+								Widgetfly.Utils.addClass(nodes[i], nodes[i].className);
+							}
+							if(nodes[i].childNodes){
+								for(j in nodes[i].childNodes){
+									r(nodes[i].childNodes[j]);
+								}
+							}
+						}
+					};
+					r(this.el);
+					
+				};
+				
+				Widget.prototype.getIframe = function(){
+					var iframe = this.el.querySelector('iframe');
+					if(!iframe){
+						if(this.el.tagName === 'IFRAME'){
+							iframe = this.el;
+						}
+					}
+					return iframe;
 				};
 			
 				Widget.prototype.onStart = function(callback) {
@@ -678,36 +710,33 @@
 				};
 			
 				Widget.prototype.render = function() {
-					var src, iframe = document.createElement('iFrame'), origin, urlOptions;
+					var src, iframe, origin, urlOptions;
 					if (window.location.protocol === 'file:') {
-						origin = window.location.href;
+						origin = window.location.protocol + '//' + window.location.pathname;
 					} else {
 						origin = window.location.protocol + '//' + window.location.host;
 					}
 			
 					urlOptions = {
-						origin : origin
+						origin : origin,
+						options : this.options.options
 					};
+					
+					this.el = Widgetfly.Utils.toElement(this.options.template);
+					
+					iframe = this.getIframe();
 			
 					iframe.setAttribute('name', this.id);
 					//console.log(this.options.src);
 					if (this.options.src.indexOf('#') === -1) {
 						src = this.options.src + '#';
 					} else {
-						src = this.options.src + '&';
+						src = this.options.src.substring(0,this.options.src.indexOf('#')) + '#';
 					}
 			
-					src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
-			
+					src = src + encodeURIComponent(JSON.stringify(urlOptions));
+					
 					iframe.setAttribute('src', src);
-					iframe.setAttribute('allowtransparency', 'true');
-					iframe.setAttribute('frameborder','0');
-					iframe.setAttribute('tabindex','0');
-					iframe.setAttribute('title','Widgetfly Widget');
-					iframe.setAttribute('width','100%');
-					iframe.setAttribute('verticalscrolling','no');
-					iframe.setAttribute('scrolling','no');
-					iframe.setAttribute('horizontalscrolling','no');
 			
 					return iframe;
 				};
@@ -721,9 +750,10 @@
 				// -------------
 				var Panel = function(options) {
 			
-					var el, elms = [], tmp;
+					var elms = [], tmp;
 					Widgetfly.Widget.apply(this, arguments);
-					this.options = options;
+					
+					this.options = Widgetfly.Utils.extend(Panel.DEFAULTS,options);
 			
 					if (options === undefined || options.container === undefined || options.container === null) {
 						return false;
@@ -735,8 +765,10 @@
 					}
 					
 					this.register(this.id);
+					
+					this.render();
 			
-					this.iframe = this.el = this.render();
+					this.iframe = this.getIframe();
 					
 					this.style();
 					
@@ -754,17 +786,17 @@
 			
 					return this;
 				};
+				
+				Panel.DEFAULTS = Widgetfly.Utils.extend({},{
+					autoGrow : false,
+					show : true,
+					template : '<iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="widgetfly wf-panel"></iframe>',
+					options : {
+								
+					}
+				});
 			
 				Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
-			
-				Panel.prototype.render = function() {
-					return Widgetfly.Widget.prototype.render.apply(this, arguments);
-				};
-				
-				Panel.prototype.style = function() {
-					Widgetfly.Widget.prototype.style.apply(this, arguments);
-					Widgetfly.Utils.addClass(this.el, 'wf-panel');
-				};
 			
 				Panel.prototype.close = function() {
 					console.log('Widget.Action close');
@@ -787,23 +819,37 @@
 				// Widgetfly.Modal
 				// -------------
 				var Modal = function(options) {
-					var el, elms = window.document.querySelector('.wf-modal');
+					var self = this;
 					Widgetfly.Widget.apply(this, arguments);
-					this.options = options;
+					this.options = Widgetfly.Utils.extend(Modal.DEFAULTS,options);
 					this.container = window.document.querySelector('body');
 					
 					if (options === undefined) {
 						return false;
 					}
-			
-					if(elms !== null){
-						this.container.removChild(window.document.querySelector('.wf-modal'));
+					
+					if(document.querySelector('.wf-modal')){
+						this.container.removChild(document.querySelector('.wf-modal'));
+					}
+					if(document.querySelector('.wf-modal-backdrop')){
+						this.container.removChild(document.querySelector('.wf-modal-backdrop'));
 					}
 					
 					this.register(this.id);
 					
 					if (this.container) {
-						this.el = this.render(options);
+						this.render();
+						
+						this.iframe = this.getIframe();
+						
+						this.backdrop = window.document.createElement('div');
+						this.el.querySelector('.wf-close').onclick = function() {
+							self.close();
+						};
+					
+						Widgetfly.Utils.addClass(this.backdrop,'widgetfly wf-modal-backdrop in');
+						this.container.appendChild(this.backdrop);
+						
 						this.style();
 						if (options.show) {
 							this.show();
@@ -812,40 +858,51 @@
 						}
 						this.container.appendChild(this.el);
 					}
+					
 					return this;
 				};
+				
+				Modal.DEFAULTS = Widgetfly.Utils.extend({},{
+					autoGrow : false,
+					show : true,
+					backdrop : true,
+					template : '<div class="widgetfly wf-modal"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="###">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body"></iframe></div></div></div>',
+					options : {
+								
+					}
+				});
 			
 				Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 			
-				Modal.prototype.render = function() {
-					//console.log(setting);
-					var self = this, modalContent = window.document.createElement('div'), aClose = document.createElement('a'), iframe = Widgetfly.Widget.prototype.render.apply(this, arguments);
-			
-					Widgetfly.Utils.addClass(modalContent, 'wf-modal');
-			
-					aClose.setAttribute('href', '###');
-					aClose.textContent = 'x';
-					aClose.onclick = function() {
-						//Widgetfly.Utils.removeClass('.modal', 'active', Widgetfly.Utils.getElementsByClassName('qt')[0]);
-						self.close();
-					};
-					Widgetfly.Utils.addClass(aClose,'wf-close');
-			
-					Widgetfly.Utils.addClass(iframe, 'wf-modal-body');
-					modalContent.appendChild(aClose);
-					modalContent.appendChild(iframe);
-					this.iframe = iframe;
-			
-					return modalContent;
-				};
-				
-				Modal.prototype.style = function() {
-					Widgetfly.Widget.prototype.style.apply(this, arguments);
-					Widgetfly.Utils.addClass(this.el, 'wf-modal');
-				};
-			
 				Modal.prototype.sizeChange = function(size) {
 					document.getElementsByName(this.id)[0].height = size + 'px';
+				};
+				
+				Modal.prototype.show = function() {
+					Widgetfly.Widget.prototype.show.apply(this, arguments);
+					Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
+					Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
+				};
+				
+				Modal.prototype.hide = function() {
+					Widgetfly.Widget.prototype.hide.apply(this, arguments);
+					Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
+					Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
+				};
+				
+				Modal.prototype.close = function() {
+					console.log('Widget.Action close');
+					var r, self = this, handlers;
+					handlers = Widgetfly.Mediator.getActionHandlers(this.id);
+					if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
+						r = handlers.onBeforeClose();
+					}
+					if(r !== false){
+						Widgetfly.Mediator.unregister(this.id, function() {
+							self.container.removeChild(self.el);
+							self.container.removeChild(self.backdrop);
+						});
+					}
 				};
 			
 				return Modal;
@@ -856,9 +913,8 @@
 				// Widgetfly.Popover
 				// -------------
 				var Popover = function(options) {
-					var arrow;
 					Widgetfly.Widget.apply(this, arguments);
-					this.options = options;
+					this.options = Widgetfly.Utils.extend(Popover.DEFAULTS,options);
 			
 					if (options === undefined || options.target === undefined || options.target === null) {
 						return false;
@@ -873,14 +929,9 @@
 					
 					this.container = this.target.parentNode;
 					
-					this.el = document.createElement('div');
+					this.render();
 					
-					arrow = document.createElement('div');
-					Widgetfly.Utils.addClass(arrow, 'wf-arrow');
-					this.el.appendChild(arrow);
-					
-					this.iframe = this.render();
-					this.el.appendChild(this.iframe);
+					this.iframe = this.getIframe();
 					
 					this.style();
 					
@@ -895,17 +946,22 @@
 			
 					return this;
 				};
+				
+				Popover.DEFAULTS = Widgetfly.Utils.extend({},{
+					autoGrow : false,
+					show : true,
+					placement : 'right',
+					template : '<div class="widgetfly wf-popover"><div class="wf-arrow"></div><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-popover-content"></iframe></div>',
+					options : {
+								
+					}
+				});
 			
 				Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
 			
-				Popover.prototype.render = function() {
-					return Widgetfly.Widget.prototype.render.apply(this, arguments);
-				};
 				
 				Popover.prototype.style = function() {
 					Widgetfly.Widget.prototype.style.apply(this, arguments);
-					Widgetfly.Utils.addClass(this.el, 'wf-popover');
-					Widgetfly.Utils.addClass(this.iframe, 'wf-popover-content');
 					
 					var placement = this.options.placement;
 					if(!placement){

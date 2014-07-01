@@ -303,6 +303,12 @@ Widgetfly.Utils = (function(global) {'use strict';
 		    }
 		    result = styles.join(' ');
 		    a.style.cssText = result;
+		},
+		
+		toElement : function(content){
+			var el = document.createElement('div');
+			el.innerHTML = content;
+			return el.firstChild;
 		}
 		
 	};

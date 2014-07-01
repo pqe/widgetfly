@@ -4,7 +4,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 	// -------------
 	var Panel = function(options) {
 
-		var el, elms = [], tmp;
+		var elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		
 		this.options = Widgetfly.Utils.extend(Panel.DEFAULTS,options);
@@ -19,8 +19,10 @@ Widgetfly.Panel = (function(global) {'use strict';
 		}
 		
 		this.register(this.id);
+		
+		this.render();
 
-		this.iframe = this.el = this.render();
+		this.iframe = this.getIframe();
 		
 		this.style();
 		
@@ -42,21 +44,13 @@ Widgetfly.Panel = (function(global) {'use strict';
 	Panel.DEFAULTS = Widgetfly.Utils.extend({},{
 		autoGrow : false,
 		show : true,
+		template : '<iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="widgetfly wf-panel"></iframe>',
 		options : {
 					
 		}
 	});
 
 	Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
-
-	Panel.prototype.render = function() {
-		return Widgetfly.Widget.prototype.render.apply(this, arguments);
-	};
-	
-	Panel.prototype.style = function() {
-		Widgetfly.Widget.prototype.style.apply(this, arguments);
-		Widgetfly.Utils.addClass(this.el, 'wf-panel');
-	};
 
 	Panel.prototype.close = function() {
 		console.log('Widget.Action close');

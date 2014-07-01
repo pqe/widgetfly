@@ -2,7 +2,6 @@ Widgetfly.Popover = (function(global) {'use strict';
 	// Widgetfly.Popover
 	// -------------
 	var Popover = function(options) {
-		var arrow;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = Widgetfly.Utils.extend(Popover.DEFAULTS,options);
 
@@ -19,14 +18,9 @@ Widgetfly.Popover = (function(global) {'use strict';
 		
 		this.container = this.target.parentNode;
 		
-		this.el = document.createElement('div');
+		this.render();
 		
-		arrow = document.createElement('div');
-		Widgetfly.Utils.addClass(arrow, 'wf-arrow');
-		this.el.appendChild(arrow);
-		
-		this.iframe = this.render();
-		this.el.appendChild(this.iframe);
+		this.iframe = this.getIframe();
 		
 		this.style();
 		
@@ -46,6 +40,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 		autoGrow : false,
 		show : true,
 		placement : 'right',
+		template : '<div class="widgetfly wf-popover"><div class="wf-arrow"></div><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-popover-content"></iframe></div>',
 		options : {
 					
 		}
@@ -53,14 +48,9 @@ Widgetfly.Popover = (function(global) {'use strict';
 
 	Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
 
-	Popover.prototype.render = function() {
-		return Widgetfly.Widget.prototype.render.apply(this, arguments);
-	};
 	
 	Popover.prototype.style = function() {
 		Widgetfly.Widget.prototype.style.apply(this, arguments);
-		Widgetfly.Utils.addClass(this.el, 'wf-popover');
-		Widgetfly.Utils.addClass(this.iframe, 'wf-popover-content');
 		
 		var placement = this.options.placement;
 		if(!placement){

@@ -14,7 +14,7 @@ Widgetfly.Server = (function(global) {'use strict';
 		this.trigger('start');
 		window.addEventListener('message', function(msgObj) {
 			if(window.parent){
-				var action, origin, parser, params,paramData = Widgetfly.Utils.getParameterByName('wo');
+				var action, origin, parser, params,paramData = decodeURIComponent(window.location.hash.substring(1));
 				params = JSON.parse(paramData);
 				
 				parser = window.document.createElement('a');
@@ -52,7 +52,7 @@ Widgetfly.Server = (function(global) {'use strict';
 			msg : data,
 			action : action,
 			id : this.id
-		}, params = JSON.parse(Widgetfly.Utils.getParameterByName('wo'));
+		}, params = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
 		
 		//console.log(corsObj);
 		parent.postMessage(corsObj, params.origin);

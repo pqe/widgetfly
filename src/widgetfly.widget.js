@@ -13,7 +13,33 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 	
 	Widget.prototype.style = function() {
-		Widgetfly.Utils.addClass(this.el, 'widgetfly');
+		Widgetfly.Utils.addClass(this.el, this.el.className);
+		var r = function(el){
+			var i,j, nodes = el.childNodes;
+			for(i in nodes){
+				if(nodes[i].className && (nodes[i].className.indexOf('wf-') === 0 || nodes[i].className.indexOf('widgetfly') === 0)){
+					console.log(nodes[i].className);
+					Widgetfly.Utils.addClass(nodes[i], nodes[i].className);
+				}
+				if(nodes[i].childNodes){
+					for(j in nodes[i].childNodes){
+						r(nodes[i].childNodes[j]);
+					}
+				}
+			}
+		};
+		r(this.el);
+		
+	};
+	
+	Widget.prototype.getIframe = function(){
+		var iframe = this.el.querySelector('iframe');
+		if(!iframe){
+			if(this.el.tagName === 'IFRAME'){
+				iframe = this.el;
+			}
+		}
+		return iframe;
 	};
 
 	Widget.prototype.onStart = function(callback) {
@@ -93,9 +119,9 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.render = function() {
-		var src, iframe = document.createElement('iFrame'), origin, urlOptions;
+		var src, iframe, origin, urlOptions;
 		if (window.location.protocol === 'file:') {
-			origin = window.location.href;
+			origin = window.location.protocol + '//' + window.location.pathname;
 		} else {
 			origin = window.location.protocol + '//' + window.location.host;
 		}
@@ -104,26 +130,22 @@ Widgetfly.Widget = (function(global) {'use strict';
 			origin : origin,
 			options : this.options.options
 		};
+		
+		this.el = Widgetfly.Utils.toElement(this.options.template);
+		
+		iframe = this.getIframe();
 
 		iframe.setAttribute('name', this.id);
 		//console.log(this.options.src);
 		if (this.options.src.indexOf('#') === -1) {
 			src = this.options.src + '#';
 		} else {
-			src = this.options.src + '&';
+			src = this.options.src.substring(0,this.options.src.indexOf('#')) + '#';
 		}
 
-		src = src + 'wo=' + decodeURIComponent(JSON.stringify(urlOptions));
-
+		src = src + encodeURIComponent(JSON.stringify(urlOptions));
+		
 		iframe.setAttribute('src', src);
-		iframe.setAttribute('allowtransparency', 'true');
-		iframe.setAttribute('frameborder','0');
-		iframe.setAttribute('tabindex','0');
-		iframe.setAttribute('title','Widgetfly Widget');
-		iframe.setAttribute('width','100%');
-		iframe.setAttribute('verticalscrolling','no');
-		iframe.setAttribute('scrolling','no');
-		iframe.setAttribute('horizontalscrolling','no');
 
 		return iframe;
 	};

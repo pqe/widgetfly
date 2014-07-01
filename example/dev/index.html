@@ -50,6 +50,7 @@
 		
 		<script>
 			var MyWidget = Widgetfly.Panel.extend({/** overwrite **/});
+			var MyModalWidget = Widgetfly.Modal.extend({/** overwrite **/});
 			var widgetA = new MyWidget({
 				container : '.mypanel',
 				autoGrow : true,
@@ -74,9 +75,15 @@
 					console.log('widgetA is closing');
 					return true;
 				});
+				widgetA.on('openModalWidget',function(){
+					var widgetC = new MyModalWidget({
+						show : true,
+						backdrop : true,
+						src : 'http://127.0.0.1:3000/widgetfly/example/dev/modal.html'
+					});
+				});
 				//widgetA.close();
 			});
-			console.log(widgetA);
 			
 			var MyPopoverWidget = Widgetfly.Popover.extend({/** overwrite **/});
 			var widgetB = new MyPopoverWidget({
@@ -84,7 +91,7 @@
 				show : true,
 				src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 			});
-			console.log(widgetB);
+			
 		</script>
 	</body>
 </html>
