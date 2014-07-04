@@ -4,7 +4,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	var Modal = function(options) {
 		var self = this;
 		Widgetfly.Widget.apply(this, arguments);
-		this.options = Widgetfly.Utils.extend(Modal.DEFAULTS,options);
+		this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
 		this.container = window.document.querySelector('body');
 		
 		if (options === undefined) {
@@ -39,17 +39,18 @@ Widgetfly.Modal = (function(global) {'use strict';
 			} else {
 				this.hide();
 			}
+			//this.container.appendChild(this.spinner);
 			this.container.appendChild(this.el);
 		}
 		
 		return this;
 	};
 	
-	Modal.DEFAULTS = Widgetfly.Utils.extend({},{
+	Modal.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
 		autoGrow : false,
 		show : true,
 		backdrop : true,
-		template : '<div class="widgetfly wf-modal"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="###">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body"></iframe></div></div></div>',
+		template : '<div class="widgetfly wf-modal"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="javascript:void(0)">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body wf-show"></iframe></div></div></div>',
 		options : {
 					
 		}

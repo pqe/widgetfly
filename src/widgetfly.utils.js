@@ -80,12 +80,6 @@ Widgetfly.Utils = (function(global) {'use strict';
 			Child.uber = Parent.prototype;
 		},
 
-		getParameterByName : function(name) {
-			name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-			var regex = new RegExp('[\\#&]' + name + '=([^&#]*)'), results = regex.exec(window.location.hash);
-			return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-		},
-
 		parseUrl : function(URL, checkLib) {
 			var nowSrc, parameter, createParam = {}, i, tmpStr, tmpParam;
 			if ( typeof URL !== 'string' && URL.length > 0) {
@@ -143,15 +137,6 @@ Widgetfly.Utils = (function(global) {'use strict';
 			} else {
 				checkLib(createParam);
 			}
-		},
-
-		genId : function() {
-			var i = 0, id = '', first, possible1 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', possible2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-			first = possible1.charAt(Math.floor(Math.random() * possible1.length));
-			for ( i = 1; i < 20; i++) {
-				id += possible2.charAt(Math.floor(Math.random() * possible2.length));
-			}
-			return (first + id);
 		},
 
 		uniqueId : function(prefix) {
@@ -302,7 +287,62 @@ Widgetfly.Utils = (function(global) {'use strict';
 				}
 		    }
 		    result = styles.join(' ');
-		    a.style.cssText = result;
+		    if(a.hasAttribute('data-ext-style')){
+				result = result + ' ' + a.getAttribute('data-ext-style');
+			}
+			a.style.cssText = result;
+		},
+		
+		actual : function(el){
+			var elWidth,elHeight,style,
+			fixStyle = ' visibility: hidden !important; display: block !important; position: absolute !important;',
+			size = function(s){
+					if(Boolean(s)){
+						return parseInt(s.substring(0,s.indexOf('px')),10);
+					}else{
+						return 0;
+					}
+			};
+			
+			if (el.offsetParent === null) {
+				el.setAttribute('style', el.getAttribute('style') + fixStyle);
+			}
+			
+			elWidth = el.offsetWidth;
+			
+			elHeight = el.offsetHeight;
+			
+			style = el.getAttribute('style');
+			if(style && style.indexOf(fixStyle) !== 0){
+				el.setAttribute('style', style.substring(0,style.indexOf(fixStyle)));
+			}
+			return {
+				width : elWidth + size(el.style.marginLeft) + size(el.style.marginRight),
+				height : elHeight + size(el.style.marginTop) + size(el.style.marginBottom)
+			};
+		},
+		
+		offset: function(el) {
+			var docElem, win,
+			elem = el,
+			box = { top: 0, left: 0 },
+			doc = elem && elem.ownerDocument;
+
+			if ( !doc ) {
+				return;
+			}
+	
+			docElem = doc.documentElement;
+			// If we don't have gBCR, just use 0,0 rather than error
+			// BlackBerry 5, iOS 3 (original iPhone)
+			if ( typeof elem.getBoundingClientRect !== undefined ) {
+				box = elem.getBoundingClientRect();
+			}
+			win = window;
+			return {
+				top: box.top + win.pageYOffset - docElem.clientTop,
+				left: box.left + win.pageXOffset - docElem.clientLeft
+			};
 		},
 		
 		toElement : function(content){

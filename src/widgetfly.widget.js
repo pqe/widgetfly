@@ -5,7 +5,11 @@ Widgetfly.Widget = (function(global) {'use strict';
 		this.id = Widgetfly.Utils.uniqueId('widget');
 		return this;
 	};
-
+	
+	Widget.DEFAULTS = Widgetfly.Utils.extend({},{
+		spinner : '<div class="widgetfly wf-spinner"><div class="wf-bounce1"></div><div class="wf-bounce2"></div><div class="wf-bounce3"></div></div>'
+	});
+	
 	Widgetfly.Utils.inherit(Widget, Widgetfly.Events);
 
 	Widget.prototype.getId = function() {
@@ -13,12 +17,14 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 	
 	Widget.prototype.style = function() {
-		Widgetfly.Utils.addClass(this.el, this.el.className);
 		var r = function(el){
+			if(el.className){
+				Widgetfly.Utils.addClass(el, el.className);
+			}
 			var i,j, nodes = el.childNodes;
 			for(i in nodes){
-				if(nodes[i].className && (nodes[i].className.indexOf('wf-') === 0 || nodes[i].className.indexOf('widgetfly') === 0)){
-					console.log(nodes[i].className);
+				if(nodes[i].className && (nodes[i].className.indexOf('widgetfly') === 0 || nodes[i].className.indexOf('wf-') === 0)){
+					
 					Widgetfly.Utils.addClass(nodes[i], nodes[i].className);
 				}
 				if(nodes[i].childNodes){
@@ -29,7 +35,6 @@ Widgetfly.Widget = (function(global) {'use strict';
 			}
 		};
 		r(this.el);
-		
 	};
 	
 	Widget.prototype.getIframe = function(){
@@ -53,6 +58,16 @@ Widgetfly.Widget = (function(global) {'use strict';
 		var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onStart)) {
 			handlers.onStart();
+		}
+		if(this.spinner){
+			if(this.container === this.spinner.parentNode){
+				this.container.removeChild(this.spinner);
+			}
+		}
+		if(this.options.show){
+			this.show();
+		}else{
+			this.hide();
 		}
 	};
 
@@ -131,12 +146,23 @@ Widgetfly.Widget = (function(global) {'use strict';
 			options : this.options.options
 		};
 		
+		this.spinner = Widgetfly.Utils.toElement(this.options.spinner);
+		
+		if(this.options.show){
+			Widgetfly.Utils.removeClass(this.spinner,'wf-show wf-hide');
+			Widgetfly.Utils.addClass(this.spinner,'wf-show');
+		}else{
+			Widgetfly.Utils.removeClass(this.spinner,'wf-show wf-hide');
+			Widgetfly.Utils.addClass(this.spinner,'wf-hide');
+		}
+		
+		
 		this.el = Widgetfly.Utils.toElement(this.options.template);
 		
 		iframe = this.getIframe();
 
 		iframe.setAttribute('name', this.id);
-		//console.log(this.options.src);
+		
 		if (this.options.src.indexOf('#') === -1) {
 			src = this.options.src + '#';
 		} else {

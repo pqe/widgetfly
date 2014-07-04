@@ -18,45 +18,45 @@
       -o-transform: translate3d(0,0,0);
       transform: translate3d(0,0,0);
       position: relative;
-      width: auto;
       margin: 30px auto;
       width: 600px;
-    }
-    
-    .wf-modal-content {
-      position: relative;
-      background-color: #fff;
-      border: 1px solid #999;
-      border: 1px solid rgba(0,0,0,.2);
-      border-radius: 6px;
-      -webkit-box-shadow: 0 5px 15px rgba(0,0,0 ,.5);
-      box-shadow: 0 5px 15px rgba(0,0,0,.5);
-      background-clip: padding-box;
-      // Remove focus outline from opened modal
-      outline: 0;
-    }
       
-    .wf-modal-body {
-      position: relative;
-      padding: 15px;
-    }
+       .wf-modal-content {
+          position: relative;
+          background-color: #fff;
+          border: 1px solid #999;
+          border: 1px solid rgba(0,0,0,.2);
+          border-radius: 6px;
+          -webkit-box-shadow: 0 5px 15px rgba(0,0,0 ,.5);
+          box-shadow: 0 5px 15px rgba(0,0,0,.5);
+          background-clip: padding-box;
+          // Remove focus outline from opened modal
+          outline: 0;
+          
+          .wf-modal-body {
+            position: relative;
+          }
+          
+          .wf-close {
+            position: absolute;
+            right: 0px;
+            margin-top: -2px;
+            margin-right: 5px;
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 500;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            cursor: pointer;
+            filter: alpha(opacity=50);
+            opacity: .5;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            z-index: 1050;
+          }
+        }
+    }      
     
-    .wf-close {
-      float: right;
-      margin-top: -2px;
-      margin-right: 5px;
-      text-decoration: none;
-      font-size: 21px;
-      font-weight: 500;
-      line-height: 1;
-      color: #000;
-      text-shadow: 0 1px 0 #fff;
-      cursor: pointer;
-      filter: alpha(opacity=50);
-      opacity: .5;
-      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-
-    }
   }
 }
 

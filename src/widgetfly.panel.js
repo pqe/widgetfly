@@ -7,7 +7,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 		var elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		
-		this.options = Widgetfly.Utils.extend(Panel.DEFAULTS,options);
+		this.options = Widgetfly.Utils.extend({}, Panel.DEFAULTS,options);
 
 		if (options === undefined || options.container === undefined || options.container === null) {
 			return false;
@@ -35,16 +35,17 @@ Widgetfly.Panel = (function(global) {'use strict';
 			while (this.container.hasChildNodes()) {
 				this.container.removeChild(this.container.lastChild);
 			}
+			//this.container.appendChild(this.spinner);
 			this.container.appendChild(this.el);
 		}
 
 		return this;
 	};
 	
-	Panel.DEFAULTS = Widgetfly.Utils.extend({},{
+	Panel.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
 		autoGrow : false,
 		show : true,
-		template : '<iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="widgetfly wf-panel"></iframe>',
+		template : '<iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="widgetfly wf-panel wf-hide"></iframe>',
 		options : {
 					
 		}

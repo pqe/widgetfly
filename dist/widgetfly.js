@@ -29,7 +29,7 @@
 			(function () {
 			    // widgetfly.css
 			    var cssText = "" +
-			".widgetfly .wf-show,.widgetfly.wf-show{display:block !important}.widgetfly .wf-hide,.widgetfly.wf-hide{display:none !important}.widgetfly .wf-panel,.widgetfly.wf-panel{width:100% !important;border:none !important;overflow:hidden !important}.widgetfly .wf-modal,.widgetfly.wf-modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;outline:0;opacity:1}.widgetfly .wf-modal .wf-modal-dialog,.widgetfly.wf-modal .wf-modal-dialog{-webkit-transform:translate3d(0, 0, 0);-o-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);position:relative;width:auto;margin:30px auto;width:600px}.widgetfly .wf-modal .wf-modal-content,.widgetfly.wf-modal .wf-modal-content{position:relative;background-color:#fff;border:1px solid #999;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 15px rgba(0,0,0,0.5);box-shadow:0 5px 15px rgba(0,0,0,0.5);background-clip:padding-box;outline:0}.widgetfly .wf-modal .wf-modal-body,.widgetfly.wf-modal .wf-modal-body{position:relative;padding:15px}.widgetfly .wf-modal .wf-close,.widgetfly.wf-modal .wf-close{float:right;margin-top:-2px;margin-right:5px;text-decoration:none;font-size:21px;font-weight:500;line-height:1;color:#000;text-shadow:0 1px 0 #fff;cursor:pointer;filter:alpha(opacity=50);opacity:.5;font-family:\"Helvetica Neue\",Helvetica,Arial,sans-serif}.wf-modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000;filter:alpha(opacity=50);opacity:.5}.widgetfly .wf-popover,.widgetfly.wf-popover{top:0;left:0;z-index:1010;display:none;max-width:276px;padding:1px;text-align:left;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);white-space:normal;position:relative;display:block;float:left;width:260px;margin:20px}.widgetfly .wf-popover .wf-popover-content,.widgetfly.wf-popover .wf-popover-content{padding:9px 14px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow{border-width:11px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow,.widgetfly .wf-popover .wf-arrow:after,.widgetfly.wf-popover .wf-arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;content:\"\";border-width:10px}.widgetfly .wf-popover.wf-top,.widgetfly.wf-popover.wf-top{margin-left:10px}.widgetfly .wf-popover.wf-top .wf-arrow,.widgetfly.wf-popover.wf-top .wf-arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,0.25);border-bottom-width:0}.widgetfly .wf-popover.wf-top .wf-arrow:after,.widgetfly.wf-popover.wf-top .wf-arrow:after{bottom:1px;margin-left:-10px;content:\" \";border-top-color:#fff;border-bottom-width:0}.widgetfly .wf-popover.wf-left,.widgetfly.wf-popover.wf-left{margin-left:10px}.widgetfly .wf-popover.wf-left .wf-arrow,.widgetfly.wf-popover.wf-left .wf-arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-left .wf-arrow:after,.widgetfly.wf-popover.wf-left .wf-arrow:after{right:1px;bottom:-10px;content:\" \";border-right-width:0;border-left-color:#fff}.widgetfly .wf-popover.wf-bottom,.widgetfly.wf-popover.wf-bottom{margin-left:10px}.widgetfly .wf-popover.wf-bottom .wf-arrow,.widgetfly.wf-popover.wf-bottom .wf-arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-bottom .wf-arrow:after,.widgetfly.wf-popover.wf-bottom .wf-arrow:after{top:1px;margin-left:-10px;content:\" \";border-top-width:0;border-bottom-color:#fff}.widgetfly .wf-popover.wf-right,.widgetfly.wf-popover.wf-right{margin-left:10px}.widgetfly .wf-popover.wf-right .wf-arrow,.widgetfly.wf-popover.wf-right .wf-arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,0.25);border-left-width:0}.widgetfly .wf-popover.wf-right .wf-arrow:after,.widgetfly.wf-popover.wf-right .wf-arrow:after{bottom:-10px;left:1px;content:\" \";border-right-color:#fff;border-left-width:0}";
+			".widgetfly .wf-show,.widgetfly.wf-show{display:block !important}.widgetfly .wf-hide,.widgetfly.wf-hide{display:none !important}.widgetfly .wf-root,.widgetfly.wf-root{position:absolute;left:0px;top:-9999px;width:47px;height:29px;z-index:999999999}.widgetfly .wf-spinner,.widgetfly.wf-spinner{width:70px;text-align:center}.widgetfly .wf-spinner div,.widgetfly.wf-spinner div{width:18px;height:18px;background-color:#333;border-radius:100%;display:inline-block;-webkit-animation:bouncedelay 1.4s infinite ease-in-out;animation:bouncedelay 1.4s infinite ease-in-out;-webkit-animation-fill-mode:both;animation-fill-mode:both}.widgetfly .wf-spinner .wf-bounce1,.widgetfly.wf-spinner .wf-bounce1{-webkit-animation-delay:-0.32s;animation-delay:-0.32s}.widgetfly .wf-spinner .wf-bounce2,.widgetfly.wf-spinner .wf-bounce2{-webkit-animation-delay:-0.16s;animation-delay:-0.16s}@-webkit-keyframes bouncedelay{0%,80%,100%{-webkit-transform:scale(0)}40%{-webkit-transform:scale(1)}}@keyframes bouncedelay{0%,80%,100%{transform:scale(0);-webkit-transform:scale(0)}40%{transform:scale(1);-webkit-transform:scale(1)}}.widgetfly .wf-panel,.widgetfly.wf-panel{width:100% !important;border:none !important;overflow:hidden !important}.widgetfly .wf-modal,.widgetfly.wf-modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;outline:0;opacity:1}.widgetfly .wf-modal .wf-modal-dialog,.widgetfly.wf-modal .wf-modal-dialog{-webkit-transform:translate3d(0, 0, 0);-o-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);position:relative;margin:30px auto;width:600px}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content{position:relative;background-color:#fff;border:1px solid #999;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 15px rgba(0,0,0,0.5);box-shadow:0 5px 15px rgba(0,0,0,0.5);background-clip:padding-box;outline:0}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content .wf-modal-body,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content .wf-modal-body{position:relative}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content .wf-close,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content .wf-close{position:absolute;right:0px;margin-top:-2px;margin-right:5px;text-decoration:none;font-size:21px;font-weight:500;line-height:1;color:#000;text-shadow:0 1px 0 #fff;cursor:pointer;filter:alpha(opacity=50);opacity:.5;font-family:\"Helvetica Neue\",Helvetica,Arial,sans-serif;z-index:1050}.wf-modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000;filter:alpha(opacity=50);opacity:.5}.widgetfly .wf-popover,.widgetfly.wf-popover{top:0;left:0;z-index:1010;display:none;padding:1px;text-align:left;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.2);border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);white-space:normal;position:absolute;display:block;float:left;width:260px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow{border-width:11px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow,.widgetfly .wf-popover .wf-arrow:after,.widgetfly.wf-popover .wf-arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;content:\"\";border-width:10px}.widgetfly .wf-popover.wf-top,.widgetfly.wf-popover.wf-top{margin-bottom:10px}.widgetfly .wf-popover.wf-top .wf-arrow,.widgetfly.wf-popover.wf-top .wf-arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,0.25);border-bottom-width:0}.widgetfly .wf-popover.wf-top .wf-arrow:after,.widgetfly.wf-popover.wf-top .wf-arrow:after{bottom:1px;margin-left:-10px;content:\" \";border-top-color:#fff;border-bottom-width:0}.widgetfly .wf-popover.wf-left,.widgetfly.wf-popover.wf-left{margin-right:10px}.widgetfly .wf-popover.wf-left .wf-arrow,.widgetfly.wf-popover.wf-left .wf-arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-left .wf-arrow:after,.widgetfly.wf-popover.wf-left .wf-arrow:after{right:1px;bottom:-10px;content:\" \";border-right-width:0;border-left-color:#fff}.widgetfly .wf-popover.wf-bottom,.widgetfly.wf-popover.wf-bottom{margin-top:10px}.widgetfly .wf-popover.wf-bottom .wf-arrow,.widgetfly.wf-popover.wf-bottom .wf-arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-bottom .wf-arrow:after,.widgetfly.wf-popover.wf-bottom .wf-arrow:after{top:1px;margin-left:-10px;content:\" \";border-top-width:0;border-bottom-color:#fff}.widgetfly .wf-popover.wf-right,.widgetfly.wf-popover.wf-right{margin-left:10px}.widgetfly .wf-popover.wf-right .wf-arrow,.widgetfly.wf-popover.wf-right .wf-arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,0.25);border-left-width:0}.widgetfly .wf-popover.wf-right .wf-arrow:after,.widgetfly.wf-popover.wf-right .wf-arrow:after{bottom:-10px;left:1px;content:\" \";border-right-color:#fff;border-left-width:0}";
 			    // cssText end
 			
 			    var styleEl = document.createElement("style");
@@ -129,12 +129,6 @@
 						Child.uber = Parent.prototype;
 					},
 			
-					getParameterByName : function(name) {
-						name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-						var regex = new RegExp('[\\#&]' + name + '=([^&#]*)'), results = regex.exec(window.location.hash);
-						return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-					},
-			
 					parseUrl : function(URL, checkLib) {
 						var nowSrc, parameter, createParam = {}, i, tmpStr, tmpParam;
 						if ( typeof URL !== 'string' && URL.length > 0) {
@@ -192,15 +186,6 @@
 						} else {
 							checkLib(createParam);
 						}
-					},
-			
-					genId : function() {
-						var i = 0, id = '', first, possible1 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', possible2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-						first = possible1.charAt(Math.floor(Math.random() * possible1.length));
-						for ( i = 1; i < 20; i++) {
-							id += possible2.charAt(Math.floor(Math.random() * possible2.length));
-						}
-						return (first + id);
 					},
 			
 					uniqueId : function(prefix) {
@@ -351,7 +336,62 @@
 							}
 					    }
 					    result = styles.join(' ');
-					    a.style.cssText = result;
+					    if(a.hasAttribute('data-ext-style')){
+							result = result + ' ' + a.getAttribute('data-ext-style');
+						}
+						a.style.cssText = result;
+					},
+					
+					actual : function(el){
+						var elWidth,elHeight,style,
+						fixStyle = ' visibility: hidden !important; display: block !important; position: absolute !important;',
+						size = function(s){
+								if(Boolean(s)){
+									return parseInt(s.substring(0,s.indexOf('px')),10);
+								}else{
+									return 0;
+								}
+						};
+						
+						if (el.offsetParent === null) {
+							el.setAttribute('style', el.getAttribute('style') + fixStyle);
+						}
+						
+						elWidth = el.offsetWidth;
+						
+						elHeight = el.offsetHeight;
+						
+						style = el.getAttribute('style');
+						if(style && style.indexOf(fixStyle) !== 0){
+							el.setAttribute('style', style.substring(0,style.indexOf(fixStyle)));
+						}
+						return {
+							width : elWidth + size(el.style.marginLeft) + size(el.style.marginRight),
+							height : elHeight + size(el.style.marginTop) + size(el.style.marginBottom)
+						};
+					},
+					
+					offset: function(el) {
+						var docElem, win,
+						elem = el,
+						box = { top: 0, left: 0 },
+						doc = elem && elem.ownerDocument;
+			
+						if ( !doc ) {
+							return;
+						}
+				
+						docElem = doc.documentElement;
+						// If we don't have gBCR, just use 0,0 rather than error
+						// BlackBerry 5, iOS 3 (original iPhone)
+						if ( typeof elem.getBoundingClientRect !== undefined ) {
+							box = elem.getBoundingClientRect();
+						}
+						win = window;
+						return {
+							top: box.top + win.pageYOffset - docElem.clientTop,
+							left: box.left + win.pageXOffset - docElem.clientLeft
+						};
 					},
 					
 					toElement : function(content){
@@ -596,7 +636,11 @@
 					this.id = Widgetfly.Utils.uniqueId('widget');
 					return this;
 				};
-			
+				
+				Widget.DEFAULTS = Widgetfly.Utils.extend({},{
+					spinner : '<div class="widgetfly wf-spinner"><div class="wf-bounce1"></div><div class="wf-bounce2"></div><div class="wf-bounce3"></div></div>'
+				});
+				
 				Widgetfly.Utils.inherit(Widget, Widgetfly.Events);
 			
 				Widget.prototype.getId = function() {
@@ -604,12 +648,14 @@
 				};
 				
 				Widget.prototype.style = function() {
-					Widgetfly.Utils.addClass(this.el, this.el.className);
 					var r = function(el){
+						if(el.className){
+							Widgetfly.Utils.addClass(el, el.className);
+						}
 						var i,j, nodes = el.childNodes;
 						for(i in nodes){
-							if(nodes[i].className && (nodes[i].className.indexOf('wf-') === 0 || nodes[i].className.indexOf('widgetfly') === 0)){
-								console.log(nodes[i].className);
+							if(nodes[i].className && (nodes[i].className.indexOf('widgetfly') === 0 || nodes[i].className.indexOf('wf-') === 0)){
+								
 								Widgetfly.Utils.addClass(nodes[i], nodes[i].className);
 							}
 							if(nodes[i].childNodes){
@@ -620,7 +666,6 @@
 						}
 					};
 					r(this.el);
-					
 				};
 				
 				Widget.prototype.getIframe = function(){
@@ -644,6 +689,16 @@
 					var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 					if (handlers && Widgetfly.Utils.isFunction(handlers.onStart)) {
 						handlers.onStart();
+					}
+					if(this.spinner){
+						if(this.container === this.spinner.parentNode){
+							this.container.removeChild(this.spinner);
+						}
+					}
+					if(this.options.show){
+						this.show();
+					}else{
+						this.hide();
 					}
 				};
 			
@@ -722,12 +777,23 @@
 						options : this.options.options
 					};
 					
+					this.spinner = Widgetfly.Utils.toElement(this.options.spinner);
+					
+					if(this.options.show){
+						Widgetfly.Utils.removeClass(this.spinner,'wf-show wf-hide');
+						Widgetfly.Utils.addClass(this.spinner,'wf-show');
+					}else{
+						Widgetfly.Utils.removeClass(this.spinner,'wf-show wf-hide');
+						Widgetfly.Utils.addClass(this.spinner,'wf-hide');
+					}
+					
+					
 					this.el = Widgetfly.Utils.toElement(this.options.template);
 					
 					iframe = this.getIframe();
 			
 					iframe.setAttribute('name', this.id);
-					//console.log(this.options.src);
+					
 					if (this.options.src.indexOf('#') === -1) {
 						src = this.options.src + '#';
 					} else {
@@ -753,7 +819,7 @@
 					var elms = [], tmp;
 					Widgetfly.Widget.apply(this, arguments);
 					
-					this.options = Widgetfly.Utils.extend(Panel.DEFAULTS,options);
+					this.options = Widgetfly.Utils.extend({}, Panel.DEFAULTS,options);
 			
 					if (options === undefined || options.container === undefined || options.container === null) {
 						return false;
@@ -781,16 +847,17 @@
 						while (this.container.hasChildNodes()) {
 							this.container.removeChild(this.container.lastChild);
 						}
+						//this.container.appendChild(this.spinner);
 						this.container.appendChild(this.el);
 					}
 			
 					return this;
 				};
 				
-				Panel.DEFAULTS = Widgetfly.Utils.extend({},{
+				Panel.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
 					autoGrow : false,
 					show : true,
-					template : '<iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="widgetfly wf-panel"></iframe>',
+					template : '<iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="widgetfly wf-panel wf-hide"></iframe>',
 					options : {
 								
 					}
@@ -821,7 +888,7 @@
 				var Modal = function(options) {
 					var self = this;
 					Widgetfly.Widget.apply(this, arguments);
-					this.options = Widgetfly.Utils.extend(Modal.DEFAULTS,options);
+					this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
 					this.container = window.document.querySelector('body');
 					
 					if (options === undefined) {
@@ -856,17 +923,18 @@
 						} else {
 							this.hide();
 						}
+						//this.container.appendChild(this.spinner);
 						this.container.appendChild(this.el);
 					}
 					
 					return this;
 				};
 				
-				Modal.DEFAULTS = Widgetfly.Utils.extend({},{
+				Modal.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
 					autoGrow : false,
 					show : true,
 					backdrop : true,
-					template : '<div class="widgetfly wf-modal"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="###">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body"></iframe></div></div></div>',
+					template : '<div class="widgetfly wf-modal"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="javascript:void(0)">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body wf-show"></iframe></div></div></div>',
 					options : {
 								
 					}
@@ -914,7 +982,8 @@
 				// -------------
 				var Popover = function(options) {
 					Widgetfly.Widget.apply(this, arguments);
-					this.options = Widgetfly.Utils.extend(Popover.DEFAULTS,options);
+					this.options = Widgetfly.Utils.extend({}, Popover.DEFAULTS,options);
+					this.container = window.document.querySelector('body');
 			
 					if (options === undefined || options.target === undefined || options.target === null) {
 						return false;
@@ -927,8 +996,6 @@
 						return false;
 					}
 					
-					this.container = this.target.parentNode;
-					
 					this.render();
 					
 					this.iframe = this.getIframe();
@@ -936,22 +1003,23 @@
 					this.style();
 					
 					if (this.container) {
+						//this.container.appendChild(this.spinner);
+						this.container.appendChild(this.el);
+						this.applyPlacement();
 						if (options.show) {
 							this.show();
 						} else {
 							this.hide();
 						}
-						this.container.appendChild(this.el);
 					}
-			
 					return this;
 				};
 				
-				Popover.DEFAULTS = Widgetfly.Utils.extend({},{
+				Popover.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
 					autoGrow : false,
 					show : true,
 					placement : 'right',
-					template : '<div class="widgetfly wf-popover"><div class="wf-arrow"></div><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-popover-content"></iframe></div>',
+					template : '<div class="widgetfly wf-popover wf-hide"><div class="wf-arrow"></div><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-popover-content"></iframe></div>',
 					options : {
 								
 					}
@@ -961,13 +1029,35 @@
 			
 				
 				Popover.prototype.style = function() {
-					Widgetfly.Widget.prototype.style.apply(this, arguments);
-					
 					var placement = this.options.placement;
 					if(!placement){
 						placement = 'right';
 					}
 					Widgetfly.Utils.addClass(this.el, 'wf-' + placement);
+					Widgetfly.Widget.prototype.style.apply(this, arguments);
+				};
+				
+				Popover.prototype.applyPlacement = function () {
+					var top,left,offset = Widgetfly.Utils.offset(this.target),
+						tg  = Widgetfly.Utils.actual(this.target),
+						el = Widgetfly.Utils.actual(this.el);
+						
+					if(this.options.placement === 'left'){
+						top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
+						left = offset.left - el.width;
+					}else if(this.options.placement === 'top'){
+						top =  offset.top - el.height;
+						left = offset.left + Math.round(tg.width / 2) - Math.round(el.width / 2);
+					}else if(this.options.placement === 'bottom'){
+						top =  offset.top + tg.height;
+						left = offset.left + Math.round(tg.width / 2) - Math.round(el.width / 2);
+					}else{
+						//default: right
+						top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
+						left = offset.left + tg.width;
+					}
+			
+					this.el.setAttribute('data-ext-style','top: ' + top + 'px; left:' + left + 'px;');
 				};
 			
 				return Popover;

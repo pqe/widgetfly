@@ -7,10 +7,8 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="main.css">
-		<!--
-			<link rel="stylesheet" href="../../dist/css/widgetfly.css">
-		-->
-		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	
+		<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
 		
 		<link rel="stylesheet/less" href="../../src/css/widgetfly.less">
 		<script src="../../bower_components/less.js/dist/less-1.6.2.min.js"></script>
@@ -63,14 +61,7 @@
 			widgetA.onStart(function(){
 				console.log('widgetA is started');
 				widgetA.trigger('hello','widgetA');
-				widgetA.onHide(function(){
-					console.log('widgetA is hidden');
-				});
-				widgetA.hide();
-				widgetA.onShow(function(){
-					console.log('widgetA is showing');
-				});
-				widgetA.show();
+				
 				widgetA.onBeforeClose(function(){
 					console.log('widgetA is closing');
 					return true;
@@ -88,9 +79,18 @@
 			var MyPopoverWidget = Widgetfly.Popover.extend({/** overwrite **/});
 			var widgetB = new MyPopoverWidget({
 				target : '.mytarget',
-				show : true,
+				placement: 'right',
+				show : false,
 				src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 			});
+			
+			var mytarget = document.querySelector('.mytarget');
+			mytarget.onmouseover = function(){
+				widgetB.show();
+			};
+			mytarget.onmouseleave = function(){
+				widgetB.hide();
+			};
 			
 		</script>
 	</body>

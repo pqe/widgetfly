@@ -5,7 +5,6 @@
     left: 0;
     z-index: 1010;
     display: none;
-    max-width: 276px;
     padding: 1px;
     text-align: left;
     background-color: #fff;
@@ -17,14 +16,14 @@
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
     white-space: normal;
     
-    position: relative;
+    position: absolute;
     display: block;
     float: left;
     width: 260px;
-    margin: 20px;
+    //margin: 20px;
     
     .wf-popover-content{
-      padding: 9px 14px;
+      //padding: 9px 14px;
     }
     
     .wf-arrow {
@@ -43,7 +42,7 @@
     }  
     
     &.wf-top {
-      margin-left: 10px;
+      margin-bottom: 10px;
       .wf-arrow {
         bottom: -11px;
         left: 50%;
@@ -62,7 +61,7 @@
         }
     }
     &.wf-left {
-      margin-left: 10px;   
+      margin-right: 10px;   
       .wf-arrow {
         top: 50%;
         right: -11px;
@@ -81,7 +80,7 @@
         }
     }
     &.wf-bottom {
-      margin-left: 10px;
+      margin-top: 10px;
       .wf-arrow {
         top: -11px;
         left: 50%;
