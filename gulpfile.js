@@ -10,10 +10,16 @@ var gulp = require('gulp'),
 	preprocess = require('gulp-preprocess'),
 	uglify = require('gulp-uglify'),
 	sourcemaps = require('gulp-sourcemaps'),
-	runSequence = require('run-sequence');
+	runSequence = require('run-sequence'),
+	bower = require('gulp-bower');
 
 gulp.task('clean', function(){
 	return gulp.src(['.tmp', 'dist', 'bower_components'])
+        .pipe(clean({force: true}));
+});
+
+gulp.task('clean:bower', function(){
+	return gulp.src(['bower_components'])
         .pipe(clean({force: true}));
 });
 
@@ -60,7 +66,15 @@ gulp.task('copy', function() {
 	return gulp.src('.tmp/widgetfly.js').pipe(gulp.dest('dist'));
 });
 
+gulp.task('bower', function() {
+  bower();
+});
+
 
 gulp.task('default',function (cb) {
-  runSequence('clean',['lint', 'jscs'],'less2js','preprocess','uglify', 'copy', cb);
+	runSequence('clean',['lint', 'jscs'],'less2js','preprocess','uglify', 'copy', cb);
+});
+
+gulp.task('release',['clean:bower'],function (cb) {
+  runSequence('bower','default', cb);
 });
