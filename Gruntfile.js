@@ -21,7 +21,7 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		
 		clean: {
-			tmp: 'tmp',
+			tmp: '.tmp',
 			bower : ['bower_components'],
 			dist: ['dist'],
 		},
@@ -43,7 +43,7 @@ module.exports = function (grunt) {
 		preprocess: {
 			amd: {
 				src: 'src/build/amd.core.js',
-				dest: 'tmp/widgetfly.js'
+				dest: '.tmp/widgetfly.js'
 			}
 	    },
     
@@ -51,18 +51,18 @@ module.exports = function (grunt) {
 			options: {
 				mangle: false,
 				sourceMap: true,
-				sourceMapName: 'dist/widgetfly.min.map'
+				sourceMapName: 'dist/widgetfly.min.js.map'
 			},
-			myTarget: {
+			main: {
 				files: {
-					'dist/widgetfly.min.js': ['tmp/widgetfly.js']
+					'dist/widgetfly.min.js': ['.tmp/widgetfly.js']
 				}
 			}
 		},
 		copy: {
 			main: {
 				files: [
-					{src: ['tmp/widgetfly.js'], dest: 'dist/widgetfly.js'}
+					{src: ['.tmp/widgetfly.js'], dest: 'dist/widgetfly.js'}
 				]
 			}
 		},
@@ -156,15 +156,15 @@ module.exports = function (grunt) {
 			        cwd:    'src/css',
 			        src:    ['*.less','!_*.less'],
 			        ext:    '.css',
-			        dest : 'tmp'
+			        dest : '.tmp'
 				}]
 				
 			}
 		},
 		css2js: {
 	        main: {
-	            src: 'tmp/widgetfly.css',
-	            dest: 'tmp/widgetfly.css.js'
+	            src: '.tmp/widgetfly.css',
+	            dest: '.tmp/widgetfly.css.js'
 	        }
 		}
 	});
