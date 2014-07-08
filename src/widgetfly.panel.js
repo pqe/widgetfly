@@ -4,16 +4,21 @@ Widgetfly.Panel = (function(global) {'use strict';
 	// -------------
 	var Panel = function(options) {
 
-		var elms = [], tmp;
 		Widgetfly.Widget.apply(this, arguments);
 		
 		this.options = Widgetfly.Utils.extend({}, Panel.DEFAULTS,options);
 
 		if (options === undefined || options.container === undefined || options.container === null) {
+			console.log('container not defined.');
 			return false;
 		}
-
-		this.container = window.document.querySelector(options.container);
+		
+		if(typeof options.container === 'string'){
+			this.container = document.querySelector(options.container);
+		}else if(typeof options.container === 'object'){
+			this.container = options.container;
+		}
+		
 		if (this.container && this.container.length <= 0) {
 			return false;
 		}
@@ -27,11 +32,6 @@ Widgetfly.Panel = (function(global) {'use strict';
 		this.style();
 		
 		if (this.container) {
-			if (options.show) {
-				this.show();
-			} else {
-				this.hide();
-			}
 			while (this.container.hasChildNodes()) {
 				this.container.removeChild(this.container.lastChild);
 			}

@@ -24,6 +24,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 
 		register : function(id, widget) {
 			this.widgets[widget.id] = widget;
+			widget.mediator = this;
 			this.actionHandlers[widget.id] = {};
 		},
 

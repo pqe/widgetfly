@@ -14,7 +14,7 @@ var gulp = require('gulp'),
 	bower = require('gulp-bower');
 
 gulp.task('clean', function(){
-	return gulp.src(['.tmp', 'dist', 'bower_components'])
+	return gulp.src(['.tmp', 'dist'])
         .pipe(clean({force: true}));
 });
 

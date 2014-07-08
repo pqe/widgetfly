@@ -25,20 +25,27 @@ Widgetfly.Modal = (function(global) {'use strict';
 			
 			this.iframe = this.getIframe();
 			
-			this.backdrop = window.document.createElement('div');
+			this.backdrop = document.createElement('div');
+			Widgetfly.Utils.addClass(this.backdrop,'widgetfly wf-modal-backdrop wf-hide');
+			
+			
+			//bind close event
 			this.el.querySelector('.wf-close').onclick = function() {
-				self.close();
+				self.hide();
 			};
-		
-			Widgetfly.Utils.addClass(this.backdrop,'widgetfly wf-modal-backdrop in');
-			this.container.appendChild(this.backdrop);
+			
+			this.el.onclick = function(e){
+				if(e.target === self.el){
+					self.hide();
+				}
+			};
+			
+			if(this.options.backdrop){
+				this.container.appendChild(this.backdrop);
+			}
 			
 			this.style();
-			if (options.show) {
-				this.show();
-			} else {
-				this.hide();
-			}
+
 			//this.container.appendChild(this.spinner);
 			this.container.appendChild(this.el);
 		}
@@ -50,7 +57,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		autoGrow : false,
 		show : true,
 		backdrop : true,
-		template : '<div class="widgetfly wf-modal"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="javascript:void(0)">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body wf-show"></iframe></div></div></div>',
+		template : '<div class="widgetfly wf-modal wf-hide"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="javascript:void(0)">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body wf-show"></iframe></div></div></div>',
 		options : {
 					
 		}
@@ -63,15 +70,29 @@ Widgetfly.Modal = (function(global) {'use strict';
 	};
 	
 	Modal.prototype.show = function() {
+		//show only one modal at a time
+		for(var i in this.mediator.widgets){
+			if(this.mediator.widgets[i] instanceof Widgetfly.Modal){
+				if(this.mediator.widgets[i].isShow()){
+					this.mediator.widgets[i].hide();
+				}
+			}
+		}
 		Widgetfly.Widget.prototype.show.apply(this, arguments);
-		Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
-		Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
+		if(this.options.backdrop){
+			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
+			Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
+			Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
+		}
 	};
 	
 	Modal.prototype.hide = function() {
 		Widgetfly.Widget.prototype.hide.apply(this, arguments);
-		Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
-		Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
+		if(this.options.backdrop){
+			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
+			Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
+			Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
+		}
 	};
 	
 	Modal.prototype.close = function() {
@@ -84,7 +105,9 @@ Widgetfly.Modal = (function(global) {'use strict';
 		if(r !== false){
 			Widgetfly.Mediator.unregister(this.id, function() {
 				self.container.removeChild(self.el);
-				self.container.removeChild(self.backdrop);
+				if(self.options.backdrop){
+					self.container.removeChild(self.backdrop);
+				}
 			});
 		}
 	};

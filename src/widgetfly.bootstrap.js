@@ -36,21 +36,28 @@
 		child.__super__ = parent.prototype;
 
 		return child;
-	},nowScripts, instance, param;
+	},nowScripts, instance, params, parser;
 	
 	Widgetfly.Panel.extend = Widgetfly.Modal.extend = Widgetfly.Popover.extend = Widgetfly.Server.extend = extend;
 
 	// Initialize for DOM prepare
 	// -------------
-	nowScripts = document.getElementsByTagName('script');
-	param  = Widgetfly.Utils.parseUrl(nowScripts);
-
+	
 	if (!Widgetfly.Utils.inIframe()) {
 		console.log('Now is Widgets initialize');
+		nowScripts = document.currentScript;
+		parser = document.createElement('a');
+		parser.href = nowScripts.getAttribute('src');
+		params  = Widgetfly.Utils.params(parser.hash);
+		
 		Widgetfly.Mediator.init();
-		if (!Widgetfly.Utils.isEmpty(param)) {
-			//console.log(param);
-			new Widgetfly.Panel(param);
+		
+		if (!Widgetfly.Utils.isEmpty(params)) {
+			if(!params.container){
+				params.container = nowScripts.parentNode;
+			}
+			
+			new (Widgetfly.Panel.extend({}))(params);
 		}
 	} else {
 		console.log('Now is Server initialize');

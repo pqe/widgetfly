@@ -93,6 +93,10 @@ Widgetfly.Widget = (function(global) {'use strict';
 			this.on('onShow', callback);
 		}
 	};
+	
+	Widget.prototype.isShow = function() {
+		return Widgetfly.Utils.hasClass(this.el,'wf-show');
+	};
 
 	Widget.prototype.show = function() {
 		console.log('Widget.Action show');
@@ -147,15 +151,6 @@ Widgetfly.Widget = (function(global) {'use strict';
 		};
 		
 		this.spinner = Widgetfly.Utils.toElement(this.options.spinner);
-		
-		if(this.options.show){
-			Widgetfly.Utils.removeClass(this.spinner,'wf-show wf-hide');
-			Widgetfly.Utils.addClass(this.spinner,'wf-show');
-		}else{
-			Widgetfly.Utils.removeClass(this.spinner,'wf-show wf-hide');
-			Widgetfly.Utils.addClass(this.spinner,'wf-hide');
-		}
-		
 		
 		this.el = Widgetfly.Utils.toElement(this.options.template);
 		

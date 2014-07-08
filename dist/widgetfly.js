@@ -124,101 +124,46 @@
 						Child.uber = Parent.prototype;
 					},
 			
-					parseUrl : function(URL, checkLib) {
-						var nowSrc, parameter, createParam = {}, i, tmpStr, tmpParam;
-						if ( typeof URL !== 'string' && URL.length > 0) {
-							URL = URL[URL.length - 1];
-							if (URL.getAttribute.length !== undefined) {
-								nowSrc = URL.getAttribute('src', -1);
+					/**
+					 * Parse and stringify URL query strings
+					 * copy from https://github.com/sindresorhus/query-stringby 
+					 */
+					params : function (str) {
+						if (typeof str !== 'string') {
+							return {};
+						}
+				
+						str = str.trim().replace(/^(\?|#)/, '');
+				
+						if (!str) {
+							return {};
+						}
+				
+						return str.trim().split('&').reduce(function (ret, param) {
+							var parts = param.replace(/\+/g, ' ').split('=');
+							var key = parts[0];
+							var val = parts[1];
+				
+							key = decodeURIComponent(key);
+							// missing `=` should be `null`:
+							// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+							val = val === undefined ? null : decodeURIComponent(val);
+				
+							if (!ret.hasOwnProperty(key)) {
+								ret[key] = val;
+							} else if (Array.isArray(ret[key])) {
+								ret[key].push(val);
+							} else {
+								ret[key] = [ret[key], val];
 							}
-						} else {
-							nowSrc = URL;
-						}
-						parameter = nowSrc.split('?', 2);
-						if (parameter.length > 1) {
-							parameter = parameter[1];
-							parameter = parameter.split('?');
-							if (parameter.length > 0) {
-								if (parameter[0].split('=', 2).length > 0) {
-									createParam.type = parameter[0].split('=', 2)[1];
-								}
-			
-								if (parameter[1] !== undefined && parameter[1].split('=', 2).length > 0) {
-									if (parameter[1].split('=', 2)[1] !== '') {
-										createParam.container = parameter[1].split('=', 2)[1];
-										if (parameter[1].split('=', 2)[0] === 'appendClass') {
-											createParam.appendType = 'class';
-											createParam.dom = '.' + createParam.container;
-										} else {
-											createParam.appendType = 'id';
-											createParam.dom = '#' + createParam.container;
-										}
-									}
-								}
-								if (parameter.length > 2) {
-									createParam.options = {};
-									for ( i = 2; i < parameter.length; i++) {
-										if (parameter[i].split('=', 2).length > 0) {
-											tmpParam = parameter[i].split('=', 2)[1];
-											tmpParam = tmpParam.split(':');
-											if (tmpParam.length > 0) {
-												tmpStr = tmpParam.shift();
-												if (tmpParam.length !== 0) {
-													tmpParam = tmpParam.join(':');
-													if (tmpParam !== '' && tmpParam !== null && tmpParam !== 'null') {
-														createParam.options[tmpStr] = tmpParam;
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-			
-						if (checkLib === undefined) {
-							return createParam;
-						} else {
-							checkLib(createParam);
-						}
+				
+							return ret;
+						}, {});
 					},
 			
 					uniqueId : function(prefix) {
 						var id = String(++idCounter);
 						return prefix ? prefix + id : id;
-					},
-			
-					getElementsByClassName : function(testClass, startFrom) {
-						/**
-						 * getElementsByClassName
-						 * @fileOverview An easy way to find DOM Nodes with a specific class
-						 * @author Dan Beam <dan@danbeam.org>
-						 * @param {string} className - the class we're looking for on DOM Nodes
-						 * @param {element} startFrom (optional) - a point in the DOM to start from
-						 * @return {array} results - any DOM Nodes that have the specified class
-						 */
-			
-						for (var// this will be incremented to 0 at start of loop
-						i = -1,
-						// results of the DOM query (elements with matching class)
-						results = [],
-						// regular expression to see if the class attribute contains
-						// the searched for class
-						finder = new RegExp('(?:^|\\s)' + testClass + '(?:\\s|$)'),
-						// grab all DOM elements and the set's length
-						a = startFrom && startFrom.getElementsByTagName && startFrom.getElementsByTagName('*') || document.all || document.getElementsByTagName('*'),
-			
-						// cache the length property
-						l = a.length;
-			
-						// this is done before we start and at every comparison (note the ++)
-						++i < l;
-						// this is done after the first comparison and every iteration afterward
-						finder.test(a[i].className) && results.push(a[i])) {
-						}
-						// do memory management and return the results of our query
-						a = null;
-						return results;
 					},
 			
 					inIframe : function() {
@@ -237,76 +182,45 @@
 						return ( typeof HTMLElement === 'object' ? o instanceof HTMLElement : o && typeof o === 'object' && o !== null && o.nodeType === 1 && typeof o.nodeName === 'string');
 					},
 			
-					trans2Elem : function(element, startFrom) {
-						var target;
-						if ( typeof element === 'string') {
-							if (element.substr(0, 1) === '#') {
-								target = document.getElementById(element.replace('#', ''));
-							} else if (element.substr(0, 1) === '.') {
-								target = this.getElementsByClassName(element.replace('.', ''), startFrom)[0];
-							} else {
-								target = document.getElementsByTagName(element)[0];
-							}
-						} else {
-							target = element;
-						}
-						return target;
-					},
-			
 					hasClass : function(element, cls) {
 						return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 					},
 					
-					addClass : function(element, className, startFrom) {
-						var target;
-						if (startFrom === undefined) {
-							startFrom = document;
+					addClass : function(element, className) {
+						if (!this.hasClass(element, className)) {
+							element.className += ' ' + className;
 						}
-						target = this.trans2Elem(element, startFrom);
-						
-						if (!this.hasClass(target, className)) {
-							target.className += ' ' + className;
-						}
-						this.innerStyle(target);
+						this.innerStyle(element);
 					},
 				
-					removeClass : function(element, rmClass, startFrom) {
-						var target, newClass;
-						if (startFrom === undefined) {
-							startFrom = document;
-						}
-						target = this.trans2Elem(element, startFrom);
-			
-						if (target !== undefined && this.isElement(target)) {
-							newClass = ' ' + target.className.replace(/[\t\r\n]/g, ' ') + ' ';
-							if (this.hasClass(target, rmClass)) {
+					removeClass : function(element, rmClass) {
+						var newClass;
+						if (element !== undefined && this.isElement(element)) {
+							newClass = ' ' + element.className.replace(/[\t\r\n]/g, ' ') + ' ';
+							if (this.hasClass(element, rmClass)) {
 								while (newClass.indexOf(' ' + rmClass + ' ') >= 0) {
 									newClass = newClass.replace(' ' + rmClass + ' ', ' ');
 								}
-								target.className = newClass.replace(/^\s+|\s+$/g, '');
+								element.className = newClass.replace(/^\s+|\s+$/g, '');
 							}
 						}
-						this.innerStyle(target);
+						this.innerStyle(element);
 					},
 			
-					toggleClass : function(element, className, startFrom) {
-						var target, newClass;
-						if (startFrom === undefined) {
-							startFrom = document;
-						}
-						target = this.trans2Elem(element, startFrom);
-						if (target !== undefined && this.isElement(target)) {
-							newClass = ' ' + target.className.replace(/[\t\r\n]/g, ' ') + ' ';
-							if (this.hasClass(target, className)) {
+					toggleClass : function(element, className) {
+						var newClass;
+						if (element !== undefined && this.isElement(element)) {
+							newClass = ' ' + element.className.replace(/[\t\r\n]/g, ' ') + ' ';
+							if (this.hasClass(element, className)) {
 								while (newClass.indexOf(' ' + className + ' ') >= 0) {
 									newClass = newClass.replace(' ' + className + ' ', ' ');
 								}
-								target.className = newClass.replace(/^\s+|\s+$/g, '');
+								element.className = newClass.replace(/^\s+|\s+$/g, '');
 							} else {
-								target.className += ' ' + className;
+								element.className += ' ' + className;
 							}
 						}
-						this.innerStyle(target);
+						this.innerStyle(element);
 					},
 					
 					innerStyle : function css(a) {
@@ -447,6 +361,7 @@
 			
 					register : function(id, widget) {
 						this.widgets[widget.id] = widget;
+						widget.mediator = this;
 						this.actionHandlers[widget.id] = {};
 					},
 			
@@ -719,6 +634,10 @@
 						this.on('onShow', callback);
 					}
 				};
+				
+				Widget.prototype.isShow = function() {
+					return Widgetfly.Utils.hasClass(this.el,'wf-show');
+				};
 			
 				Widget.prototype.show = function() {
 					console.log('Widget.Action show');
@@ -774,15 +693,6 @@
 					
 					this.spinner = Widgetfly.Utils.toElement(this.options.spinner);
 					
-					if(this.options.show){
-						Widgetfly.Utils.removeClass(this.spinner,'wf-show wf-hide');
-						Widgetfly.Utils.addClass(this.spinner,'wf-show');
-					}else{
-						Widgetfly.Utils.removeClass(this.spinner,'wf-show wf-hide');
-						Widgetfly.Utils.addClass(this.spinner,'wf-hide');
-					}
-					
-					
 					this.el = Widgetfly.Utils.toElement(this.options.template);
 					
 					iframe = this.getIframe();
@@ -811,16 +721,21 @@
 				// -------------
 				var Panel = function(options) {
 			
-					var elms = [], tmp;
 					Widgetfly.Widget.apply(this, arguments);
 					
 					this.options = Widgetfly.Utils.extend({}, Panel.DEFAULTS,options);
 			
 					if (options === undefined || options.container === undefined || options.container === null) {
+						console.log('container not defined.');
 						return false;
 					}
-			
-					this.container = window.document.querySelector(options.container);
+					
+					if(typeof options.container === 'string'){
+						this.container = document.querySelector(options.container);
+					}else if(typeof options.container === 'object'){
+						this.container = options.container;
+					}
+					
 					if (this.container && this.container.length <= 0) {
 						return false;
 					}
@@ -834,11 +749,6 @@
 					this.style();
 					
 					if (this.container) {
-						if (options.show) {
-							this.show();
-						} else {
-							this.hide();
-						}
 						while (this.container.hasChildNodes()) {
 							this.container.removeChild(this.container.lastChild);
 						}
@@ -904,20 +814,27 @@
 						
 						this.iframe = this.getIframe();
 						
-						this.backdrop = window.document.createElement('div');
+						this.backdrop = document.createElement('div');
+						Widgetfly.Utils.addClass(this.backdrop,'widgetfly wf-modal-backdrop wf-hide');
+						
+						
+						//bind close event
 						this.el.querySelector('.wf-close').onclick = function() {
-							self.close();
+							self.hide();
 						};
-					
-						Widgetfly.Utils.addClass(this.backdrop,'widgetfly wf-modal-backdrop in');
-						this.container.appendChild(this.backdrop);
+						
+						this.el.onclick = function(e){
+							if(e.target === self.el){
+								self.hide();
+							}
+						};
+						
+						if(this.options.backdrop){
+							this.container.appendChild(this.backdrop);
+						}
 						
 						this.style();
-						if (options.show) {
-							this.show();
-						} else {
-							this.hide();
-						}
+			
 						//this.container.appendChild(this.spinner);
 						this.container.appendChild(this.el);
 					}
@@ -929,7 +846,7 @@
 					autoGrow : false,
 					show : true,
 					backdrop : true,
-					template : '<div class="widgetfly wf-modal"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="javascript:void(0)">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body wf-show"></iframe></div></div></div>',
+					template : '<div class="widgetfly wf-modal wf-hide"><div class="wf-modal-dialog"><div class="wf-modal-content"><a class="wf-close" href="javascript:void(0)">x</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body wf-show"></iframe></div></div></div>',
 					options : {
 								
 					}
@@ -942,15 +859,29 @@
 				};
 				
 				Modal.prototype.show = function() {
+					//show only one modal at a time
+					for(var i in this.mediator.widgets){
+						if(this.mediator.widgets[i] instanceof Widgetfly.Modal){
+							if(this.mediator.widgets[i].isShow()){
+								this.mediator.widgets[i].hide();
+							}
+						}
+					}
 					Widgetfly.Widget.prototype.show.apply(this, arguments);
-					Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
-					Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
+					if(this.options.backdrop){
+						Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
+						Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
+						Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
+					}
 				};
 				
 				Modal.prototype.hide = function() {
 					Widgetfly.Widget.prototype.hide.apply(this, arguments);
-					Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
-					Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
+					if(this.options.backdrop){
+						Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
+						Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
+						Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
+					}
 				};
 				
 				Modal.prototype.close = function() {
@@ -963,7 +894,9 @@
 					if(r !== false){
 						Widgetfly.Mediator.unregister(this.id, function() {
 							self.container.removeChild(self.el);
-							self.container.removeChild(self.backdrop);
+							if(self.options.backdrop){
+								self.container.removeChild(self.backdrop);
+							}
 						});
 					}
 				};
@@ -986,7 +919,12 @@
 			
 					this.register(this.id);
 					
-					this.target = window.document.querySelector(options.target);
+					if(typeof options.target === 'string'){
+						this.target = document.querySelector(options.target);
+					}else if(typeof options.target === 'object'){
+						this.target = options.target;
+					}
+					
 					if (this.target && this.target.length <= 0) {
 						return false;
 					}
@@ -1000,12 +938,6 @@
 					if (this.container) {
 						//this.container.appendChild(this.spinner);
 						this.container.appendChild(this.el);
-						this.applyPlacement();
-						if (options.show) {
-							this.show();
-						} else {
-							this.hide();
-						}
 					}
 					return this;
 				};
@@ -1051,8 +983,35 @@
 						top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
 						left = offset.left + tg.width;
 					}
-			
 					this.el.setAttribute('data-ext-style','top: ' + top + 'px; left:' + left + 'px;');
+					Widgetfly.Utils.innerStyle(this.el);
+				};
+				
+				Popover.prototype.show = function(){
+					var self = this;
+					if(this.interval) {
+						clearInterval(this.interval);
+					}
+					this.applyPlacement();
+					this.interval = setInterval(function(){
+						self.applyPlacement();
+					},500);
+					
+					Widgetfly.Widget.prototype.show.apply(this, arguments);
+				};
+				
+				Popover.prototype.hide = function(){
+					if(this.interval) {
+						clearInterval(this.interval);
+					}
+					Widgetfly.Widget.prototype.hide.apply(this, arguments);
+				};
+				
+				Popover.prototype.close = function(){
+					if(this.interval) {
+						clearInterval(this.interval);
+					}
+					Widgetfly.Widget.prototype.close.apply(this, arguments);
 				};
 			
 				return Popover;
@@ -1097,21 +1056,30 @@
 					child.__super__ = parent.prototype;
 			
 					return child;
-				},nowScripts, instance, param;
+				},nowScripts, instance, params, parser;
 				
 				Widgetfly.Panel.extend = Widgetfly.Modal.extend = Widgetfly.Popover.extend = Widgetfly.Server.extend = extend;
 			
 				// Initialize for DOM prepare
 				// -------------
-				nowScripts = document.getElementsByTagName('script');
-				param  = Widgetfly.Utils.parseUrl(nowScripts);
-			
+				
 				if (!Widgetfly.Utils.inIframe()) {
 					console.log('Now is Widgets initialize');
+					nowScripts = document.currentScript;
+					parser = document.createElement('a');
+					parser.href = nowScripts.getAttribute('src');
+					params  = Widgetfly.Utils.params(parser.hash);
+					
+					console.log(params);
+					
 					Widgetfly.Mediator.init();
-					if (!Widgetfly.Utils.isEmpty(param)) {
-						//console.log(param);
-						new Widgetfly.Panel(param);
+					
+					if (!Widgetfly.Utils.isEmpty(params)) {
+						if(!params.container){
+							params.container = nowScripts.parentNode;
+						}
+						
+						new (Widgetfly.Panel.extend({}))(params);
 					}
 				} else {
 					console.log('Now is Server initialize');
