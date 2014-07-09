@@ -96,9 +96,9 @@ Widgetfly.Utils = (function(global) {'use strict';
 			}
 	
 			return str.trim().split('&').reduce(function (ret, param) {
-				var parts = param.replace(/\+/g, ' ').split('=');
-				var key = parts[0];
-				var val = parts[1];
+				var parts = param.replace(/\+/g, ' ').split('='),
+					key = parts[0],
+					val = parts[1];
 	
 				key = decodeURIComponent(key);
 				// missing `=` should be `null`:

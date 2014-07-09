@@ -42,27 +42,43 @@
 
 	// Initialize for DOM prepare
 	// -------------
-	
-	if (!Widgetfly.Utils.inIframe()) {
-		console.log('Now is Widgets initialize');
-		nowScripts = document.currentScript;
-		parser = document.createElement('a');
-		parser.href = nowScripts.getAttribute('src');
-		params  = Widgetfly.Utils.params(parser.hash);
+	Widgetfly.init = function(){
 		
-		Widgetfly.Mediator.init();
-		
-		if (!Widgetfly.Utils.isEmpty(params)) {
-			if(!params.container){
-				params.container = nowScripts.parentNode;
-			}
+		if (!Widgetfly.Utils.inIframe()) {
+			console.log('Now is Widgets initialize');
+			Widgetfly.Mediator.init();
 			
-			new (Widgetfly.Panel.extend({}))(params);
+			nowScripts = document.currentScript;
+			if(nowScripts){
+				parser = document.createElement('a');
+				parser.href = nowScripts.getAttribute('src');
+				params  = Widgetfly.Utils.params(parser.hash);
+				
+				if (!Widgetfly.Utils.isEmpty(params)) {
+					
+					if(params.type === 'modal'){
+						delete params.container;
+						new (Widgetfly.Modal.extend({}))(params);
+					}if(params.type === 'popover'){
+						if(!params.target){
+							params.target = nowScripts.parentNode;
+						}
+						new (Widgetfly.Popover.extend({}))(params);
+					}else{
+						if(!params.container){
+							params.container = nowScripts.parentNode;
+						}
+						new (Widgetfly.Panel.extend({}))(params);
+					}
+				}
+			}
+		} else {
+			console.log('Now is Server initialize');
+			// widget
+			//var Server = new Widgetfly.Server();
 		}
-	} else {
-		console.log('Now is Server initialize');
-		// widget
-		//var Server = new Widgetfly.Server();
-	}
+	};
+	
+	Widgetfly.init();
 
 })(this);
