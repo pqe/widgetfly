@@ -3,10 +3,19 @@ Widgetfly.Utils = (function(global) {'use strict';
 	// -------------
 
 	var idCounter = 0, Utils = {
+		
+		
 		has : function(obj, key) {
 			return Object.prototype.hasOwnProperty.call(obj, key);
 		},
 
+		/**
+		 *	The cornerstone, an `each` implementation, aka `forEach`.
+		 *	Handles raw objects in addition to array-likes. Treats all
+		 *	sparse array-likes as if they were dense.
+		 *	Borrowing this code from underscore:
+		*	https://github.com/jashkenas/underscore 
+		 */
 		each : function(obj, iterator, context) {
 			var i, l, key;
 
@@ -33,6 +42,12 @@ Widgetfly.Utils = (function(global) {'use strict';
 			}
 		},
 
+		/**
+		 *	Is a given array, string, or object empty?
+		 *	An "empty" object has no enumerable own-properties.
+		 *	Borrowing this code from underscore:
+		 *	https://github.com/jashkenas/underscore 
+		 */
 		isEmpty : function(obj) {
 			// null and undefined are "empty"
 			if (obj === null) {
@@ -59,7 +74,12 @@ Widgetfly.Utils = (function(global) {'use strict';
 			}
 			return true;
 		},
-
+		
+		/*  
+		 *	Extend a given object with all the properties in passed-in object(s).
+		 *	Borrowing this code from underscore:
+		 *	https://github.com/jashkenas/underscore 
+		 */
 		extend : function(obj) {
 			this.each(Array.prototype.slice.call(arguments, 1), function(source) {
 				if (source) {
@@ -82,7 +102,8 @@ Widgetfly.Utils = (function(global) {'use strict';
 
 		/**
 		 * Parse and stringify URL query strings
-		 * copy from https://github.com/sindresorhus/query-stringby 
+		 * orrowing this code from :
+		 * https://github.com/sindresorhus/query-stringby 
 		 */
 		params : function (str) {
 			if (typeof str !== 'string') {
@@ -116,7 +137,13 @@ Widgetfly.Utils = (function(global) {'use strict';
 				return ret;
 			}, {});
 		},
-
+		
+		/**
+		 * Generate a unique integer id (unique within the entire client session).
+		 * Useful for temporary DOM ids.
+		 * Borrowing this code from underscore:
+		 * https://github.com/jashkenas/underscore 
+		 */
 		uniqueId : function(prefix) {
 			var id = String(++idCounter);
 			return prefix ? prefix + id : id;
@@ -236,6 +263,11 @@ Widgetfly.Utils = (function(global) {'use strict';
 			};
 		},
 		
+		/**
+		 * Get the current coordinates of the first element, or set the coordinates of every element, in the set of matched elements, relative to the document.
+		 * Borrowing this code from jquery:
+		 * https://github.com/jquery/jquery
+		 */
 		offset: function(el) {
 			var docElem, win,
 			elem = el,
