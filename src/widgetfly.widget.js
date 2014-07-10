@@ -147,7 +147,8 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 		urlOptions = {
 			origin : origin,
-			options : this.options.options
+			options : this.options.options,
+			autoGrow : this.options.autoGrow
 		};
 		
 		this.spinner = Widgetfly.Utils.toElement(this.options.spinner);

@@ -10,15 +10,15 @@ Widgetfly.Server = (function(global) {'use strict';
 	Widgetfly.Utils.inherit(Server, Widgetfly.Events);
 
 	Server.prototype.init = function() {
-		var self = this;
+		var self = this, paramData = decodeURIComponent(window.location.hash.substring(1));
+		this.params = JSON.parse(paramData);
 		this.trigger('start');
 		window.addEventListener('message', function(msgObj) {
 			if(window.parent){
-				var action, origin, parser, params,paramData = decodeURIComponent(window.location.hash.substring(1));
-				params = JSON.parse(paramData);
-				
+				var action, origin, parser;
+		
 				parser = window.document.createElement('a');
-				parser.href = params.origin;
+				parser.href = self.params.origin;
 				origin = parser.protocol + '//' + parser.host;
 				
 				if(origin !== 'file://' && origin !== msgObj.origin){
@@ -52,10 +52,11 @@ Widgetfly.Server = (function(global) {'use strict';
 			msg : data,
 			action : action,
 			id : this.id
-		}, params = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
+		};
+		//self.params = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
 		
 		//console.log(corsObj);
-		parent.postMessage(corsObj, params.origin);
+		parent.postMessage(corsObj, this.params.origin);
 	};
 
 	Server.prototype.show = function() {
@@ -90,9 +91,16 @@ Widgetfly.Server = (function(global) {'use strict';
 	 Events.trigger(window.name, 'sizeChange', width, height);
 	 };
 	 */
-	Server.prototype.setSize = function(width, height) {
-		//console.log(size);
-		Widgetfly.Events.trigger(window.name, 'sizeChange', width, height);
+	Server.prototype.expand = function() {
+		var height = 0, width = null,body = window.document.body;
+		if (window.innerHeight) {
+		    height = window.innerHeight;
+		} else if (body.parentElement.clientHeight) {
+		    height = body.parentElement.clientHeight;
+		} else if (body && body.clientHeight) {
+		    height = body.clientHeight;
+		}
+		this.trigger('sizeChange', {height : height, width : width});
 	};
 	
 	return Server;

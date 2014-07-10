@@ -66,7 +66,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 
 	Modal.prototype.sizeChange = function(size) {
-		document.getElementsByName(this.id)[0].height = size + 'px';
+		document.getElementsByName(this.id)[0].height = size.height + 'px';
 	};
 	
 	Modal.prototype.show = function() {
