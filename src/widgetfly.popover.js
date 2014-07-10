@@ -107,11 +107,6 @@ Widgetfly.Popover = (function(global) {'use strict';
 		Widgetfly.Widget.prototype.close.apply(this, arguments);
 	};
 
-	Popover.prototype.sizeChange = function(size){
-		this.iframe.setAttribute('data-ext-style','height:' + size.height + 'px');
-		Widgetfly.Utils.innerStyle(this.iframe);
-	};
-
 	return Popover;
 
 })(this);

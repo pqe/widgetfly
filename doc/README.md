@@ -36,7 +36,7 @@ define(["widgetfly"], function (Widgetfly) {
 
 #Usage
 
-Include the Widgetfly SDK on your page once, ideally right after the opening <body> tag.
+Include the Widgetfly SDK on your page once, ideally right after the opening ```<body>``` tag. 
 
 ```
 <div id="widgetfly-root"></div>
