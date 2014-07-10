@@ -219,7 +219,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 		    }
 		    for (i in o){
 				r = o[i];
-				if(r.indexOf('.widgetfly') === 0){
+				if(r && typeof(r) === 'string' && r.indexOf('.widgetfly') === 0){
 					ruleExp = /\{\s*([^\}]+)\s\}/g;
 					match = ruleExp.exec(r);
 					if(match){
