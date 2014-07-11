@@ -172,5 +172,10 @@ Widgetfly.Widget = (function(global) {'use strict';
 		return iframe;
 	};
 
+	Widget.prototype.sizeChange = function(size){
+		this.iframe.setAttribute('data-ext-style','height:' + size.height + 'px');
+		Widgetfly.Utils.innerStyle(this.iframe);
+	};
+
 	return Widget;
 })(this);

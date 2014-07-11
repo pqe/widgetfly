@@ -65,12 +65,6 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 	Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 
-	Modal.prototype.sizeChange = function(size) {
-		this.iframe.setAttribute('data-ext-style','height:' + size.height + 'px');
-		Widgetfly.Utils.innerStyle(this.iframe);
-		//document.getElementsByName(this.id)[0].height = size.height + 'px';
-	};
-	
 	Modal.prototype.show = function() {
 		//show only one modal at a time
 		for(var i in this.mediator.widgets){

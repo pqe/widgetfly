@@ -764,6 +764,11 @@
 						return iframe;
 					};
 				
+					Widget.prototype.sizeChange = function(size){
+						this.iframe.setAttribute('data-ext-style','height:' + size.height + 'px');
+						Widgetfly.Utils.innerStyle(this.iframe);
+					};
+				
 					return Widget;
 				})(this);
 				
@@ -834,11 +839,6 @@
 								self.container.remove(0);
 							});
 						}
-					};
-					
-					Panel.prototype.sizeChange = function(size){
-						this.iframe.setAttribute('data-ext-style','height:' + size.height + 'px');
-						Widgetfly.Utils.innerStyle(this.iframe);
 					};
 				
 					return Panel;
@@ -911,12 +911,6 @@
 				
 					Widgetfly.Utils.inherit(Modal, Widgetfly.Widget);
 				
-					Modal.prototype.sizeChange = function(size) {
-						this.iframe.setAttribute('data-ext-style','height:' + size.height + 'px');
-						Widgetfly.Utils.innerStyle(this.iframe);
-						//document.getElementsByName(this.id)[0].height = size.height + 'px';
-					};
-					
 					Modal.prototype.show = function() {
 						//show only one modal at a time
 						for(var i in this.mediator.widgets){
@@ -1071,11 +1065,6 @@
 							clearInterval(this.interval);
 						}
 						Widgetfly.Widget.prototype.close.apply(this, arguments);
-					};
-				
-					Popover.prototype.sizeChange = function(size){
-						this.iframe.setAttribute('data-ext-style','height:' + size.height + 'px');
-						Widgetfly.Utils.innerStyle(this.iframe);
 					};
 				
 					return Popover;
