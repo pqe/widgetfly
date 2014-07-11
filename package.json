@@ -2,8 +2,8 @@
   "name": "widgetfly",
   "version": "0.1.0",
   "author": "hsfeng",
-  "homepage": "https://github.com/hsfeng/widgetfly",
-  "bugs": "https://github.com/hsfeng/widgetfly/issues",
+  "homepage": "https://github.com/pqe/widgetfly",
+  "bugs": "https://github.com/pqe/widgetfly/issues",
   "repository": {
     "type": "git",
     "url": "git://github.com/hsfeng/widgetfly.git"

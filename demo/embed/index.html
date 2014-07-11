@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>widgetfly</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="main.css">
+	
+		<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+		
+		<link rel="stylesheet/less" href="../../src/css/widgetfly.less">
+		<script src="../../bower_components/less.js/dist/less-1.6.2.min.js"></script>
+		
+	</head>
+	<body>
+		<div>
+			Panel
+		</div>
+		<div class="mypanel">
+			<script>
+				 (function() {
+		            var wf = document.createElement('script'); wf.type = 'text/javascript'; wf.async = true;
+		            wf.src = 'http://127.0.0.1:3000/widgetfly/dist/widgetfly.js#type=panel&show=true&src=http://127.0.0.1:3000/widgetfly/demo/dev/panel.html';
+		           	document.currentScript.parentNode.appendChild(wf);
+		        })();
+			</script>
+		</div>
+		<div>
+			Popover
+		</div>
+		<div class="mypopover">
+			<div class="mytarget">Target Element
+			<script>
+				 (function() {
+		            var wf = document.createElement('script'); wf.type = 'text/javascript'; wf.async = true;
+		            wf.src = 'http://127.0.0.1:3000/widgetfly/dist/widgetfly.js#type=popover&show=true&src=http://127.0.0.1:3000/widgetfly/demo/dev/popover.html';
+		           	document.currentScript.parentNode.appendChild(wf);
+		        })();
+			</script>
+			</div>
+		</div>
+	</body>
+</html>
