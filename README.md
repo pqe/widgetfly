@@ -1,13 +1,12 @@
 Widgetfly
 ==============
 
+A javascript library for building cross-site web widgets.
+
 About
 --------------
 
 URL: [https://github.com/pqe/widgetfly](https://github.com/pqe/widgetfly)
-
-Author: [hsfeng](https://github.com/hsfeng)
-
 
 
 Build from source

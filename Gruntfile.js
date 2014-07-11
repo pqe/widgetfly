@@ -33,10 +33,7 @@ module.exports = function (grunt) {
 			},
 			all: [
 				'src/**/*.js',
-				'example/app.js',
-				'Gruntfile.js',
-				'!src/prototype/**',
-				'!src/demo/**'
+				'Gruntfile.js'
 			]
 		},
 		
@@ -75,7 +72,7 @@ module.exports = function (grunt) {
 			}
 		},
 		jscs: {
-			src: ['src/**/*.js', 'Gruntfile.js', 'example/app.js'],
+			src: ['src/**/*.js', 'Gruntfile.js'],
 			options: {
 				config: '.jscs.json'
 			}
@@ -100,7 +97,7 @@ module.exports = function (grunt) {
 				livereload: true
 			},
 			js: {
-				files: ['src/**/*.js', 'example/**/*', 'Gruntfile.js'],
+				files: ['src/**/*.js', 'demo/**/*', 'Gruntfile.js'],
 				tasks: ['jshint', 'jscs', 'uglify', 'copy:main'],
 				options: {
 					livereload: {
@@ -116,11 +113,11 @@ module.exports = function (grunt) {
 			},
 			livereload: {
 				options: {
-					base: 'example',
+					base: '',
 					middleware: function (connect) {
 						return [
 							lrSnippet,
-							mountFolder(connect, 'example')
+							mountFolder(connect, '.')
 						];
 					}
 				}
@@ -128,7 +125,7 @@ module.exports = function (grunt) {
 		},
 		open: {
 			server: {
-				path: 'http://localhost:' + SERVER_PORT
+				path: 'http://localhost:' + SERVER_PORT + '/demo/dev/'
 			}
 		},
 		bower : {
