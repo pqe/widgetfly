@@ -424,7 +424,7 @@
 						},
 				
 						send : function(id, action, data) {
-							console.log('Mediator.send');
+							//console.log('Mediator.send');
 				
 							var parser, targetOrigin, corsObj = {
 								msg : data,
@@ -441,7 +441,7 @@
 						},
 				
 						bind : function(id, action, callback) {
-							console.log('Mediator.bind: ' + action);
+							//console.log('Mediator.bind: ' + action);
 							if (this.actionHandlers[id] === undefined) {
 								this.actionHandlers[id] = {};
 							}
@@ -449,7 +449,7 @@
 						},
 				
 						unbind : function(id, action) {
-							console.log('Mediator.unbind');
+							//console.log('Mediator.unbind');
 							delete this.actionHandlers[id][action];
 							if (Object.keys(this.actionHandlers[id]).length <= 0) {
 								delete this.actionHandlers[id];
@@ -457,7 +457,7 @@
 						},
 				
 						receive : function(msgObj) {
-							console.log('Mediator.receive');
+							//console.log('Mediator.receive');
 				
 							var origin, parser, widgetId = msgObj.data.id, widget = this.widgets[widgetId], myActionHandlers = this.actionHandlers[widgetId], action = msgObj.data.action;
 				
@@ -467,7 +467,7 @@
 								origin = parser.protocol + '//' + parser.host;
 				
 								if (origin !== msgObj.origin) {
-									console.log('Widget ignore message from ' + msgObj.origin);
+									//console.log('Widget ignore message from ' + msgObj.origin);
 									return;
 								}
 				
@@ -509,7 +509,7 @@
 								origin = parser.protocol + '//' + parser.host;
 								
 								if(origin !== 'file://' && origin !== msgObj.origin){
-									console.log('Server ignore message from ' + msgObj.origin);
+									//console.log('Server ignore message from ' + msgObj.origin);
 									return;
 								}
 								
@@ -534,7 +534,7 @@
 					};
 				
 					Server.prototype.trigger = function(action, data) {
-						console.log('Server.trigger');
+						//console.log('Server.trigger');
 						var corsObj = {
 							msg : data,
 							action : action,
@@ -555,19 +555,19 @@
 					};
 				
 					Server.prototype.onClose = function(callback) {
-						console.log('Server onClose action');
+						//console.log('Server onClose action');
 						callback();
 					};
 				
 					Server.prototype.close = function() {
-						console.log('Prepare server close action');
+						//console.log('Prepare server close action');
 						var self = this;
 						Widgetfly.Utils.each(this.events, function(key) {
 							delete self.events[key];
 						});
 				
 						this.onClose(function() {
-							console.log('Server close action');
+							//console.log('Server close action');
 							self.trigger('close');
 						});
 					};
@@ -650,7 +650,7 @@
 					};
 				
 					Widget.prototype.start = function() {
-						console.log('Widget.Action start');
+						//console.log('Widget.Action start');
 						var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onStart)) {
 							handlers.onStart();
@@ -674,7 +674,7 @@
 					};
 				
 					Widget.prototype.hide = function() {
-						console.log('Widget.Action hide');
+						//console.log('Widget.Action hide');
 						Widgetfly.Utils.removeClass(this.el, 'wf-show');
 						Widgetfly.Utils.removeClass(this.el, 'wf-hide');
 						Widgetfly.Utils.addClass(this.el, 'wf-hide');
@@ -695,7 +695,7 @@
 					};
 				
 					Widget.prototype.show = function() {
-						console.log('Widget.Action show');
+						//console.log('Widget.Action show');
 						var self = this, handlers;
 						Widgetfly.Utils.removeClass(this.el, 'wf-show');
 						Widgetfly.Utils.removeClass(this.el, 'wf-hide');
@@ -713,7 +713,7 @@
 					};
 				
 					Widget.prototype.close = function() {
-						console.log('Widget.Action close');
+						//console.log('Widget.Action close');
 						var r, self = this, handlers;
 						handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
@@ -787,7 +787,7 @@
 						this.options = Widgetfly.Utils.extend({}, Panel.DEFAULTS,options);
 				
 						if (options === undefined || options.container === undefined || options.container === null) {
-							console.log('container not defined.');
+							//console.log('container not defined.');
 							return false;
 						}
 						
@@ -832,7 +832,7 @@
 					Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 				
 					Panel.prototype.close = function() {
-						console.log('Widget.Action close');
+						//console.log('Widget.Action close');
 						var r, self = this, handlers;
 						handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
@@ -942,7 +942,7 @@
 					};
 					
 					Modal.prototype.close = function() {
-						console.log('Widget.Action close');
+						//console.log('Widget.Action close');
 						var r, self = this, handlers;
 						handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
@@ -1050,14 +1050,15 @@
 							clearInterval(this.interval);
 						}
 						this.applyPlacement();
-						this.interval = setInterval(function(){
+						
+						/*this.interval = setInterval(function(){
 							self.applyPlacement();
-						},500);
+						},500);*/
 						
 						Widgetfly.Widget.prototype.show.apply(this, arguments);
 					};
 					
-					Popover.prototype.hide = function(){
+					/*Popover.prototype.hide = function(){
 						if(this.interval) {
 							clearInterval(this.interval);
 						}
@@ -1069,7 +1070,7 @@
 							clearInterval(this.interval);
 						}
 						Widgetfly.Widget.prototype.close.apply(this, arguments);
-					};
+					};*/
 				
 					return Popover;
 				
@@ -1122,7 +1123,7 @@
 					Widgetfly.init = function(){
 						
 						if (!Widgetfly.Utils.inIframe()) {
-							console.log('Now is Widgets initialize');
+							//console.log('Now is Widgets initialize');
 							Widgetfly.Mediator.init();
 							
 							nowScripts = document.currentScript;
@@ -1150,9 +1151,12 @@
 								}
 							}
 						} else {
-							console.log('Now is Server initialize');
+							//console.log('Now is Server initialize');
 							// widget
-							//var Server = new Widgetfly.Server();
+							Widgetfly.Server._default = new Widgetfly.Server({});
+							Widgetfly.Server.get = function() {
+								return Widgetfly.Server._default;
+							};
 						}
 					};
 					

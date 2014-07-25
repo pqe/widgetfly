@@ -22,7 +22,7 @@ Widgetfly.Server = (function(global) {'use strict';
 				origin = parser.protocol + '//' + parser.host;
 				
 				if(origin !== 'file://' && origin !== msgObj.origin){
-					console.log('Server ignore message from ' + msgObj.origin);
+					//console.log('Server ignore message from ' + msgObj.origin);
 					return;
 				}
 				
@@ -47,7 +47,7 @@ Widgetfly.Server = (function(global) {'use strict';
 	};
 
 	Server.prototype.trigger = function(action, data) {
-		console.log('Server.trigger');
+		//console.log('Server.trigger');
 		var corsObj = {
 			msg : data,
 			action : action,
@@ -68,19 +68,19 @@ Widgetfly.Server = (function(global) {'use strict';
 	};
 
 	Server.prototype.onClose = function(callback) {
-		console.log('Server onClose action');
+		//console.log('Server onClose action');
 		callback();
 	};
 
 	Server.prototype.close = function() {
-		console.log('Prepare server close action');
+		//console.log('Prepare server close action');
 		var self = this;
 		Widgetfly.Utils.each(this.events, function(key) {
 			delete self.events[key];
 		});
 
 		this.onClose(function() {
-			console.log('Server close action');
+			//console.log('Server close action');
 			self.trigger('close');
 		});
 	};

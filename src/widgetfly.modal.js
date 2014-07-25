@@ -92,7 +92,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	};
 	
 	Modal.prototype.close = function() {
-		console.log('Widget.Action close');
+		//console.log('Widget.Action close');
 		var r, self = this, handlers;
 		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {

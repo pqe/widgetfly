@@ -40,7 +40,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 		},
 
 		send : function(id, action, data) {
-			console.log('Mediator.send');
+			//console.log('Mediator.send');
 
 			var parser, targetOrigin, corsObj = {
 				msg : data,
@@ -57,7 +57,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 		},
 
 		bind : function(id, action, callback) {
-			console.log('Mediator.bind: ' + action);
+			//console.log('Mediator.bind: ' + action);
 			if (this.actionHandlers[id] === undefined) {
 				this.actionHandlers[id] = {};
 			}
@@ -65,7 +65,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 		},
 
 		unbind : function(id, action) {
-			console.log('Mediator.unbind');
+			//console.log('Mediator.unbind');
 			delete this.actionHandlers[id][action];
 			if (Object.keys(this.actionHandlers[id]).length <= 0) {
 				delete this.actionHandlers[id];
@@ -73,7 +73,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 		},
 
 		receive : function(msgObj) {
-			console.log('Mediator.receive');
+			//console.log('Mediator.receive');
 
 			var origin, parser, widgetId = msgObj.data.id, widget = this.widgets[widgetId], myActionHandlers = this.actionHandlers[widgetId], action = msgObj.data.action;
 
@@ -83,7 +83,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 				origin = parser.protocol + '//' + parser.host;
 
 				if (origin !== msgObj.origin) {
-					console.log('Widget ignore message from ' + msgObj.origin);
+					//console.log('Widget ignore message from ' + msgObj.origin);
 					return;
 				}
 

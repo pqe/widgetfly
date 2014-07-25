@@ -9,7 +9,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 		this.options = Widgetfly.Utils.extend({}, Panel.DEFAULTS,options);
 
 		if (options === undefined || options.container === undefined || options.container === null) {
-			console.log('container not defined.');
+			//console.log('container not defined.');
 			return false;
 		}
 		
@@ -54,7 +54,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 	Widgetfly.Utils.inherit(Panel, Widgetfly.Widget);
 
 	Panel.prototype.close = function() {
-		console.log('Widget.Action close');
+		//console.log('Widget.Action close');
 		var r, self = this, handlers;
 		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {

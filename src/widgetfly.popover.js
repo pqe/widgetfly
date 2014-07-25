@@ -86,14 +86,15 @@ Widgetfly.Popover = (function(global) {'use strict';
 			clearInterval(this.interval);
 		}
 		this.applyPlacement();
-		this.interval = setInterval(function(){
+		
+		/*this.interval = setInterval(function(){
 			self.applyPlacement();
-		},500);
+		},500);*/
 		
 		Widgetfly.Widget.prototype.show.apply(this, arguments);
 	};
 	
-	Popover.prototype.hide = function(){
+	/*Popover.prototype.hide = function(){
 		if(this.interval) {
 			clearInterval(this.interval);
 		}
@@ -105,7 +106,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 			clearInterval(this.interval);
 		}
 		Widgetfly.Widget.prototype.close.apply(this, arguments);
-	};
+	};*/
 
 	return Popover;
 

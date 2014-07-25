@@ -45,7 +45,7 @@
 	Widgetfly.init = function(){
 		
 		if (!Widgetfly.Utils.inIframe()) {
-			console.log('Now is Widgets initialize');
+			//console.log('Now is Widgets initialize');
 			Widgetfly.Mediator.init();
 			
 			nowScripts = document.currentScript;
@@ -73,9 +73,12 @@
 				}
 			}
 		} else {
-			console.log('Now is Server initialize');
+			//console.log('Now is Server initialize');
 			// widget
-			//var Server = new Widgetfly.Server();
+			Widgetfly.Server._default = new Widgetfly.Server({});
+			Widgetfly.Server.get = function() {
+				return Widgetfly.Server._default;
+			};
 		}
 	};
 	
