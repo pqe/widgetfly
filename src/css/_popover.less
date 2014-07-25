@@ -1,4 +1,42 @@
 .widgetfly { 
+  
+  /**
+    * 
+    * Borrowing this code from Animate.css
+    * http://daneden.me/animate
+    */
+  .wf-animated-popover, &.wf-animated-popover {
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  
+  @-webkit-keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+  
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+  
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .wf-animated-fadeIn, &.wf-animated-fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+  }
+
   .wf-popover, &.wf-popover {
     //position: absolute;
     top: 0;
@@ -10,10 +48,10 @@
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #ccc;
-    border: 1px solid rgba(0,0,0,.2);
-    border-radius: 6px;
-    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    border: 1px solid rgba(0,0,0,.26);
+    border-radius: 3px;
+    -webkit-box-shadow: 0 2px 5px rgba(0,0,0,.26);
+    box-shadow: 0 2px 5px rgba(0,0,0,.26);
     white-space: normal;
     
     position: absolute;

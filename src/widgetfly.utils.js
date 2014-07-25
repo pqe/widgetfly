@@ -207,7 +207,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 		},
 		
 		innerStyle : function css(a) {
-		    var i,r, match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [];
+		    var i,r,cs,match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [];
 		    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
 		    for (i in sheets) {
 		        rules = sheets[i].rules || sheets[i].cssRules;
@@ -220,10 +220,14 @@ Widgetfly.Utils = (function(global) {'use strict';
 		    for (i in o){
 				r = o[i];
 				if(r && typeof(r) === 'string' && r.indexOf('.widgetfly') === 0){
+					
 					ruleExp = /\{\s*([^\}]+)\s\}/g;
 					match = ruleExp.exec(r);
 					if(match){
-						styles.push(match[1]);
+						cs = r.split(' ')[1];
+						if(cs.indexOf('.wf-') === 0 && cs.indexOf('.wf-animated-') !== 0){
+							styles.push(match[1]);
+						}
 					}
 				}
 		    }
