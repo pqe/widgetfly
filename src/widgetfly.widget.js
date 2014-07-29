@@ -131,10 +131,10 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.register = function() {
-		var nowScripts = document.getElementsByTagName('script'), cScript = nowScripts[nowScripts.length - 1];
+		var nowScripts = document.currentScript;
 		//console.log(this);
 		Widgetfly.Mediator.register(this.id, this);
-		cScript.setAttribute('data-id', this.id);
+		nowScripts.setAttribute('data-id', this.id);
 	};
 
 	Widget.prototype.render = function() {

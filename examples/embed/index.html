@@ -21,9 +21,9 @@
 		<div class="mypanel">
 			<script>
 				 (function() {
-		            var wf = document.createElement('script'); wf.type = 'text/javascript'; wf.async = true;
-		            wf.src = 'http://127.0.0.1:3000/widgetfly/dist/widgetfly.js#type=panel&show=true&src=http://127.0.0.1:3000/widgetfly/examples/widgets/panel.html';
-		           	document.currentScript.parentNode.appendChild(wf);
+		            var js = document.createElement('script'); js.type = 'text/javascript'; js.async = true;
+		            js.src = 'http://127.0.0.1:3000/widgetfly/dist/widgetfly.js#type=panel&show=true&src=http://127.0.0.1:3000/widgetfly/examples/widgets/panel.html';
+		           	document.currentScript.parentNode.appendChild(js);
 		        })();
 			</script>
 		</div>
@@ -33,11 +33,16 @@
 		<div class="mypopover">
 			<div class="mytarget">Target Element
 			<script>
-				 (function() {
-		            var wf = document.createElement('script'); wf.type = 'text/javascript'; wf.async = true;
-		            wf.src = 'http://127.0.0.1:3000/widgetfly/dist/widgetfly.js#type=popover&show=true&src=http://127.0.0.1:3000/widgetfly/examples/widgets/popover.html';
-		           	document.currentScript.parentNode.appendChild(wf);
-		        })();
+				 (function(callback) {
+		            var js = document.createElement('script'); js.type = 'text/javascript'; js.async = true;
+		            js.src = 'http://127.0.0.1:3000/widgetfly/dist/widgetfly.js#type=popover&show=true&src=http://127.0.0.1:3000/widgetfly/examples/widgets/popover.html';
+		            js.onload = function() {
+    					callback(Widgetfly.Mediator.getWidget(js.getAttribute('data-id')));
+  					};
+		           	document.currentScript.parentNode.appendChild(js);
+		        })(function(widget){
+		        	//do something with widget
+		        });
 			</script>
 			</div>
 		</div>

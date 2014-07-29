@@ -32,8 +32,10 @@ Widgetfly.Panel = (function(global) {'use strict';
 		this.style();
 		
 		if (this.container) {
-			while (this.container.hasChildNodes()) {
-				this.container.removeChild(this.container.lastChild);
+			for (var n in this.container.childNodes) {
+				if(this.container.childNodes[n].nodeName !== 'SCRIPT' && this.container.childNodes[n].parentNode === this.container){
+					this.container.removeChild(this.container.childNodes[n]);
+				}
 			}
 			//this.container.appendChild(this.spinner);
 			this.container.appendChild(this.el);

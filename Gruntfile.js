@@ -97,7 +97,7 @@ module.exports = function (grunt) {
 				livereload: true
 			},
 			js: {
-				files: ['src/**/*.js', 'demo/**/*', 'Gruntfile.js'],
+				files: ['src/**/*.js', 'examples/**/*', 'Gruntfile.js'],
 				tasks: ['jshint', 'jscs', 'uglify', 'copy:main'],
 				options: {
 					livereload: {
@@ -125,7 +125,7 @@ module.exports = function (grunt) {
 		},
 		open: {
 			server: {
-				path: 'http://localhost:' + SERVER_PORT + '/demo/dev/'
+				path: 'http://localhost:' + SERVER_PORT + '/examples/dev/'
 			}
 		},
 		bower : {

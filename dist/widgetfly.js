@@ -727,10 +727,10 @@
 					};
 				
 					Widget.prototype.register = function() {
-						var nowScripts = document.getElementsByTagName('script'), cScript = nowScripts[nowScripts.length - 1];
+						var nowScripts = document.currentScript;
 						//console.log(this);
 						Widgetfly.Mediator.register(this.id, this);
-						cScript.setAttribute('data-id', this.id);
+						nowScripts.setAttribute('data-id', this.id);
 					};
 				
 					Widget.prototype.render = function() {
@@ -810,8 +810,10 @@
 						this.style();
 						
 						if (this.container) {
-							while (this.container.hasChildNodes()) {
-								this.container.removeChild(this.container.lastChild);
+							for (var n in this.container.childNodes) {
+								if(this.container.childNodes[n].nodeName !== 'SCRIPT' && this.container.childNodes[n].parentNode === this.container){
+									this.container.removeChild(this.container.childNodes[n]);
+								}
 							}
 							//this.container.appendChild(this.spinner);
 							this.container.appendChild(this.el);
