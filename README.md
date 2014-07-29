@@ -10,7 +10,7 @@ URL: [https://github.com/pqe/widgetfly](https://github.com/pqe/widgetfly)
 
 Documentation
 --------------
-Read the [docs](./docs/README.md) to learn about the Widgetfly.
+Read the [docs](docs/README.md) to learn about the Widgetfly.
 
 Build from source
 --------------
