@@ -19,12 +19,12 @@ require([
 	var widgetA = new MyWidget({
 		container : '.mypanel',
 		show : true,
-		src : 'http://127.0.0.1:3000/widgetfly/examples/widgets/panel.html',
+		src : 'http://pqe.github.io/widgetfly/examples/widgets/panel.html',
 		options : {
 			hello: 'world'
 		}
 	});
 	widgetA.onStart(function(){
-		alert(1);
+		console.log('onStart');
 	});
 });

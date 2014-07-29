@@ -20,6 +20,8 @@
     "framework",
     "library",
     "widgetfly",
-    "widget"
+    "widget",
+    "cross site",
+    "cross domain"
   ]
 }

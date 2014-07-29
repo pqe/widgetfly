@@ -6,7 +6,7 @@
   "bugs": "https://github.com/pqe/widgetfly/issues",
   "repository": {
     "type": "git",
-    "url": "git://github.com/hsfeng/widgetfly.git"
+    "url": "git://github.com/pqe/widgetfly.git"
   },
   "engines": {
     "node": ">= 0.10.0"

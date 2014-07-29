@@ -134,7 +134,9 @@ Widgetfly.Widget = (function(global) {'use strict';
 		var nowScripts = document.currentScript;
 		//console.log(this);
 		Widgetfly.Mediator.register(this.id, this);
-		nowScripts.setAttribute('data-id', this.id);
+		if(nowScripts){
+			nowScripts.setAttribute('data-id', this.id);
+		}
 	};
 
 	Widget.prototype.render = function() {
