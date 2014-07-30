@@ -206,8 +206,8 @@ Widgetfly.Utils = (function(global) {'use strict';
 			this.innerStyle(element);
 		},
 		
-		innerStyle : function css(a) {
-		    var i,r,cs,match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [];
+		innerStyle : function css(a, options) {
+		    var i,r,cs,match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [], extStyles = '';
 		    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
 		    for (i in sheets) {
 		        rules = sheets[i].rules || sheets[i].cssRules;
@@ -232,8 +232,16 @@ Widgetfly.Utils = (function(global) {'use strict';
 				}
 		    }
 		    result = styles.join(' ');
-		    if(a.hasAttribute('data-ext-style')){
-				result = result + ' ' + a.getAttribute('data-ext-style');
+		    if(options){
+		    	for(i in options){
+		    		extStyles = extStyles + options[i];
+		    	}
+		    	a.setAttribute('data-ext-style', extStyles);
+				result = result + ' ' + extStyles;
+			}else{
+				if(a.getAttribute('data-ext-style')){
+					result = result + ' ' + a.getAttribute('data-ext-style');
+				}
 			}
 			a.style.cssText = result;
 		},

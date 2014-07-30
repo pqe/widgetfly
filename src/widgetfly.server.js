@@ -85,12 +85,7 @@ Widgetfly.Server = (function(global) {'use strict';
 		});
 	};
 
-	/*
-	 Server.prototype.setAutoGrow = function(width, height) {
-	 //console.log(size);
-	 Events.trigger(window.name, 'sizeChange', width, height);
-	 };
-	 */
+	
 	Server.prototype.expand = function() {
 		var height = 0, width = null,body = window.document.body;
 		if (window.innerHeight) {

@@ -206,7 +206,6 @@ myWidget.onBeforeClose(function(){
 * **autoGrow** : true / false
 * **src** : URL of widget
 * **show** : true / false
-* **styles** : extra css styles (ex. width:500px; height:500px;)
 * **options** : { //custom widget specification }
 <p>Extra options will pass to **Server** object</p>
 
@@ -272,7 +271,7 @@ var CustomServer = new Widgetfly.Server.extend({
 var myCustomServer = new CustomServer({//custom options});
 myCustomServer.hello('world');
 ```
-Extending **Widget** class
+Extending **Widget** object
 ```js
 var CustomPanel = new Widgetfly.Panel.extend({
 	//extend to add support Server features

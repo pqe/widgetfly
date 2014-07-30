@@ -66,7 +66,8 @@
       transform: translate3d(0,0,0);
       position: relative;
       margin: 30px auto;
-      width: 600px;
+      min-width: 240px;
+      
       
        .wf-modal-content {
           position: relative;
@@ -102,7 +103,35 @@
             z-index: 1050;
           }
         }
-    }      
+    }  
+    
+    &.wf-modal-lg {
+      .wf-modal-dialog {
+        max-width: 80%;
+          .wf-modal-body {
+            min-height: 80%;
+          }
+        }
+      }
+    
+      
+      &.wf-modal-md {
+        .wf-modal-dialog {
+          max-width: 50%;
+          .wf-modal-body {
+              min-height: 60%;
+           }
+         }
+      }
+      
+      &.wf-modal-sm {
+        .wf-modal-dialog {
+          max-width: 30%;
+          .wf-modal-body {
+              min-height: 30%;
+           }
+         }
+      }    
     
   }
 }

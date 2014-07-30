@@ -1,7 +1,7 @@
 Widgetfly.Widget = (function(global) {'use strict';
 	// Widget
 	// -------------
-	var Widget = function() {
+	var Widget = function(options) {
 		this.id = Widgetfly.Utils.uniqueId('widget');
 		return this;
 	};
@@ -174,9 +174,8 @@ Widgetfly.Widget = (function(global) {'use strict';
 		return iframe;
 	};
 
-	Widget.prototype.sizeChange = function(size){
-		this.iframe.setAttribute('data-ext-style','height:' + size.height + 'px');
-		Widgetfly.Utils.innerStyle(this.iframe);
+	Widget.prototype.Change = function(size){
+		Widgetfly.Utils.innerStyle(this.iframe,{size: 'height:' + ((typeof size.height === 'string')?size.height:(String(size.height) + 'px'))});
 	};
 
 	return Widget;

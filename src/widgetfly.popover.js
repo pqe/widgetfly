@@ -4,6 +4,12 @@ Widgetfly.Popover = (function(global) {'use strict';
 	var Popover = function(options) {
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = Widgetfly.Utils.extend({}, Popover.DEFAULTS,options);
+		
+		this.styles = {};
+		if(options.styles){
+			this.styles.extra = options.styles;
+		}
+		
 		this.container = window.document.querySelector('body');
 
 		if (options === undefined || options.target === undefined || options.target === null) {
@@ -23,6 +29,10 @@ Widgetfly.Popover = (function(global) {'use strict';
 		}
 		
 		this.render();
+	
+		if(this.options.size){
+			this.styles.size = 'height:' + this.options.size.height + '; width:'+this.options.size.width;
+		}
 		
 		this.iframe = this.getIframe();
 		
@@ -39,7 +49,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 		autoGrow : false,
 		show : true,
 		placement : 'right',
-		template : '<div class="widgetfly wf-popover wf-hide wf-animated-fadeIn wf-animated-popover"><div class="wf-arrow"></div><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-popover-content"></iframe></div>',
+		template : '<div class="widgetfly wf-popover wf-hide wf-animated-fadeIn wf-animated-popover"><div class="wf-arrow"></div><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="wf-popover-content"></iframe></div>',
 		options : {
 					
 		}
@@ -58,6 +68,8 @@ Widgetfly.Popover = (function(global) {'use strict';
 	};
 	
 	Popover.prototype.applyPlacement = function () {
+		Widgetfly.Utils.innerStyle(this.el,this.styles);
+		
 		var top,left,offset = Widgetfly.Utils.offset(this.target),
 			tg  = Widgetfly.Utils.actual(this.target),
 			el = Widgetfly.Utils.actual(this.el);
@@ -76,15 +88,17 @@ Widgetfly.Popover = (function(global) {'use strict';
 			top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
 			left = offset.left + tg.width;
 		}
-		this.el.setAttribute('data-ext-style','top: ' + top + 'px; left:' + left + 'px;');
-		Widgetfly.Utils.innerStyle(this.el);
+		this.styles.offset = 'top: ' + ((typeof top === 'string')?top:(String(top) + 'px')) + '; left:' + ((typeof left === 'string')?left:(String(left) + 'px;'));
+		Widgetfly.Utils.innerStyle(this.el,this.styles);
 	};
 	
 	Popover.prototype.show = function(){
 		var self = this;
+		/*
 		if(this.interval) {
 			clearInterval(this.interval);
-		}
+		}*/
+		
 		this.applyPlacement();
 		
 		/*this.interval = setInterval(function(){

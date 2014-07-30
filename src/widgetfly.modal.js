@@ -2,7 +2,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var self = this;
+		var self = this, sizeClass;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
 		this.container = window.document.querySelector('body');
@@ -26,6 +26,16 @@ Widgetfly.Modal = (function(global) {'use strict';
 			this.iframe = this.getIframe();
 			
 			this.backdrop = document.createElement('div');
+			
+			if(this.options.size === 'large'){
+				sizeClass = 'wf-modal-lg';
+			}else if(this.options.size === 'small'){
+				sizeClass = 'wf-modal-sm';
+			}else{
+				sizeClass = 'wf-modal-md';
+			}
+			Widgetfly.Utils.addClass(this.el,sizeClass);
+			
 			Widgetfly.Utils.addClass(this.backdrop,'widgetfly wf-modal-backdrop wf-hide');
 			
 			
@@ -57,7 +67,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		autoGrow : false,
 		show : true,
 		backdrop : true,
-		template : '<div class="widgetfly wf-modal wf-hide"><div class="wf-modal-dialog"><div class="wf-modal-content wf-animated-fadeInUpBig wf-animated-modal"><a class="wf-close" href="javascript:void(0)">&#215</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" verticalscrolling="no" scrolling="no" horizontalscrolling="no" class="wf-modal-body wf-show"></iframe></div></div></div>',
+		template : '<div class="widgetfly wf-modal wf-hide"><div class="wf-modal-dialog"><div class="wf-modal-content wf-animated-fadeInUpBig wf-animated-modal"><a class="wf-close" href="javascript:void(0)">&#215</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="wf-modal-body wf-show"></iframe></div></div></div>',
 		options : {
 					
 		}
