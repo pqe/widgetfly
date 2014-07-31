@@ -73,7 +73,6 @@ document.querySelector('#target-top').onmouseleave = function() {
 };
 var po4 = new PopoverWidget({
 	target : '#target-bottom',
-	styles : 'width:500px; height:500px;',
 	placement : 'bottom',
 	show : false,
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
