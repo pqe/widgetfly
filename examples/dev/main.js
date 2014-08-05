@@ -25,7 +25,6 @@ pa1.onStart(function() {
 	pa1.on('openModalWidget', function() {
 		m1.show();
 	});
-	//widgetA.close();
 });
 
 var PopoverWidget = Widgetfly.Popover.extend({/** overwrite **/});
@@ -84,4 +83,4 @@ document.querySelector('#target-bottom').onmouseover = function() {
 };
 document.querySelector('#target-bottom').onmouseleave = function() {
 	po4.hide();
-}; 
+};

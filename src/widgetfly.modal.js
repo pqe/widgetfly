@@ -6,27 +6,27 @@ Widgetfly.Modal = (function(global) {'use strict';
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
 		this.container = window.document.querySelector('body');
-		
+
 		if (options === undefined) {
 			return false;
 		}
-		
+
 		if(document.querySelector('.wf-modal')){
 			this.container.removChild(document.querySelector('.wf-modal'));
 		}
 		if(document.querySelector('.wf-modal-backdrop')){
 			this.container.removChild(document.querySelector('.wf-modal-backdrop'));
 		}
-		
+
 		this.register(this.id);
-		
+
 		if (this.container) {
 			this.render();
-			
+
 			this.iframe = this.getIframe();
-			
+
 			this.backdrop = document.createElement('div');
-			
+
 			if(this.options.size === 'large'){
 				sizeClass = 'wf-modal-lg';
 			}else if(this.options.size === 'small'){
@@ -35,41 +35,40 @@ Widgetfly.Modal = (function(global) {'use strict';
 				sizeClass = 'wf-modal-md';
 			}
 			Widgetfly.Utils.addClass(this.el,sizeClass);
-			
+
 			Widgetfly.Utils.addClass(this.backdrop,'widgetfly wf-modal-backdrop wf-hide');
-			
-			
+
 			//bind close event
 			this.el.querySelector('.wf-close').onclick = function() {
 				self.hide();
 			};
-			
+
 			this.el.onclick = function(e){
 				if(e.target === self.el){
 					self.hide();
 				}
 			};
-			
+
 			if(this.options.backdrop){
 				this.container.appendChild(this.backdrop);
 			}
-			
+
 			this.style();
 
 			//this.container.appendChild(this.spinner);
 			this.container.appendChild(this.el);
 		}
-		
+
 		return this;
 	};
-	
+
 	Modal.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
 		autoGrow : false,
 		show : true,
 		backdrop : true,
 		template : '<div class="widgetfly wf-modal wf-hide"><div class="wf-modal-dialog"><div class="wf-modal-content wf-animated-fadeInUpBig wf-animated-modal"><a class="wf-close" href="javascript:void(0)">&#215</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="wf-modal-body wf-show"></iframe></div></div></div>',
 		options : {
-					
+
 		}
 	});
 
@@ -85,22 +84,22 @@ Widgetfly.Modal = (function(global) {'use strict';
 			}
 		}
 		Widgetfly.Widget.prototype.show.apply(this, arguments);
-		if(this.options.backdrop){
+		if(Widgetfly.Utils.isTrue(this.options.backdrop)){
 			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
 			Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
 			Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
 		}
 	};
-	
+
 	Modal.prototype.hide = function() {
 		Widgetfly.Widget.prototype.hide.apply(this, arguments);
-		if(this.options.backdrop){
+		if(Widgetfly.Utils.isTrue(this.options.backdrop)){
 			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
 			Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
 			Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
 		}
 	};
-	
+
 	Modal.prototype.close = function() {
 		//console.log('Widget.Action close');
 		var r, self = this, handlers;
@@ -111,7 +110,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		if(r !== false){
 			Widgetfly.Mediator.unregister(this.id, function() {
 				self.container.removeChild(self.el);
-				if(self.options.backdrop){
+				if(Widgetfly.Utils.isTrue(self.options.backdrop)){
 					self.container.removeChild(self.backdrop);
 				}
 			});

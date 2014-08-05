@@ -3,8 +3,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 	// -------------
 
 	var idCounter = 0, Utils = {
-		
-		
+
 		has : function(obj, key) {
 			return Object.prototype.hasOwnProperty.call(obj, key);
 		},
@@ -14,7 +13,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 		 *	Handles raw objects in addition to array-likes. Treats all
 		 *	sparse array-likes as if they were dense.
 		 *	Borrowing this code from underscore:
-		*	https://github.com/jashkenas/underscore 
+		*	https://github.com/jashkenas/underscore
 		 */
 		each : function(obj, iterator, context) {
 			var i, l, key;
@@ -46,7 +45,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 		 *	Is a given array, string, or object empty?
 		 *	An "empty" object has no enumerable own-properties.
 		 *	Borrowing this code from underscore:
-		 *	https://github.com/jashkenas/underscore 
+		 *	https://github.com/jashkenas/underscore
 		 */
 		isEmpty : function(obj) {
 			// null and undefined are "empty"
@@ -74,11 +73,11 @@ Widgetfly.Utils = (function(global) {'use strict';
 			}
 			return true;
 		},
-		
-		/*  
+
+		/*
 		 *	Extend a given object with all the properties in passed-in object(s).
 		 *	Borrowing this code from underscore:
-		 *	https://github.com/jashkenas/underscore 
+		 *	https://github.com/jashkenas/underscore
 		 */
 		extend : function(obj) {
 			this.each(Array.prototype.slice.call(arguments, 1), function(source) {
@@ -103,29 +102,29 @@ Widgetfly.Utils = (function(global) {'use strict';
 		/**
 		 * Parse and stringify URL query strings
 		 * orrowing this code from :
-		 * https://github.com/sindresorhus/query-stringby 
+		 * https://github.com/sindresorhus/query-stringby
 		 */
 		params : function (str) {
 			if (typeof str !== 'string') {
 				return {};
 			}
-	
+
 			str = str.trim().replace(/^(\?|#)/, '');
-	
+
 			if (!str) {
 				return {};
 			}
-	
+
 			return str.trim().split('&').reduce(function (ret, param) {
 				var parts = param.replace(/\+/g, ' ').split('='),
 					key = parts[0],
 					val = parts[1];
-	
+
 				key = decodeURIComponent(key);
 				// missing `=` should be `null`:
 				// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
 				val = val === undefined ? null : decodeURIComponent(val);
-	
+
 				if (!ret.hasOwnProperty(key)) {
 					ret[key] = val;
 				} else if (Array.isArray(ret[key])) {
@@ -133,20 +132,28 @@ Widgetfly.Utils = (function(global) {'use strict';
 				} else {
 					ret[key] = [ret[key], val];
 				}
-	
+
 				return ret;
 			}, {});
 		},
-		
+
 		/**
 		 * Generate a unique integer id (unique within the entire client session).
 		 * Useful for temporary DOM ids.
 		 * Borrowing this code from underscore:
-		 * https://github.com/jashkenas/underscore 
+		 * https://github.com/jashkenas/underscore
 		 */
 		uniqueId : function(prefix) {
 			var id = String(++idCounter);
 			return prefix ? prefix + id : id;
+		},
+
+		isTrue : function(value){
+			if(value === true || value === 'true'){
+				return true;
+			}else{
+				return false;
+			}
 		},
 
 		inIframe : function() {
@@ -168,14 +175,14 @@ Widgetfly.Utils = (function(global) {'use strict';
 		hasClass : function(element, cls) {
 			return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 		},
-		
+
 		addClass : function(element, className) {
 			if (!this.hasClass(element, className)) {
 				element.className += ' ' + className;
 			}
 			this.innerStyle(element);
 		},
-	
+
 		removeClass : function(element, rmClass) {
 			var newClass;
 			if (element !== undefined && this.isElement(element)) {
@@ -205,7 +212,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 			}
 			this.innerStyle(element);
 		},
-		
+
 		innerStyle : function css(a, options) {
 		    var i,r,cs,match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [], extStyles = '';
 		    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
@@ -218,34 +225,34 @@ Widgetfly.Utils = (function(global) {'use strict';
 		        }
 		    }
 		    for (i in o){
-				r = o[i];
-				if(r && typeof(r) === 'string' && r.indexOf('.widgetfly') === 0){
-					
-					ruleExp = /\{\s*([^\}]+)\s\}/g;
-					match = ruleExp.exec(r);
-					if(match){
-						cs = r.split(' ')[1];
-						if(cs.indexOf('.wf-') === 0 && cs.indexOf('.wf-animated-') !== 0){
-							styles.push(match[1]);
+					r = o[i];
+					if(r && typeof(r) === 'string' && r.indexOf('.widgetfly') === 0){
+
+						ruleExp = /\{\s*([^\}]+)\s\}/g;
+						match = ruleExp.exec(r);
+						if(match){
+							cs = r.split(' ')[1];
+							if(cs.indexOf('.wf-') === 0 && cs.indexOf('.wf-animated-') !== 0){
+								styles.push(match[1]);
+							}
 						}
 					}
 				}
-		    }
 		    result = styles.join(' ');
 		    if(options){
-		    	for(i in options){
-		    		extStyles = extStyles + options[i];
-		    	}
-		    	a.setAttribute('data-ext-style', extStyles);
-				result = result + ' ' + extStyles;
-			}else{
-				if(a.getAttribute('data-ext-style')){
-					result = result + ' ' + a.getAttribute('data-ext-style');
+					for(i in options){
+						extStyles = extStyles + options[i];
+					}
+					a.setAttribute('data-ext-style', extStyles);
+					result = result + ' ' + extStyles;
+				}else{
+					if(a.getAttribute('data-ext-style')){
+						result = result + ' ' + a.getAttribute('data-ext-style');
+					}
 				}
-			}
-			a.style.cssText = result;
+				a.style.cssText = result;
 		},
-		
+
 		actual : function(el){
 			var elWidth,elHeight,style,
 			fixStyle = ' visibility: hidden !important; display: block !important; position: absolute !important;',
@@ -256,15 +263,15 @@ Widgetfly.Utils = (function(global) {'use strict';
 						return 0;
 					}
 			};
-			
+
 			if (el.offsetParent === null) {
 				el.setAttribute('style', el.getAttribute('style') + fixStyle);
 			}
-			
+
 			elWidth = el.offsetWidth;
-			
+
 			elHeight = el.offsetHeight;
-			
+
 			style = el.getAttribute('style');
 			if(style && style.indexOf(fixStyle) !== 0){
 				el.setAttribute('style', style.substring(0,style.indexOf(fixStyle)));
@@ -274,7 +281,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 				height : elHeight + size(el.style.marginTop) + size(el.style.marginBottom)
 			};
 		},
-		
+
 		/**
 		 * Get the current coordinates of the first element, or set the coordinates of every element, in the set of matched elements, relative to the document.
 		 * Borrowing this code from jquery:
@@ -289,7 +296,7 @@ Widgetfly.Utils = (function(global) {'use strict';
 			if ( !doc ) {
 				return;
 			}
-	
+
 			docElem = doc.documentElement;
 			// If we don't have gBCR, just use 0,0 rather than error
 			// BlackBerry 5, iOS 3 (original iPhone)
@@ -302,13 +309,13 @@ Widgetfly.Utils = (function(global) {'use strict';
 				left: box.left + win.pageXOffset - docElem.clientLeft
 			};
 		},
-		
+
 		toElement : function(content){
 			var el = document.createElement('div');
 			el.innerHTML = content;
 			return el.firstChild;
 		}
-		
+
 	};
 
 	return Utils;

@@ -37,29 +37,29 @@
 
 		return child;
 	},nowScripts, instance, params, parser;
-	
+
 	Widgetfly.Panel.extend = Widgetfly.Modal.extend = Widgetfly.Popover.extend = Widgetfly.Server.extend = extend;
 
 	// Initialize for DOM prepare
 	// -------------
 	Widgetfly.init = function(){
-		
+
 		if (!Widgetfly.Utils.inIframe()) {
 			//console.log('Now is Widgets initialize');
 			Widgetfly.Mediator.init();
-			
+
 			nowScripts = document.currentScript;
 			if(nowScripts){
 				parser = document.createElement('a');
 				parser.href = nowScripts.getAttribute('src');
 				params  = Widgetfly.Utils.params(parser.hash);
-				
+
 				if (!Widgetfly.Utils.isEmpty(params)) {
-					
+
 					if(params.type === 'modal'){
 						delete params.container;
 						new (Widgetfly.Modal.extend({}))(params);
-					}if(params.type === 'popover'){
+					}else if(params.type === 'popover'){
 						if(!params.target){
 							params.target = nowScripts.parentNode;
 						}
@@ -81,7 +81,7 @@
 			};
 		}
 	};
-	
+
 	Widgetfly.init();
 
 })(this);

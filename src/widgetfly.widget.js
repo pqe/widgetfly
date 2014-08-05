@@ -5,17 +5,17 @@ Widgetfly.Widget = (function(global) {'use strict';
 		this.id = Widgetfly.Utils.uniqueId('widget');
 		return this;
 	};
-	
+
 	Widget.DEFAULTS = Widgetfly.Utils.extend({},{
 		spinner : '<div class="widgetfly wf-spinner"><div class="wf-bounce1"></div><div class="wf-bounce2"></div><div class="wf-bounce3"></div></div>'
 	});
-	
+
 	Widgetfly.Utils.inherit(Widget, Widgetfly.Events);
 
 	Widget.prototype.getId = function() {
 		return this.id;
 	};
-	
+
 	Widget.prototype.style = function() {
 		var r = function(el){
 			if(el.className){
@@ -24,7 +24,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 			var i,j, nodes = el.childNodes;
 			for(i in nodes){
 				if(nodes[i].className && (nodes[i].className.indexOf('widgetfly') === 0 || nodes[i].className.indexOf('wf-') === 0)){
-					
+
 					Widgetfly.Utils.addClass(nodes[i], nodes[i].className);
 				}
 				if(nodes[i].childNodes){
@@ -36,7 +36,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		};
 		r(this.el);
 	};
-	
+
 	Widget.prototype.getIframe = function(){
 		var iframe = this.el.querySelector('iframe');
 		if(!iframe){
@@ -64,7 +64,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 				this.container.removeChild(this.spinner);
 			}
 		}
-		if(this.options.show){
+		if(Widgetfly.Utils.isTrue(this.options.show)){
 			this.show();
 		}else{
 			this.hide();
@@ -93,7 +93,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 			this.on('onShow', callback);
 		}
 	};
-	
+
 	Widget.prototype.isShow = function() {
 		return Widgetfly.Utils.hasClass(this.el,'wf-show');
 	};
@@ -152,15 +152,15 @@ Widgetfly.Widget = (function(global) {'use strict';
 			options : this.options.options,
 			autoGrow : this.options.autoGrow
 		};
-		
+
 		this.spinner = Widgetfly.Utils.toElement(this.options.spinner);
-		
+
 		this.el = Widgetfly.Utils.toElement(this.options.template);
-		
+
 		iframe = this.getIframe();
 
 		iframe.setAttribute('name', this.id);
-		
+
 		if (this.options.src.indexOf('#') === -1) {
 			src = this.options.src + '#';
 		} else {
@@ -168,14 +168,14 @@ Widgetfly.Widget = (function(global) {'use strict';
 		}
 
 		src = src + encodeURIComponent(JSON.stringify(urlOptions));
-		
+
 		iframe.setAttribute('src', src);
 
 		return iframe;
 	};
 
 	Widget.prototype.Change = function(size){
-		Widgetfly.Utils.innerStyle(this.iframe,{size: 'height:' + ((typeof size.height === 'string')?size.height:(String(size.height) + 'px'))});
+		Widgetfly.Utils.innerStyle(this.iframe,{size: 'height:' + ((typeof size.height === 'string') ? size.height : (String(size.height) + 'px'))});
 	};
 
 	return Widget;
