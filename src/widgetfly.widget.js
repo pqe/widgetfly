@@ -7,7 +7,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.DEFAULTS = Widgetfly.Utils.extend({},{
-		spinner : '<div class="widgetfly wf-spinner"><div class="wf-bounce1"></div><div class="wf-bounce2"></div><div class="wf-bounce3"></div></div>'
+		spinner : '<div class="widgetfly wf-spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>'
 	});
 
 	Widgetfly.Utils.inherit(Widget, Widgetfly.Events);
@@ -59,16 +59,13 @@ Widgetfly.Widget = (function(global) {'use strict';
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onStart)) {
 			handlers.onStart();
 		}
-		if(this.spinner){
-			if(this.container === this.spinner.parentNode){
-				this.container.removeChild(this.spinner);
-			}
-		}
+
 		if(Widgetfly.Utils.isTrue(this.options.show)){
 			this.show();
 		}else{
 			this.hide();
 		}
+
 	};
 
 	Widget.prototype.onHide = function(callback) {
@@ -140,7 +137,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.render = function() {
-		var src, iframe, origin, urlOptions;
+		var self = this, src, iframe, origin, urlOptions;
 		if (window.location.protocol === 'file:') {
 			origin = window.location.protocol + '//' + window.location.pathname;
 		} else {
@@ -169,12 +166,20 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 		src = src + encodeURIComponent(JSON.stringify(urlOptions));
 
+		iframe.onload = function(e){
+			if(self.spinner){
+				if(self.spinner.parentNode){
+					self.spinner.parentNode.removeChild(self.spinner);
+				}
+			}
+		};
+
 		iframe.setAttribute('src', src);
 
 		return iframe;
 	};
 
-	Widget.prototype.Change = function(size){
+	Widget.prototype.sizeChange = function(size){
 		Widgetfly.Utils.innerStyle(this.iframe,{size: 'height:' + ((typeof size.height === 'string') ? size.height : (String(size.height) + 'px'))});
 	};
 

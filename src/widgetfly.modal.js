@@ -55,7 +55,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 			this.style();
 
-			//this.container.appendChild(this.spinner);
+			this.el.querySelector('.wf-modal-content').insertBefore(this.spinner,this.iframe);
 			this.container.appendChild(this.el);
 		}
 

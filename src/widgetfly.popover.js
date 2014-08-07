@@ -39,7 +39,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 		this.style();
 
 		if (this.container) {
-			//this.container.appendChild(this.spinner);
+			this.el.insertBefore(this.spinner,this.iframe);
 			this.container.appendChild(this.el);
 		}
 		return this;

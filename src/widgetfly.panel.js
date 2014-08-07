@@ -18,7 +18,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 		}else if(typeof options.container === 'object'){
 			this.container = options.container;
 		}
-		
+
 		if (this.container && this.container.length <= 0) {
 			return false;
 		}
@@ -37,7 +37,7 @@ Widgetfly.Panel = (function(global) {'use strict';
 					this.container.removeChild(this.container.childNodes[n]);
 				}
 			}
-			//this.container.appendChild(this.spinner);
+			this.container.appendChild(this.spinner);
 			this.container.appendChild(this.el);
 		}
 
