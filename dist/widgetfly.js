@@ -534,16 +534,16 @@
 						window.addEventListener('message', function(msgObj) {
 							if(window.parent){
 								var action, origin, parser;
-						
+				
 								parser = window.document.createElement('a');
 								parser.href = self.params.origin;
 								origin = parser.protocol + '//' + parser.host;
-								
+				
 								if(origin !== 'file://' && origin !== msgObj.origin){
 									//console.log('Server ignore message from ' + msgObj.origin);
 									return;
 								}
-								
+				
 								action = msgObj.data.action;
 								if (Widgetfly.Utils.isFunction(self[action])) {
 									self[action](msgObj.data.msg);
@@ -572,7 +572,7 @@
 							id : this.id
 						};
 						//self.params = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
-						
+				
 						//console.log(corsObj);
 						parent.postMessage(corsObj, this.params.origin);
 					};
@@ -583,6 +583,10 @@
 				
 					Server.prototype.hide = function() {
 						this.trigger('hide');
+					};
+				
+					Server.prototype.toggle = function() {
+						this.trigger('toggle');
 					};
 				
 					Server.prototype.onClose = function(callback) {
@@ -603,7 +607,6 @@
 						});
 					};
 				
-					
 					Server.prototype.expand = function() {
 						var height = 0, width = null,body = window.document.body;
 						if (window.innerHeight) {
@@ -615,9 +618,9 @@
 						}
 						this.trigger('sizeChange', {height : height, width : width});
 					};
-					
+				
 					return Server;
-					
+				
 				})(this);
 				
 				Widgetfly.Widget = (function(global) {'use strict';

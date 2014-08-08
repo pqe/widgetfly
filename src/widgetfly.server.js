@@ -67,7 +67,7 @@ Widgetfly.Server = (function(global) {'use strict';
 		this.trigger('hide');
 	};
 
-	Server.prototype.toggle = function(){
+	Server.prototype.toggle = function() {
 		this.trigger('toggle');
 	};
 
@@ -88,7 +88,6 @@ Widgetfly.Server = (function(global) {'use strict';
 			self.trigger('close');
 		});
 	};
-
 
 	Server.prototype.expand = function() {
 		var height = 0, width = null,body = window.document.body;
