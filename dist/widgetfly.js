@@ -35,7 +35,7 @@
 				(function () {
 				    // widgetfly.css
 				    var cssText = "" +
-				".widgetfly .wf-show,.widgetfly.wf-show{display:block !important}.widgetfly .wf-hide,.widgetfly.wf-hide{display:none !important}.widgetfly .wf-root,.widgetfly.wf-root{position:absolute;left:0px;top:-9999px;width:47px;height:29px;z-index:999999999}.widgetfly .wf-spinner,.widgetfly.wf-spinner{margin:16px auto;width:50px;height:30px;text-align:center;font-size:10px}.widgetfly .wf-spinner>div,.widgetfly.wf-spinner>div{background-color:#666;height:100%;width:6px;display:inline-block;margin:0 3px 0 0;-webkit-animation:stretchdelay 1.2s infinite ease-in-out;animation:stretchdelay 1.2s infinite ease-in-out}.widgetfly .wf-spinner>.rect2,.widgetfly.wf-spinner>.rect2{-webkit-animation-delay:-1.1s;animation-delay:-1.1s}.widgetfly .wf-spinner>.rect3,.widgetfly.wf-spinner>.rect3{-webkit-animation-delay:-1s;animation-delay:-1s}.widgetfly .wf-spinner>.rect4,.widgetfly.wf-spinner>.rect4{-webkit-animation-delay:-0.9s;animation-delay:-0.9s}.widgetfly .wf-spinner>.rect5,.widgetfly.wf-spinner>.rect5{-webkit-animation-delay:-0.8s;animation-delay:-0.8s}@-webkit-keyframes stretchdelay{0%,40%,100%{-webkit-transform:scaleY(.4)}20%{-webkit-transform:scaleY(1)}}@keyframes stretchdelay{0%,40%,100%{transform:scaleY(.4);-webkit-transform:scaleY(.4)}20%{transform:scaleY(1);-webkit-transform:scaleY(1)}}.widgetfly .wf-panel,.widgetfly.wf-panel{width:100% !important;border:none !important;overflow:hidden !important}.widgetfly .wf-animated-modal,.widgetfly.wf-animated-modal{-webkit-animation-duration:0.2s;animation-duration:0.2s;-webkit-animation-fill-mode:both;animation-fill-mode:both}@-webkit-keyframes fadeInUpBig{0%{opacity:0;-webkit-transform:translate3d(0, 2000px, 0);transform:translate3d(0, 2000px, 0)}100%{opacity:1;-webkit-transform:none;transform:none}}@keyframes fadeInUpBig{0%{opacity:0;-webkit-transform:translate3d(0, 2000px, 0);-ms-transform:translate3d(0, 2000px, 0);transform:translate3d(0, 2000px, 0)}100%{opacity:1;-webkit-transform:none;-ms-transform:none;transform:none}}.widgetfly .wf-animated-fadeInUpBig{-webkit-animation-name:fadeInUpBig;animation-name:fadeInUpBig}.widgetfly .wf-modal,.widgetfly.wf-modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;outline:0;opacity:1}.widgetfly .wf-modal .wf-modal-dialog,.widgetfly.wf-modal .wf-modal-dialog{-webkit-transform:translate3d(0, 0, 0);-o-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);position:relative;margin:30px auto;min-width:240px}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content{position:relative;background-color:#fff;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.26);border-radius:3px;-webkit-box-shadow:0 2px 5px rgba(0,0,0,0.26);box-shadow:0 2px 5px rgba(0,0,0,0.26);background-clip:padding-box;outline:0}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content .wf-modal-body,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content .wf-modal-body{position:relative}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content .wf-close,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content .wf-close{position:absolute;right:0px;margin-top:-2px;margin-right:4px;text-decoration:none;font-size:21px;font-weight:600;line-height:1;color:#000;text-shadow:0 1px 0 #fff;cursor:pointer;filter:alpha(opacity=50);opacity:.5;font-family:\"Helvetica Neue\",Helvetica,Arial,sans-serif;z-index:1050}.widgetfly .wf-modal.wf-modal-lg .wf-modal-dialog,.widgetfly.wf-modal.wf-modal-lg .wf-modal-dialog{max-width:80%}.widgetfly .wf-modal.wf-modal-lg .wf-modal-dialog .wf-modal-body,.widgetfly.wf-modal.wf-modal-lg .wf-modal-dialog .wf-modal-body{min-height:80%}.widgetfly .wf-modal.wf-modal-md .wf-modal-dialog,.widgetfly.wf-modal.wf-modal-md .wf-modal-dialog{max-width:50%}.widgetfly .wf-modal.wf-modal-md .wf-modal-dialog .wf-modal-body,.widgetfly.wf-modal.wf-modal-md .wf-modal-dialog .wf-modal-body{min-height:60%}.widgetfly .wf-modal.wf-modal-sm .wf-modal-dialog,.widgetfly.wf-modal.wf-modal-sm .wf-modal-dialog{max-width:30%}.widgetfly .wf-modal.wf-modal-sm .wf-modal-dialog .wf-modal-body,.widgetfly.wf-modal.wf-modal-sm .wf-modal-dialog .wf-modal-body{min-height:30%}.wf-modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000;filter:alpha(opacity=50);opacity:.5}.widgetfly .wf-animated-popover,.widgetfly.wf-animated-popover{-webkit-animation-duration:0.5s;animation-duration:0.5s;-webkit-animation-fill-mode:both;animation-fill-mode:both}@-webkit-keyframes fadeIn{0%{opacity:0}100%{opacity:1}}@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}.widgetfly .wf-animated-fadeIn,.widgetfly.wf-animated-fadeIn{-webkit-animation-name:fadeIn;animation-name:fadeIn}.widgetfly .wf-popover,.widgetfly.wf-popover{top:0;left:0;z-index:1010;display:none;padding:1px;text-align:left;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.26);border-radius:3px;-webkit-box-shadow:0 2px 5px rgba(0,0,0,0.26);box-shadow:0 2px 5px rgba(0,0,0,0.26);white-space:normal;position:absolute;display:block;float:left;min-width:240px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow{border-width:11px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow,.widgetfly .wf-popover .wf-arrow:after,.widgetfly.wf-popover .wf-arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;content:\"\";border-width:10px}.widgetfly .wf-popover.wf-top,.widgetfly.wf-popover.wf-top{margin-bottom:10px}.widgetfly .wf-popover.wf-top .wf-arrow,.widgetfly.wf-popover.wf-top .wf-arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,0.25);border-bottom-width:0}.widgetfly .wf-popover.wf-top .wf-arrow:after,.widgetfly.wf-popover.wf-top .wf-arrow:after{bottom:1px;margin-left:-10px;content:\" \";border-top-color:#fff;border-bottom-width:0}.widgetfly .wf-popover.wf-left,.widgetfly.wf-popover.wf-left{margin-right:10px}.widgetfly .wf-popover.wf-left .wf-arrow,.widgetfly.wf-popover.wf-left .wf-arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-left .wf-arrow:after,.widgetfly.wf-popover.wf-left .wf-arrow:after{right:1px;bottom:-10px;content:\" \";border-right-width:0;border-left-color:#fff}.widgetfly .wf-popover.wf-bottom,.widgetfly.wf-popover.wf-bottom{margin-top:10px}.widgetfly .wf-popover.wf-bottom .wf-arrow,.widgetfly.wf-popover.wf-bottom .wf-arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-bottom .wf-arrow:after,.widgetfly.wf-popover.wf-bottom .wf-arrow:after{top:1px;margin-left:-10px;content:\" \";border-top-width:0;border-bottom-color:#fff}.widgetfly .wf-popover.wf-right,.widgetfly.wf-popover.wf-right{margin-left:10px}.widgetfly .wf-popover.wf-right .wf-arrow,.widgetfly.wf-popover.wf-right .wf-arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,0.25);border-left-width:0}.widgetfly .wf-popover.wf-right .wf-arrow:after,.widgetfly.wf-popover.wf-right .wf-arrow:after{bottom:-10px;left:1px;content:\" \";border-right-color:#fff;border-left-width:0}";
+				".widgetfly .wf-show,.widgetfly.wf-show{display:block !important}.widgetfly .wf-hide,.widgetfly.wf-hide{display:none !important}.widgetfly .wf-root,.widgetfly.wf-root{position:absolute;left:0px;top:-9999px;width:47px;height:29px;z-index:999999999}.widgetfly .wf-spinner,.widgetfly.wf-spinner{margin:16px auto;width:50px;height:30px;text-align:center;font-size:10px}.widgetfly .wf-spinner>div,.widgetfly.wf-spinner>div{background-color:#666;height:100%;width:6px;display:inline-block;margin:0 3px 0 0;-webkit-animation:wf-stretchdelay 1.2s infinite ease-in-out;animation:wf-stretchdelay 1.2s infinite ease-in-out}.widgetfly .wf-spinner>.rect2,.widgetfly.wf-spinner>.rect2{-webkit-animation-delay:-1.1s;animation-delay:-1.1s}.widgetfly .wf-spinner>.rect3,.widgetfly.wf-spinner>.rect3{-webkit-animation-delay:-1s;animation-delay:-1s}.widgetfly .wf-spinner>.rect4,.widgetfly.wf-spinner>.rect4{-webkit-animation-delay:-0.9s;animation-delay:-0.9s}.widgetfly .wf-spinner>.rect5,.widgetfly.wf-spinner>.rect5{-webkit-animation-delay:-0.8s;animation-delay:-0.8s}@-webkit-keyframes wf-stretchdelay{0%,40%,100%{-webkit-transform:scaleY(.4)}20%{-webkit-transform:scaleY(1)}}@keyframes wf-stretchdelay{0%,40%,100%{transform:scaleY(.4);-webkit-transform:scaleY(.4)}20%{transform:scaleY(1);-webkit-transform:scaleY(1)}}.widgetfly .wf-panel,.widgetfly.wf-panel{width:100% !important;border:none !important;overflow:hidden !important}.widgetfly .wf-animated-modal,.widgetfly.wf-animated-modal{-webkit-animation-duration:0.2s;animation-duration:0.2s;-webkit-animation-fill-mode:both;animation-fill-mode:both}@-webkit-keyframes wf-fadeInUpBig{0%{opacity:0;-webkit-transform:translate3d(0, 2000px, 0);transform:translate3d(0, 2000px, 0)}100%{opacity:1;-webkit-transform:none;transform:none}}@keyframes wf-fadeInUpBig{0%{opacity:0;-webkit-transform:translate3d(0, 2000px, 0);-ms-transform:translate3d(0, 2000px, 0);transform:translate3d(0, 2000px, 0)}100%{opacity:1;-webkit-transform:none;-ms-transform:none;transform:none}}.widgetfly .wf-animated-fadeInUpBig{-webkit-animation-name:wf-fadeInUpBig;animation-name:wf-fadeInUpBig}.widgetfly .wf-modal,.widgetfly.wf-modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;outline:0;opacity:1}.widgetfly .wf-modal .wf-modal-dialog,.widgetfly.wf-modal .wf-modal-dialog{-webkit-transform:translate3d(0, 0, 0);-o-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);position:relative;margin:30px auto;min-width:240px}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content{position:relative;background-color:#fff;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.26);border-radius:3px;-webkit-box-shadow:0 2px 5px rgba(0,0,0,0.26);box-shadow:0 2px 5px rgba(0,0,0,0.26);background-clip:padding-box;outline:0}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content .wf-modal-body,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content .wf-modal-body{position:relative}.widgetfly .wf-modal .wf-modal-dialog .wf-modal-content .wf-close,.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content .wf-close{position:absolute;right:0px;margin-top:-2px;margin-right:4px;text-decoration:none;font-size:21px;font-weight:600;line-height:1em;color:#000;text-shadow:0 1px 0 #fff;cursor:pointer;filter:alpha(opacity=50);opacity:.5;font-family:\"Helvetica Neue\",Helvetica,Arial,sans-serif;z-index:1050}.widgetfly .wf-modal.wf-modal-lg .wf-modal-dialog,.widgetfly.wf-modal.wf-modal-lg .wf-modal-dialog{max-width:80%}.widgetfly .wf-modal.wf-modal-lg .wf-modal-dialog .wf-modal-body,.widgetfly.wf-modal.wf-modal-lg .wf-modal-dialog .wf-modal-body{min-height:80%}.widgetfly .wf-modal.wf-modal-md .wf-modal-dialog,.widgetfly.wf-modal.wf-modal-md .wf-modal-dialog{max-width:50%}.widgetfly .wf-modal.wf-modal-md .wf-modal-dialog .wf-modal-body,.widgetfly.wf-modal.wf-modal-md .wf-modal-dialog .wf-modal-body{min-height:60%}.widgetfly .wf-modal.wf-modal-sm .wf-modal-dialog,.widgetfly.wf-modal.wf-modal-sm .wf-modal-dialog{max-width:30%}.widgetfly .wf-modal.wf-modal-sm .wf-modal-dialog .wf-modal-body,.widgetfly.wf-modal.wf-modal-sm .wf-modal-dialog .wf-modal-body{min-height:30%}.widgetfly .wf-modal-backdrop,.widgetfly.wf-modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000;filter:alpha(opacity=50);opacity:.5}@media screen and (max-width:640px){.widgetfly.wf-modal .wf-modal-dialog,.widgetfly.wf-modal-lg .wf-modal-dialog,.widgetfly.wf-modal-md .wf-modal-dialog,.widgetfly.wf-modal-sm .wf-modal-dialog{width:100%;min-width:100%;height:100%;min-height:100%;padding:0;margin:0}.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content,.widgetfly.wf-modal-lg .wf-modal-dialog .wf-modal-content,.widgetfly.wf-modal-md .wf-modal-dialog .wf-modal-content,.widgetfly.wf-modal-sm .wf-modal-dialog .wf-modal-content{position:fixed;top:0px;width:100%;min-width:100%;height:100%;min-height:100%;-webkit-animation-name:none;animation-name:none;border:0;border-radius:0}.widgetfly.wf-modal .wf-modal-dialog .wf-modal-content .wf-close,.widgetfly.wf-modal-lg .wf-modal-dialog .wf-modal-content .wf-close,.widgetfly.wf-modal-md .wf-modal-dialog .wf-modal-content .wf-close,.widgetfly.wf-modal-sm .wf-modal-dialog .wf-modal-content .wf-close{right:0px;margin-top:10px;margin-right:10px;font-size:28px;font-weight:800;border-radius:50%;width:35px;height:35px;text-align:center;line-height:23px;border:5px solid #000;text-shadow:none}}.widgetfly .wf-animated-popover,.widgetfly.wf-animated-popover{-webkit-animation-duration:0.5s;animation-duration:0.5s;-webkit-animation-fill-mode:both;animation-fill-mode:both}@-webkit-keyframes wf-fadeIn{0%{opacity:0}100%{opacity:1}}@keyframes wf-fadeIn{0%{opacity:0}100%{opacity:1}}.widgetfly .wf-animated-fadeIn,.widgetfly.wf-animated-fadeIn{-webkit-animation-name:wf-fadeIn;animation-name:wf-fadeIn}.widgetfly .wf-popover,.widgetfly.wf-popover{top:0;left:0;z-index:1010;display:none;padding:1px;text-align:left;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,0.26);border-radius:3px;-webkit-box-shadow:0 2px 5px rgba(0,0,0,0.26);box-shadow:0 2px 5px rgba(0,0,0,0.26);white-space:normal;position:absolute;display:block;float:left;min-width:240px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow{border-width:11px}.widgetfly .wf-popover .wf-arrow,.widgetfly.wf-popover .wf-arrow,.widgetfly .wf-popover .wf-arrow:after,.widgetfly.wf-popover .wf-arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid;content:\"\";border-width:10px}.widgetfly .wf-popover.wf-top,.widgetfly.wf-popover.wf-top{margin-bottom:10px}.widgetfly .wf-popover.wf-top .wf-arrow,.widgetfly.wf-popover.wf-top .wf-arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,0.25);border-bottom-width:0}.widgetfly .wf-popover.wf-top .wf-arrow:after,.widgetfly.wf-popover.wf-top .wf-arrow:after{bottom:1px;margin-left:-10px;content:\" \";border-top-color:#fff;border-bottom-width:0}.widgetfly .wf-popover.wf-left,.widgetfly.wf-popover.wf-left{margin-right:10px}.widgetfly .wf-popover.wf-left .wf-arrow,.widgetfly.wf-popover.wf-left .wf-arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-left .wf-arrow:after,.widgetfly.wf-popover.wf-left .wf-arrow:after{right:1px;bottom:-10px;content:\" \";border-right-width:0;border-left-color:#fff}.widgetfly .wf-popover.wf-bottom,.widgetfly.wf-popover.wf-bottom{margin-top:10px}.widgetfly .wf-popover.wf-bottom .wf-arrow,.widgetfly.wf-popover.wf-bottom .wf-arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,0.25)}.widgetfly .wf-popover.wf-bottom .wf-arrow:after,.widgetfly.wf-popover.wf-bottom .wf-arrow:after{top:1px;margin-left:-10px;content:\" \";border-top-width:0;border-bottom-color:#fff}.widgetfly .wf-popover.wf-right,.widgetfly.wf-popover.wf-right{margin-left:10px}.widgetfly .wf-popover.wf-right .wf-arrow,.widgetfly.wf-popover.wf-right .wf-arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,0.25);border-left-width:0}.widgetfly .wf-popover.wf-right .wf-arrow:after,.widgetfly.wf-popover.wf-right .wf-arrow:after{bottom:-10px;left:1px;content:\" \";border-right-color:#fff;border-left-width:0}";
 				    // cssText end
 				
 				    var styleEl = document.createElement("style");
@@ -269,20 +269,34 @@
 						},
 				
 						innerStyle : function css(a, options) {
-						    var i,r,cs,match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [], extStyles = '';
+						    var i,r,mr,cs,match, ruleExp, result,styles = [],rules,mediaRules, sheets = document.styleSheets, o = [], extStyles = '';
 						    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
 						    for (i in sheets) {
+										if(sheets[i].href){
+											continue;
+										}
 						        rules = sheets[i].rules || sheets[i].cssRules;
 						        for (r in rules) {
-						            if (a.matches(rules[r].selectorText)) {
-						                o.push(rules[r].cssText);
-						            }
+											if(rules[r].type === 4){
+												if(window.matchMedia(rules[r].media.mediaText).matches){
+													mediaRules = rules[r].rules || rules[r].cssRules;
+													for (mr in mediaRules) {
+															if (a.matches(mediaRules[mr].selectorText)) {
+																	o.push(mediaRules[mr].cssText);
+															}
+													}
+												}
+											}else{
+												if (a.matches(rules[r].selectorText)) {
+														o.push(rules[r].cssText);
+												}
+											}
 						        }
 						    }
+				
 						    for (i in o){
 									r = o[i];
 									if(r && typeof(r) === 'string' && r.indexOf('.widgetfly') === 0){
-				
 										ruleExp = /\{\s*([^\}]+)\s\}/g;
 										match = ruleExp.exec(r);
 										if(match){
@@ -435,7 +449,9 @@
 								});
 							}
 							delete this.widgets[id];
-							callback(true);
+							if(callback) {
+								callback(true);
+							}
 						},
 				
 						send : function(id, action, data) {
@@ -518,16 +534,16 @@
 						window.addEventListener('message', function(msgObj) {
 							if(window.parent){
 								var action, origin, parser;
-						
+				
 								parser = window.document.createElement('a');
 								parser.href = self.params.origin;
 								origin = parser.protocol + '//' + parser.host;
-								
+				
 								if(origin !== 'file://' && origin !== msgObj.origin){
 									//console.log('Server ignore message from ' + msgObj.origin);
 									return;
 								}
-								
+				
 								action = msgObj.data.action;
 								if (Widgetfly.Utils.isFunction(self[action])) {
 									self[action](msgObj.data.msg);
@@ -556,7 +572,7 @@
 							id : this.id
 						};
 						//self.params = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
-						
+				
 						//console.log(corsObj);
 						parent.postMessage(corsObj, this.params.origin);
 					};
@@ -567,6 +583,10 @@
 				
 					Server.prototype.hide = function() {
 						this.trigger('hide');
+					};
+				
+					Server.prototype.toggle = function() {
+						this.trigger('toggle');
 					};
 				
 					Server.prototype.onClose = function(callback) {
@@ -587,7 +607,6 @@
 						});
 					};
 				
-					
 					Server.prototype.expand = function() {
 						var height = 0, width = null,body = window.document.body;
 						if (window.innerHeight) {
@@ -599,9 +618,9 @@
 						}
 						this.trigger('sizeChange', {height : height, width : width});
 					};
-					
+				
 					return Server;
-					
+				
 				})(this);
 				
 				Widgetfly.Widget = (function(global) {'use strict';
@@ -689,6 +708,14 @@
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
 							handlers.onHide();
 						}
+					};
+				
+					Widget.prototype.toggle = function() {
+							if(this.isShow()){
+								this.hide();
+							}else{
+								this.show();
+							}
 					};
 				
 					Widget.prototype.onShow = function(callback) {
@@ -870,7 +897,7 @@
 					// Widgetfly.Modal
 					// -------------
 					var Modal = function(options) {
-						var self = this, sizeClass;
+						var self = this, sizeClass, aw, w;
 						Widgetfly.Widget.apply(this, arguments);
 						this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
 						this.container = window.document.querySelector('body');
@@ -879,11 +906,11 @@
 							return false;
 						}
 				
-						if(document.querySelector('.wf-modal')){
-							this.container.removChild(document.querySelector('.wf-modal'));
-						}
-						if(document.querySelector('.wf-modal-backdrop')){
-							this.container.removChild(document.querySelector('.wf-modal-backdrop'));
+						aw = Widgetfly.Mediator.widgets;
+						for(w in aw){
+							if(aw[w] instanceof Widgetfly.Modal){
+								aw[w].close();
+							}
 						}
 				
 						this.register(this.id);
@@ -925,7 +952,12 @@
 				
 							this.el.querySelector('.wf-modal-content').insertBefore(this.spinner,this.iframe);
 							this.container.appendChild(this.el);
+				
 						}
+						this.resizeCallback = function(e){
+							self.style();
+						};
+						window.addEventListener('resize',this.resizeCallback,false);
 				
 						return this;
 					};
@@ -975,6 +1007,7 @@
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
 							r = handlers.onBeforeClose();
 						}
+						window.window.removeEventListener('resize', this.resizeCallback, false);
 						if(r !== false){
 							Widgetfly.Mediator.unregister(this.id, function() {
 								self.container.removeChild(self.el);
