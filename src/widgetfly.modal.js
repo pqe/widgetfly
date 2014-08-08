@@ -2,7 +2,15 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var self = this, sizeClass, aw, w;
+		var self = this, sizeClass, aw, w, throttle = function(method, scope) {
+				clearTimeout(method._tId);
+				method._tId = setTimeout(function(){
+						method.call(scope);
+				}, 100);
+		},wrapper = function(){
+			self.style();
+		};
+
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
 		this.container = window.document.querySelector('body');
@@ -59,10 +67,12 @@ Widgetfly.Modal = (function(global) {'use strict';
 			this.container.appendChild(this.el);
 
 		}
+
 		this.resizeCallback = function(e){
-			self.style();
+			throttle(wrapper,window);
 		};
-		window.addEventListener('resize',this.resizeCallback,false);
+
+		window.addEventListener('resize', this.resizeCallback, false);
 
 		return this;
 	};
