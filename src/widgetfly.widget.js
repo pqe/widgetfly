@@ -85,6 +85,14 @@ Widgetfly.Widget = (function(global) {'use strict';
 		}
 	};
 
+	Widget.prototype.toggle = function() {
+			if(this.isShow()){
+				this.hide();
+			}else{
+				this.show();
+			}
+	};
+
 	Widget.prototype.onShow = function(callback) {
 		if (Widgetfly.Utils.isFunction(callback)) {
 			this.on('onShow', callback);

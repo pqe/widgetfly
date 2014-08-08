@@ -75,12 +75,9 @@
 				           	document.currentScript.parentNode.appendChild(js);
 				        })(function(widget){
 				        	//do something with widget
-									document.querySelector('#target-right').onmouseover = function(){
-										widget.show();
+									document.querySelector('#target-right').onclick = function(){
+										widget.toggle();
 									};
-									document.querySelector('#target-right').onmouseout = function(){
-										widget.hide();
-									}
 				        });
 					</script>
 					</button>

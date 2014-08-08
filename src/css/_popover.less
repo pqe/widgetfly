@@ -1,7 +1,7 @@
-.widgetfly { 
-  
+.widgetfly {
+
   /**
-    * 
+    *
     * Borrowing this code from Animate.css
     * http://daneden.me/animate
     */
@@ -11,30 +11,30 @@
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
   }
-  
-  @-webkit-keyframes fadeIn {
+
+  @-webkit-keyframes wf-fadeIn {
     0% {
       opacity: 0;
     }
-  
+
     100% {
       opacity: 1;
     }
   }
-  
-  @keyframes fadeIn {
+
+  @keyframes wf-fadeIn {
     0% {
       opacity: 0;
     }
-  
+
     100% {
       opacity: 1;
     }
   }
-  
+
   .wf-animated-fadeIn, &.wf-animated-fadeIn {
-    -webkit-animation-name: fadeIn;
-    animation-name: fadeIn;
+    -webkit-animation-name: wf-fadeIn;
+    animation-name: wf-fadeIn;
   }
 
   .wf-popover, &.wf-popover {
@@ -53,21 +53,21 @@
     -webkit-box-shadow: 0 2px 5px rgba(0,0,0,.26);
     box-shadow: 0 2px 5px rgba(0,0,0,.26);
     white-space: normal;
-    
+
     position: absolute;
     display: block;
     float: left;
     min-width: 240px;
     //margin: 20px;
-    
+
     .wf-popover-content{
       //padding: 9px 14px;
     }
-    
+
     .wf-arrow {
       border-width: 11px;
-    }  
-    
+    }
+
     .wf-arrow, .wf-arrow:after {
       position: absolute;
       display: block;
@@ -77,8 +77,8 @@
       border-style: solid;
       content: "";
       border-width: 10px;
-    }  
-    
+    }
+
     &.wf-top {
       margin-bottom: 10px;
       .wf-arrow {
@@ -89,7 +89,7 @@
         border-top-color: rgba(0, 0, 0, .25);
         border-bottom-width: 0;
       }
-      
+
       .wf-arrow:after {
          bottom: 1px;
           margin-left: -10px;
@@ -99,7 +99,7 @@
         }
     }
     &.wf-left {
-      margin-right: 10px;   
+      margin-right: 10px;
       .wf-arrow {
         top: 50%;
         right: -11px;
@@ -108,7 +108,7 @@
         border-left-color: #999;
         border-left-color: rgba(0, 0, 0, .25);
       }
-      
+
       .wf-arrow:after {
          right: 1px;
           bottom: -10px;
@@ -127,7 +127,7 @@
         border-bottom-color: #999;
         border-bottom-color: rgba(0, 0, 0, .25);
       }
-      
+
       .wf-arrow:after {
          top: 1px;
           margin-left: -10px;
@@ -135,9 +135,9 @@
           border-top-width: 0;
           border-bottom-color: #fff;
         }
-        
+
     }
-    
+
     &.wf-right {
       margin-left: 10px;
       .wf-arrow {
@@ -148,7 +148,7 @@
         border-right-color: rgba(0, 0, 0, .25);
         border-left-width: 0;
       }
-      
+
       .wf-arrow:after {
           bottom: -10px;
           left: 1px;
@@ -156,7 +156,7 @@
           border-right-color: #fff;
           border-left-width: 0;
         }
-      
+
     }
   }
 }

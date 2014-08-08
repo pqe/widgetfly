@@ -2,7 +2,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var self = this, sizeClass;
+		var self = this, sizeClass, aw, w;
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
 		this.container = window.document.querySelector('body');
@@ -11,11 +11,11 @@ Widgetfly.Modal = (function(global) {'use strict';
 			return false;
 		}
 
-		if(document.querySelector('.wf-modal')){
-			this.container.removChild(document.querySelector('.wf-modal'));
-		}
-		if(document.querySelector('.wf-modal-backdrop')){
-			this.container.removChild(document.querySelector('.wf-modal-backdrop'));
+		aw = Widgetfly.Mediator.widgets;
+		for(w in aw){
+			if(aw[w] instanceof Widgetfly.Modal){
+				aw[w].close();
+			}
 		}
 
 		this.register(this.id);
@@ -57,7 +57,12 @@ Widgetfly.Modal = (function(global) {'use strict';
 
 			this.el.querySelector('.wf-modal-content').insertBefore(this.spinner,this.iframe);
 			this.container.appendChild(this.el);
+
 		}
+		this.resizeCallback = function(e){
+			self.style();
+		};
+		window.addEventListener('resize',this.resizeCallback,false);
 
 		return this;
 	};
@@ -107,6 +112,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
 			r = handlers.onBeforeClose();
 		}
+		window.window.removeEventListener('resize', this.resizeCallback, false);
 		if(r !== false){
 			Widgetfly.Mediator.unregister(this.id, function() {
 				self.container.removeChild(self.el);

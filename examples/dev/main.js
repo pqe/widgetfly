@@ -36,12 +36,10 @@ var po1 = new PopoverWidget({
 	//src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 });
 
-document.querySelector('#target-right').onmouseover = function() {
-	po1.show();
+document.querySelector('#target-right').onclick = function() {
+	po1.toggle();
 };
-document.querySelector('#target-right').onmouseleave = function() {
-	po1.hide();
-};
+
 var po2 = new PopoverWidget({
 	target : '#target-left',
 	placement : 'left',
@@ -50,12 +48,10 @@ var po2 = new PopoverWidget({
 	//src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 });
 
-document.querySelector('#target-left').onmouseover = function() {
-	po2.show();
+document.querySelector('#target-left').onclick = function() {
+	po2.toggle();
 };
-document.querySelector('#target-left').onmouseleave = function() {
-	po2.hide();
-};
+
 var po3 = new PopoverWidget({
 	target : '#target-top',
 	placement : 'top',
@@ -64,12 +60,10 @@ var po3 = new PopoverWidget({
 	//src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 });
 
-document.querySelector('#target-top').onmouseover = function() {
-	po3.show();
+document.querySelector('#target-top').onclick = function() {
+	po3.toggle();
 };
-document.querySelector('#target-top').onmouseleave = function() {
-	po3.hide();
-};
+
 var po4 = new PopoverWidget({
 	target : '#target-bottom',
 	placement : 'bottom',
@@ -78,9 +72,6 @@ var po4 = new PopoverWidget({
 	//src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 });
 
-document.querySelector('#target-bottom').onmouseover = function() {
-	po4.show();
-};
-document.querySelector('#target-bottom').onmouseleave = function() {
-	po4.hide();
+document.querySelector('#target-bottom').onclick = function() {
+	po4.toggle();
 };

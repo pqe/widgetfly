@@ -19,13 +19,13 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		
+
 		clean: {
 			tmp: '.tmp',
 			bower : ['bower_components'],
 			dist: ['dist'],
 		},
-    
+
 		jshint: {
 			options: {
 				jshintrc: true,
@@ -36,14 +36,14 @@ module.exports = function (grunt) {
 				'Gruntfile.js'
 			]
 		},
-		
+
 		preprocess: {
 			amd: {
 				src: 'src/build/amd.core.js',
 				dest: '.tmp/widgetfly.js'
 			}
 	    },
-    
+
 		uglify: {
 			options: {
 				mangle: false,
@@ -109,7 +109,7 @@ module.exports = function (grunt) {
 		connect: {
 			options: {
 				port: SERVER_PORT,
-				hostname: 'localhost'
+				hostname: '*'
 			},
 			livereload: {
 				options: {
@@ -146,7 +146,7 @@ module.exports = function (grunt) {
 					yuicompress : true,
 					strictImports : true
 				},
-				
+
 				files : [{
 			        // no need for files, the config below should work
 			        expand: true,
@@ -155,7 +155,7 @@ module.exports = function (grunt) {
 			        ext:    '.css',
 			        dest : '.tmp'
 				}]
-				
+
 			}
 		},
 		css2js: {
@@ -165,9 +165,9 @@ module.exports = function (grunt) {
 	        }
 		}
 	});
-	
+
 	grunt.registerTask('bower-install', ['clean:bower','bower:install']);
-	
+
 	grunt.registerTask('release', [
 		'bower-install',
 		'default'
@@ -192,7 +192,7 @@ module.exports = function (grunt) {
 		'open',
 		'watch:js'
 	]);
-	
+
 	grunt.registerTask('doc', [
 		'jsdoc:dist'
 	]);

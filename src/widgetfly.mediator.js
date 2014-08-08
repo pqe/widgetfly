@@ -36,7 +36,9 @@ Widgetfly.Mediator = (function(global) {'use strict';
 				});
 			}
 			delete this.widgets[id];
-			callback(true);
+			if(callback) {
+				callback(true);
+			}
 		},
 
 		send : function(id, action, data) {

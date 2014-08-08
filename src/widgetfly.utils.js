@@ -214,20 +214,34 @@ Widgetfly.Utils = (function(global) {'use strict';
 		},
 
 		innerStyle : function css(a, options) {
-		    var i,r,cs,match, ruleExp, result,styles = [],rules, sheets = document.styleSheets, o = [], extStyles = '';
+		    var i,r,mr,cs,match, ruleExp, result,styles = [],rules,mediaRules, sheets = document.styleSheets, o = [], extStyles = '';
 		    a.matches = a.matches || a.webkitMatchesSelector || a.mozMatchesSelector || a.msMatchesSelector || a.oMatchesSelector;
 		    for (i in sheets) {
+						if(sheets[i].href){
+							continue;
+						}
 		        rules = sheets[i].rules || sheets[i].cssRules;
 		        for (r in rules) {
-		            if (a.matches(rules[r].selectorText)) {
-		                o.push(rules[r].cssText);
-		            }
+							if(rules[r].type === 4){
+								if(window.matchMedia(rules[r].media.mediaText).matches){
+									mediaRules = rules[r].rules || rules[r].cssRules;
+									for (mr in mediaRules) {
+											if (a.matches(mediaRules[mr].selectorText)) {
+													o.push(mediaRules[mr].cssText);
+											}
+									}
+								}
+							}else{
+								if (a.matches(rules[r].selectorText)) {
+										o.push(rules[r].cssText);
+								}
+							}
 		        }
 		    }
+
 		    for (i in o){
 					r = o[i];
 					if(r && typeof(r) === 'string' && r.indexOf('.widgetfly') === 0){
-
 						ruleExp = /\{\s*([^\}]+)\s\}/g;
 						match = ruleExp.exec(r);
 						if(match){
