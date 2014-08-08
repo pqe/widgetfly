@@ -115,6 +115,8 @@ this.options
 <p>Manually show a widget</p>
 * **hide()**
 <p>Manually hides a widget</p>
+* **toggle()**
+<p>Display or hide the widget</p>
 * **close()**
 <p>Manually destroy a widget</p>
 * **isShow()**
@@ -168,6 +170,8 @@ this.options
 <p>Manually show a widget</p>
 * **hide()**
 <p>Manually hides a widget</p>
+* **toggle()**
+<p>Display or hide the widget</p>
 * **close()**
 <p>Manually destroy a widget</p>
 * **isShow()**
@@ -220,6 +224,8 @@ this.options
 <p>Manually show a widget</p>
 * **hide()**
 <p>Manually hides a widget</p>
+* **toggle()**
+<p>Display or hide the widget</p>
 * **close()**
 <p>Manually destroy a widget</p>
 * **isShow()**
@@ -297,6 +303,12 @@ Widgetfly.Server.get().show();
 ```js
 Widgetfly.Server.get().hide();
 ```
+* **toggle()**
+<p>Display or hide the widget</p>
+```js
+Widgetfly.Server.get().toggle();
+```
+
 * **close()**
 <p>Manually **Server** trigger to destroy a **Widget**</p>
 ```js
