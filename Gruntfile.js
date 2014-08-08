@@ -48,18 +48,20 @@ module.exports = function (grunt) {
 			options: {
 				mangle: false,
 				sourceMap: true,
-				sourceMapName: 'dist/widgetfly.min.js.map'
+				sourceMapName: '.tmp/widgetfly.min.js.map'
 			},
 			main: {
 				files: {
-					'dist/widgetfly.min.js': ['.tmp/widgetfly.js']
+					'.tmp/widgetfly.min.js': ['.tmp/widgetfly.js']
 				}
 			}
 		},
 		copy: {
 			main: {
 				files: [
-					{src: ['.tmp/widgetfly.js'], dest: 'dist/widgetfly.js'}
+					{src: ['.tmp/widgetfly.js'], dest: 'dist/widgetfly.js'},
+					{src: ['.tmp/widgetfly.min.js'], dest: 'dist/widgetfly.min.js'},
+					{src: ['.tmp/widgetfly.min.js.map'], dest: 'dist/widgetfly.min.js.map'}
 				]
 			}
 		},
