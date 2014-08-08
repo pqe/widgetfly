@@ -16,16 +16,16 @@ Widgetfly.Server = (function(global) {'use strict';
 		window.addEventListener('message', function(msgObj) {
 			if(window.parent){
 				var action, origin, parser;
-		
+
 				parser = window.document.createElement('a');
 				parser.href = self.params.origin;
 				origin = parser.protocol + '//' + parser.host;
-				
+
 				if(origin !== 'file://' && origin !== msgObj.origin){
 					//console.log('Server ignore message from ' + msgObj.origin);
 					return;
 				}
-				
+
 				action = msgObj.data.action;
 				if (Widgetfly.Utils.isFunction(self[action])) {
 					self[action](msgObj.data.msg);
@@ -54,7 +54,7 @@ Widgetfly.Server = (function(global) {'use strict';
 			id : this.id
 		};
 		//self.params = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
-		
+
 		//console.log(corsObj);
 		parent.postMessage(corsObj, this.params.origin);
 	};
@@ -65,6 +65,10 @@ Widgetfly.Server = (function(global) {'use strict';
 
 	Server.prototype.hide = function() {
 		this.trigger('hide');
+	};
+
+	Server.prototype.toggle = function(){
+		this.trigger('toggle');
 	};
 
 	Server.prototype.onClose = function(callback) {
@@ -85,7 +89,7 @@ Widgetfly.Server = (function(global) {'use strict';
 		});
 	};
 
-	
+
 	Server.prototype.expand = function() {
 		var height = 0, width = null,body = window.document.body;
 		if (window.innerHeight) {
@@ -97,7 +101,7 @@ Widgetfly.Server = (function(global) {'use strict';
 		}
 		this.trigger('sizeChange', {height : height, width : width});
 	};
-	
+
 	return Server;
-	
+
 })(this);
