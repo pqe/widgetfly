@@ -34,6 +34,7 @@ grunt serve
 ```
 
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+[![Build Status](https://travis-ci.org/pqe/widgetfly.svg?branch=master)](https://travis-ci.org/pqe/widgetfly)
 
 Credits
 --------------
