@@ -328,6 +328,13 @@ Widgetfly.Utils = (function(global) {'use strict';
 			var el = document.createElement('div');
 			el.innerHTML = content;
 			return el.firstChild;
+		},
+
+		throttle : function(method, scope) {
+				clearTimeout(scope._tId);
+				scope._tId = setTimeout(function(){
+						method.call(scope);
+				}, 100);
 		}
 
 	};

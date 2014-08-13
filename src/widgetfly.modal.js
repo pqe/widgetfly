@@ -2,14 +2,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	// Widgetfly.Modal
 	// -------------
 	var Modal = function(options) {
-		var self = this, sizeClass, aw, w, throttle = function(method, scope) {
-				clearTimeout(method._tId);
-				method._tId = setTimeout(function(){
-						method.call(scope);
-				}, 100);
-		},wrapper = function(){
-			self.style();
-		};
+		var self = this, sizeClass, aw, w;
 
 		Widgetfly.Widget.apply(this, arguments);
 		this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
@@ -69,7 +62,9 @@ Widgetfly.Modal = (function(global) {'use strict';
 		}
 
 		this.resizeCallback = function(e){
-			throttle(wrapper,window);
+			if(self.isShow()){
+				Widgetfly.Utils.throttle(self.style, self);
+			}
 		};
 
 		window.addEventListener('resize', this.resizeCallback, false);
