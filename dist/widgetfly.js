@@ -325,6 +325,7 @@
 						actual : function(el){
 							var elWidth,elHeight,style,
 							fixStyle = ' visibility: hidden !important; display: block !important; position: absolute !important;',
+				
 							size = function(s){
 									if(Boolean(s)){
 										return parseInt(s.substring(0,s.indexOf('px')),10);
@@ -333,18 +334,20 @@
 									}
 							};
 				
-							if (el.offsetParent === null) {
+							//if (el.offsetParent === null) {
 								el.setAttribute('style', el.getAttribute('style') + fixStyle);
-							}
+							//}
 				
 							elWidth = el.offsetWidth;
 				
 							elHeight = el.offsetHeight;
 				
 							style = el.getAttribute('style');
+				
 							if(style && style.indexOf(fixStyle) !== 0){
 								el.setAttribute('style', style.substring(0,style.indexOf(fixStyle)));
 							}
+				
 							return {
 								width : elWidth + size(el.style.marginLeft) + size(el.style.marginRight),
 								height : elHeight + size(el.style.marginTop) + size(el.style.marginBottom)
