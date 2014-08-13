@@ -383,6 +383,13 @@
 							var el = document.createElement('div');
 							el.innerHTML = content;
 							return el.firstChild;
+						},
+				
+						throttle : function(method, scope) {
+								clearTimeout(scope._tId);
+								scope._tId = setTimeout(function(){
+										method.call(scope);
+								}, 100);
 						}
 				
 					};
@@ -897,14 +904,7 @@
 					// Widgetfly.Modal
 					// -------------
 					var Modal = function(options) {
-						var self = this, sizeClass, aw, w, throttle = function(method, scope) {
-								clearTimeout(method._tId);
-								method._tId = setTimeout(function(){
-										method.call(scope);
-								}, 100);
-						},wrapper = function(){
-							self.style();
-						};
+						var self = this, sizeClass, aw, w;
 				
 						Widgetfly.Widget.apply(this, arguments);
 						this.options = Widgetfly.Utils.extend({}, Modal.DEFAULTS,options);
@@ -964,7 +964,9 @@
 						}
 				
 						this.resizeCallback = function(e){
-							throttle(wrapper,window);
+							if(self.isShow()){
+								Widgetfly.Utils.throttle(self.style, self);
+							}
 						};
 				
 						window.addEventListener('resize', this.resizeCallback, false);
@@ -1036,6 +1038,8 @@
 					// Widgetfly.Popover
 					// -------------
 					var Popover = function(options) {
+						var self = this;
+				
 						Widgetfly.Widget.apply(this, arguments);
 						this.options = Widgetfly.Utils.extend({}, Popover.DEFAULTS,options);
 				
@@ -1076,6 +1080,15 @@
 							this.el.insertBefore(this.spinner,this.iframe);
 							this.container.appendChild(this.el);
 						}
+				
+						this.resizeCallback = function(e){
+							if(self.isShow()){
+								Widgetfly.Utils.throttle(self.applyPlacement, self);
+							}
+						};
+				
+						window.addEventListener('resize', this.resizeCallback, false);
+				
 						return this;
 					};
 				
@@ -1147,13 +1160,13 @@
 						}
 						Widgetfly.Widget.prototype.hide.apply(this, arguments);
 					};
+					*/
 				
 					Popover.prototype.close = function(){
-						if(this.interval) {
-							clearInterval(this.interval);
-						}
+						window.window.removeEventListener('resize', this.resizeCallback, false);
+				
 						Widgetfly.Widget.prototype.close.apply(this, arguments);
-					};*/
+					};
 				
 					return Popover;
 				
