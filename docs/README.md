@@ -206,7 +206,7 @@ myWidget.onBeforeClose(function(){
 
 ###Widget Options
 * **target** : id / class / HTML tag
-* **placement** : top / left / bottom / right
+* **placement** : top / left / bottom / right / auto
 * **autoGrow** : true / false
 * **src** : URL of widget
 * **show** : true / false

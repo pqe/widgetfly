@@ -47,7 +47,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 
 		this.resizeCallback = function(e){
 			if(self.isShow()){
-				Widgetfly.Utils.throttle(self.applyPlacement, self);
+				Widgetfly.Utils.throttle(self.style, self);
 			}
 		};
 
@@ -69,28 +69,42 @@ Widgetfly.Popover = (function(global) {'use strict';
 	Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
 
 	Popover.prototype.style = function() {
-		var placement = this.options.placement;
-		if(!placement){
-			placement = 'right';
+		var vw,vh,vert,vertPlacement,horiz,horizPlacement, actualWidth, actualHeight,size = Widgetfly.Utils.actual(this.el);
+		this.placement = this.options.placement;
+
+		if(this.options.placement === 'auto' || !Boolean(this.options.placement)){
+				vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+				vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+				vert = 0.5 * vh - size.width;
+		    vertPlacement = vert > 0 ? 'bottom' : 'top';
+		    horiz = 0.5 * vw - size.height;
+		    horizPlacement = horiz > 0 ? 'right' : 'left';
+		    this.placement = Math.abs(horiz) > Math.abs(vert) ?  horizPlacement : vertPlacement;
 		}
-		Widgetfly.Utils.addClass(this.el, 'wf-' + placement);
+
+		Widgetfly.Utils.removeClass(this.el, 'wf-top wf-right wf-bottom wf-left');
+		Widgetfly.Utils.addClass(this.el, 'wf-' + this.placement);
+
 		Widgetfly.Widget.prototype.style.apply(this, arguments);
+
+		this.applyPlacement();
 	};
 
 	Popover.prototype.applyPlacement = function () {
+
 		Widgetfly.Utils.innerStyle(this.el,this.styles);
 
 		var top,left,offset = Widgetfly.Utils.offset(this.target),
 			tg  = Widgetfly.Utils.actual(this.target),
 			el = Widgetfly.Utils.actual(this.el);
 
-		if(this.options.placement === 'left'){
+		if(this.placement === 'left'){
 			top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
 			left = offset.left - el.width;
-		}else if(this.options.placement === 'top'){
+		}else if(this.placement === 'top'){
 			top =  offset.top - el.height;
 			left = offset.left + Math.round(tg.width / 2) - Math.round(el.width / 2);
-		}else if(this.options.placement === 'bottom'){
+		}else if(this.placement === 'bottom'){
 			top =  offset.top + tg.height;
 			left = offset.left + Math.round(tg.width / 2) - Math.round(el.width / 2);
 		}else{
@@ -109,7 +123,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 			clearInterval(this.interval);
 		}*/
 
-		this.applyPlacement();
+		this.style();
 
 		/*this.interval = setInterval(function(){
 			self.applyPlacement();

@@ -177,21 +177,26 @@ Widgetfly.Utils = (function(global) {'use strict';
 		},
 
 		addClass : function(element, className) {
-			if (!this.hasClass(element, className)) {
-				element.className += ' ' + className;
+			var a, ad = className.split(' ');
+			for(a in ad){
+				if (!this.hasClass(element, ad[a])) {
+					element.className += ' ' + ad[a];
+				}
 			}
 			this.innerStyle(element);
 		},
 
 		removeClass : function(element, rmClass) {
-			var newClass;
+			var newClass, r, rm = rmClass.split(' ');
 			if (element !== undefined && this.isElement(element)) {
 				newClass = ' ' + element.className.replace(/[\t\r\n]/g, ' ') + ' ';
-				if (this.hasClass(element, rmClass)) {
-					while (newClass.indexOf(' ' + rmClass + ' ') >= 0) {
-						newClass = newClass.replace(' ' + rmClass + ' ', ' ');
+				for(r in rm){
+					if (this.hasClass(element, rm[r])) {
+						while (newClass.indexOf(' ' + rm[r] + ' ') >= 0) {
+							newClass = newClass.replace(' ' + rm[r] + ' ', ' ');
+						}
+						element.className = newClass.replace(/^\s+|\s+$/g, '');
 					}
-					element.className = newClass.replace(/^\s+|\s+$/g, '');
 				}
 			}
 			this.innerStyle(element);

@@ -95,8 +95,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		}
 		Widgetfly.Widget.prototype.show.apply(this, arguments);
 		if(Widgetfly.Utils.isTrue(this.options.backdrop)){
-			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
-			Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
+			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
 			Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
 		}
 	};
@@ -104,8 +103,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	Modal.prototype.hide = function() {
 		Widgetfly.Widget.prototype.hide.apply(this, arguments);
 		if(Widgetfly.Utils.isTrue(this.options.backdrop)){
-			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
-			Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
+			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
 			Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
 		}
 	};
