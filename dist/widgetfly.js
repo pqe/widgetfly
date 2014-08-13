@@ -232,21 +232,26 @@
 						},
 				
 						addClass : function(element, className) {
-							if (!this.hasClass(element, className)) {
-								element.className += ' ' + className;
+							var a, ad = className.split(' ');
+							for(a in ad){
+								if (!this.hasClass(element, ad[a])) {
+									element.className += ' ' + ad[a];
+								}
 							}
 							this.innerStyle(element);
 						},
 				
 						removeClass : function(element, rmClass) {
-							var newClass;
+							var newClass, r, rm = rmClass.split(' ');
 							if (element !== undefined && this.isElement(element)) {
 								newClass = ' ' + element.className.replace(/[\t\r\n]/g, ' ') + ' ';
-								if (this.hasClass(element, rmClass)) {
-									while (newClass.indexOf(' ' + rmClass + ' ') >= 0) {
-										newClass = newClass.replace(' ' + rmClass + ' ', ' ');
+								for(r in rm){
+									if (this.hasClass(element, rm[r])) {
+										while (newClass.indexOf(' ' + rm[r] + ' ') >= 0) {
+											newClass = newClass.replace(' ' + rm[r] + ' ', ' ');
+										}
+										element.className = newClass.replace(/^\s+|\s+$/g, '');
 									}
-									element.className = newClass.replace(/^\s+|\s+$/g, '');
 								}
 							}
 							this.innerStyle(element);
@@ -325,6 +330,7 @@
 						actual : function(el){
 							var elWidth,elHeight,style,
 							fixStyle = ' visibility: hidden !important; display: block !important; position: absolute !important;',
+				
 							size = function(s){
 									if(Boolean(s)){
 										return parseInt(s.substring(0,s.indexOf('px')),10);
@@ -333,18 +339,20 @@
 									}
 							};
 				
-							if (el.offsetParent === null) {
+							//if (el.offsetParent === null) {
 								el.setAttribute('style', el.getAttribute('style') + fixStyle);
-							}
+							//}
 				
 							elWidth = el.offsetWidth;
 				
 							elHeight = el.offsetHeight;
 				
 							style = el.getAttribute('style');
+				
 							if(style && style.indexOf(fixStyle) !== 0){
 								el.setAttribute('style', style.substring(0,style.indexOf(fixStyle)));
 							}
+				
 							return {
 								width : elWidth + size(el.style.marginLeft) + size(el.style.marginRight),
 								height : elHeight + size(el.style.marginTop) + size(el.style.marginBottom)
@@ -708,8 +716,7 @@
 				
 					Widget.prototype.hide = function() {
 						//console.log('Widget.Action hide');
-						Widgetfly.Utils.removeClass(this.el, 'wf-show');
-						Widgetfly.Utils.removeClass(this.el, 'wf-hide');
+						Widgetfly.Utils.removeClass(this.el, 'wf-show wf-hide');
 						Widgetfly.Utils.addClass(this.el, 'wf-hide');
 						var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
@@ -738,8 +745,7 @@
 					Widget.prototype.show = function() {
 						//console.log('Widget.Action show');
 						var self = this, handlers;
-						Widgetfly.Utils.removeClass(this.el, 'wf-show');
-						Widgetfly.Utils.removeClass(this.el, 'wf-hide');
+						Widgetfly.Utils.removeClass(this.el, 'wf-show wf-hide');
 						Widgetfly.Utils.addClass(this.el, 'wf-show');
 						handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
@@ -997,8 +1003,7 @@
 						}
 						Widgetfly.Widget.prototype.show.apply(this, arguments);
 						if(Widgetfly.Utils.isTrue(this.options.backdrop)){
-							Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
-							Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
+							Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
 							Widgetfly.Utils.addClass(this.backdrop, 'wf-show');
 						}
 					};
@@ -1006,8 +1011,7 @@
 					Modal.prototype.hide = function() {
 						Widgetfly.Widget.prototype.hide.apply(this, arguments);
 						if(Widgetfly.Utils.isTrue(this.options.backdrop)){
-							Widgetfly.Utils.removeClass(this.backdrop, 'wf-show');
-							Widgetfly.Utils.removeClass(this.backdrop, 'wf-hide');
+							Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
 							Widgetfly.Utils.addClass(this.backdrop, 'wf-hide');
 						}
 					};
@@ -1083,7 +1087,7 @@
 				
 						this.resizeCallback = function(e){
 							if(self.isShow()){
-								Widgetfly.Utils.throttle(self.applyPlacement, self);
+								Widgetfly.Utils.throttle(self.style, self);
 							}
 						};
 				
@@ -1105,28 +1109,42 @@
 					Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
 				
 					Popover.prototype.style = function() {
-						var placement = this.options.placement;
-						if(!placement){
-							placement = 'right';
+						var vw,vh,vert,vertPlacement,horiz,horizPlacement, actualWidth, actualHeight,size = Widgetfly.Utils.actual(this.el);
+						this.placement = this.options.placement;
+				
+						if(this.options.placement === 'auto' || !Boolean(this.options.placement)){
+								vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+								vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+								vert = 0.5 * vh - size.width;
+						    vertPlacement = vert > 0 ? 'bottom' : 'top';
+						    horiz = 0.5 * vw - size.height;
+						    horizPlacement = horiz > 0 ? 'right' : 'left';
+						    this.placement = Math.abs(horiz) > Math.abs(vert) ?  horizPlacement : vertPlacement;
 						}
-						Widgetfly.Utils.addClass(this.el, 'wf-' + placement);
+				
+						Widgetfly.Utils.removeClass(this.el, 'wf-top wf-right wf-bottom wf-left');
+						Widgetfly.Utils.addClass(this.el, 'wf-' + this.placement);
+				
 						Widgetfly.Widget.prototype.style.apply(this, arguments);
+				
+						this.applyPlacement();
 					};
 				
 					Popover.prototype.applyPlacement = function () {
+				
 						Widgetfly.Utils.innerStyle(this.el,this.styles);
 				
 						var top,left,offset = Widgetfly.Utils.offset(this.target),
 							tg  = Widgetfly.Utils.actual(this.target),
 							el = Widgetfly.Utils.actual(this.el);
 				
-						if(this.options.placement === 'left'){
+						if(this.placement === 'left'){
 							top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
 							left = offset.left - el.width;
-						}else if(this.options.placement === 'top'){
+						}else if(this.placement === 'top'){
 							top =  offset.top - el.height;
 							left = offset.left + Math.round(tg.width / 2) - Math.round(el.width / 2);
-						}else if(this.options.placement === 'bottom'){
+						}else if(this.placement === 'bottom'){
 							top =  offset.top + tg.height;
 							left = offset.left + Math.round(tg.width / 2) - Math.round(el.width / 2);
 						}else{
@@ -1145,7 +1163,7 @@
 							clearInterval(this.interval);
 						}*/
 				
-						this.applyPlacement();
+						this.style();
 				
 						/*this.interval = setInterval(function(){
 							self.applyPlacement();
