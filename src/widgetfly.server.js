@@ -19,7 +19,7 @@ Widgetfly.Server = (function(global) {'use strict';
 
 				parser = window.document.createElement('a');
 				parser.href = self.params.origin;
-				origin = parser.protocol + '//' + parser.host;
+				origin = parser.protocol + '//' + parser.hostname + (parser.port &&  parseInt(parser.port,10) !== 80 ? (':' + parser.port) : '');
 
 				if(origin !== 'file://' && origin !== msgObj.origin){
 					//console.log('Server ignore message from ' + msgObj.origin);

@@ -72,6 +72,11 @@
 					}
 				}
 			}
+
+			Widgetfly.Server.get = function(){
+				throw 'Widgetfly.Server is not supported outside iframe.';
+			};
+
 		} else {
 			//console.log('Now is Server initialize');
 			// widget

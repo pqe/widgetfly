@@ -147,7 +147,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		if (window.location.protocol === 'file:') {
 			origin = window.location.protocol + '//' + window.location.pathname;
 		} else {
-			origin = window.location.protocol + '//' + window.location.host;
+			origin = window.location.protocol + '//' + window.location.hostname + (parseInt(window.location.port,10) &&  window.location.port !== 80 ? (':' + window.location.port) : '');
 		}
 
 		urlOptions = {

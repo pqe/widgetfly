@@ -53,7 +53,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 			if (widget) {
 				parser = window.document.createElement('a');
 				parser.href = widget.iframe.src;
-				targetOrigin = parser.protocol + '//' + parser.host;
+				targetOrigin = parser.protocol + '//' + parser.hostname + (parser.port &&  parseInt(parser.port,10) !== 80 ? (':' + parser.port) : '');
 				widget.iframe.contentWindow.postMessage(corsObj, targetOrigin);
 			}
 		},
@@ -82,7 +82,7 @@ Widgetfly.Mediator = (function(global) {'use strict';
 			if (widget) {
 				parser = window.document.createElement('a');
 				parser.href = widget.iframe.src;
-				origin = parser.protocol + '//' + parser.host;
+				origin = parser.protocol + '//' + parser.hostname + (parser.port &&  parseInt(parser.port,10) !== 80 ? (':' + parser.port) : '');
 
 				if (origin !== msgObj.origin) {
 					//console.log('Widget ignore message from ' + msgObj.origin);
