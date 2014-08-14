@@ -481,7 +481,7 @@
 							if (widget) {
 								parser = window.document.createElement('a');
 								parser.href = widget.iframe.src;
-								targetOrigin = parser.protocol + '//' + parser.host;
+								targetOrigin = parser.protocol + '//' + parser.hostname + (parser.port ? (':' + parser.port) : '');
 								widget.iframe.contentWindow.postMessage(corsObj, targetOrigin);
 							}
 						},
@@ -510,8 +510,8 @@
 							if (widget) {
 								parser = window.document.createElement('a');
 								parser.href = widget.iframe.src;
-								origin = parser.protocol + '//' + parser.host;
-				
+								origin = parser.protocol + '//' + parser.hostname + (parser.port ? (':' + parser.port) : '');
+								console.log(origin + '=' + msgObj.origin);
 								if (origin !== msgObj.origin) {
 									//console.log('Widget ignore message from ' + msgObj.origin);
 									return;
@@ -552,7 +552,7 @@
 				
 								parser = window.document.createElement('a');
 								parser.href = self.params.origin;
-								origin = parser.protocol + '//' + parser.host;
+								origin = parser.protocol + '//' + parser.hostname + (parser.port ? (':' + parser.port) : '');
 				
 								if(origin !== 'file://' && origin !== msgObj.origin){
 									//console.log('Server ignore message from ' + msgObj.origin);
@@ -787,7 +787,7 @@
 						if (window.location.protocol === 'file:') {
 							origin = window.location.protocol + '//' + window.location.pathname;
 						} else {
-							origin = window.location.protocol + '//' + window.location.host;
+							origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? (':' + window.location.port) : '');
 						}
 				
 						urlOptions = {
@@ -1264,6 +1264,11 @@
 									}
 								}
 							}
+				
+							Widgetfly.Server.get = function(){
+								throw 'Widgetfly.Server is not supported outside iframe.';
+							};
+				
 						} else {
 							//console.log('Now is Server initialize');
 							// widget
