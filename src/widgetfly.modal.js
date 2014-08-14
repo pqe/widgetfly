@@ -115,7 +115,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
 			r = handlers.onBeforeClose();
 		}
-		window.window.removeEventListener('resize', this.resizeCallback, false);
+		window.removeEventListener('resize', this.resizeCallback, false);
 		if(r !== false){
 			Widgetfly.Mediator.unregister(this.id, function() {
 				self.container.removeChild(self.el);

@@ -49,6 +49,7 @@
 
   .wf-modal, &.wf-modal {
     position: fixed;
+    height:100%;
     top: 0;
     right: 0;
     bottom: 0;
@@ -80,9 +81,11 @@
           background-clip: padding-box;
           // Remove focus outline from opened modal
           outline: 0;
+          height:100%;
 
           .wf-modal-body {
             position: relative;
+            height:100%;
           }
 
           .wf-close {
@@ -108,9 +111,8 @@
     &.wf-modal-lg {
       .wf-modal-dialog {
         max-width: 80%;
-          .wf-modal-body {
-            min-height: 80%;
-          }
+        height:80%;
+
         }
       }
 
@@ -118,18 +120,15 @@
       &.wf-modal-md {
         .wf-modal-dialog {
           max-width: 50%;
-          .wf-modal-body {
-              min-height: 60%;
-           }
+          height: 60%;
+
          }
       }
 
       &.wf-modal-sm {
         .wf-modal-dialog {
           max-width: 30%;
-          .wf-modal-body {
-              min-height: 30%;
-           }
+          height: 30%;
          }
       }
 
