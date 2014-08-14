@@ -30,6 +30,12 @@ Once you have generated your AMD module skeleton, you can build the minified fil
 grunt
 ```
 
+bower install dependencies
+
+```shell
+grunt bower-install
+```
+
 You can also launch the `grunt serve` task to load the "examples/dev" folder in your browser and benefit from livereload of the page in the browser once you edit one of your source file or one of the example files:
 
 ```shell
