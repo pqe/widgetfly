@@ -97,7 +97,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 		var top,left,offset = Widgetfly.Utils.offset(this.target),
 			tg  = Widgetfly.Utils.actual(this.target),
 			el = Widgetfly.Utils.actual(this.el);
-
+			
 		if(this.placement === 'left'){
 			top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
 			left = offset.left - el.width;

@@ -284,19 +284,17 @@ Widgetfly.Utils = (function(global) {'use strict';
 					}
 			};
 
+			style = el.getAttribute('style');
+
 			//if (el.offsetParent === null) {
-				el.setAttribute('style', el.getAttribute('style') + fixStyle);
+				el.setAttribute('style', (style ? style : '') + fixStyle);
 			//}
 
 			elWidth = el.offsetWidth;
 
 			elHeight = el.offsetHeight;
 
-			style = el.getAttribute('style');
-
-			if(style && style.indexOf(fixStyle) !== 0){
-				el.setAttribute('style', style.substring(0,style.indexOf(fixStyle)));
-			}
+			el.setAttribute('style', (style ? style : ''));
 
 			return {
 				width : elWidth + size(el.style.marginLeft) + size(el.style.marginRight),
