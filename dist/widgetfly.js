@@ -481,7 +481,7 @@
 							if (widget) {
 								parser = window.document.createElement('a');
 								parser.href = widget.iframe.src;
-								targetOrigin = parser.protocol + '//' + parser.hostname + (parser.port &&  parser.port !== 80 ? (':' + parser.port) : '');
+								targetOrigin = parser.protocol + '//' + parser.hostname + (parser.port &&  parseInt(parser.port,10) !== 80 ? (':' + parser.port) : '');
 								widget.iframe.contentWindow.postMessage(corsObj, targetOrigin);
 							}
 						},
@@ -510,8 +510,8 @@
 							if (widget) {
 								parser = window.document.createElement('a');
 								parser.href = widget.iframe.src;
-								origin = parser.protocol + '//' + parser.hostname + (parser.port &&  parser.port !== 80 ? (':' + parser.port) : '');
-								console.log(origin + '=' + msgObj.origin);
+								origin = parser.protocol + '//' + parser.hostname + (parser.port &&  parseInt(parser.port,10) !== 80 ? (':' + parser.port) : '');
+				
 								if (origin !== msgObj.origin) {
 									//console.log('Widget ignore message from ' + msgObj.origin);
 									return;
@@ -552,7 +552,7 @@
 				
 								parser = window.document.createElement('a');
 								parser.href = self.params.origin;
-								origin = parser.protocol + '//' + parser.hostname + (parser.port &&  parser.port !== 80 ? (':' + parser.port) : '');
+								origin = parser.protocol + '//' + parser.hostname + (parser.port &&  parseInt(parser.port,10) !== 80 ? (':' + parser.port) : '');
 				
 								if(origin !== 'file://' && origin !== msgObj.origin){
 									//console.log('Server ignore message from ' + msgObj.origin);
@@ -787,7 +787,7 @@
 						if (window.location.protocol === 'file:') {
 							origin = window.location.protocol + '//' + window.location.pathname;
 						} else {
-							origin = window.location.protocol + '//' + window.location.hostname + (window.location.port &&  window.location.port !== 80 ? (':' + window.location.port) : '');
+							origin = window.location.protocol + '//' + window.location.hostname + (parseInt(window.location.port,10) &&  window.location.port !== 80 ? (':' + window.location.port) : '');
 						}
 				
 						urlOptions = {
