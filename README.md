@@ -1,16 +1,19 @@
 Widgetfly
 ==============
 
-A javascript library for building cross-site web widgets.
+A javascript library for building cross-site(cross domain) web widgets.
 
 About
 --------------
 
-URL: [https://github.com/pqe/widgetfly](https://github.com/pqe/widgetfly)
+Website URL: [https://github.com/pqe/widgetfly](https://github.com/pqe/widgetfly)
+
+**Widgetfly** SDK is a javascript framework that helps you to building cross-site(cross domain) web widgets. It gives architecture to web widgets by providing cross-site **Events** model and basic **UI Features**.
 
 Documentation
 --------------
-Read the [docs](docs/README.md) to learn about the Widgetfly.
+Read the [documentation](docs/README.md) to learn about the Widgetfly.
+
 
 Build from source
 --------------
@@ -27,7 +30,7 @@ Once you have generated your AMD module skeleton, you can build the minified fil
 grunt
 ```
 
-You can also launch the `grunt serve` task to load the "examples" folder in your browser and benefit from livereload of the page in the browser once you edit one of your source file or one of the example files:
+You can also launch the `grunt serve` task to load the "examples/dev" folder in your browser and benefit from livereload of the page in the browser once you edit one of your source file or one of the example files:
 
 ```shell
 grunt serve
