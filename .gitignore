@@ -3,6 +3,8 @@ bower_components
 .tmp
 *.log
 .project
+*.DS_Store
+
 =======
 # Logs
 logs
