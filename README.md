@@ -6,7 +6,7 @@ A javascript library for building cross-site(cross domain) web widgets.
 About
 --------------
 
-Website URL: [https://github.com/pqe/widgetfly](https://github.com/pqe/widgetfly)
+Website URL: [http://pqe.github.io/widgetfly/](http://pqe.github.io/widgetfly/)
 
 **Widgetfly** SDK is a javascript framework that helps you to building cross-site(cross domain) web widgets. It gives architecture to web widgets by providing cross-site **Events** model and basic **UI Features**.
 
@@ -30,6 +30,9 @@ Once you have generated your AMD module skeleton, you can build the minified fil
 grunt
 ```
 
+Development
+--------------
+
 bower install dependencies
 
 ```shell
@@ -45,19 +48,12 @@ grunt serve
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 [![Build Status](https://travis-ci.org/pqe/widgetfly.svg?branch=master)](https://travis-ci.org/pqe/widgetfly)
 
-Credits
+
+Browser compatibility
 --------------
 
-Widgetfly was initiated with [generator-amd](https://github.com/T1st3/generator-amd), a [Yeoman](http://yeoman.io) generator that builds an AMD module boilerplate.
-
-This project uses the following as development dependencies:
-
-* [JSHint](http://jshint.com)
-* [JSCS](https://npmjs.org/package/jscs)
-* [UglifyJS](http://marijn.haverbeke.nl/uglifyjs)
-* [JSDoc](http://usejsdoc.org)
-
-
+ - Newer versions of Google Chrome, Safari, Firefox
+ - IE10+
 
 License
 --------------
