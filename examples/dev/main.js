@@ -14,6 +14,10 @@ var m1 = new ModalWidget({
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/modal.html'
 });
 
+m1.on('selected', function(path){
+	$('.file').html(path);
+});
+
 pa1.onStart(function() {
 	console.log('p1 is started');
 	pa1.trigger('hello', 'p1');
@@ -22,9 +26,11 @@ pa1.onStart(function() {
 		console.log('p1 is closing');
 		return true;
 	});
+
 	pa1.on('openModalWidget', function() {
 		m1.show();
 	});
+
 });
 
 var PopoverWidget = Widgetfly.Popover.extend({/** overwrite **/});

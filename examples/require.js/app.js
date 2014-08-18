@@ -31,6 +31,10 @@ require([
 		src : 'http://pqe.github.io/widgetfly/examples/widgets/modal.html'
 	});
 
+	m1.on('selected', function(path){
+		document.querySelector('.file').innerHTML = path;
+	});
+
 	pa1.onStart(function() {
 		console.log('p1 is started');
 		pa1.trigger('hello', 'p1');
