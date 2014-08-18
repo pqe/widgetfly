@@ -11,14 +11,14 @@ Widgetfly.Server = (function(global) {'use strict';
 
 	Server.prototype.init = function() {
 		var self = this, paramData = decodeURIComponent(window.location.hash.substring(1));
-		this.params = JSON.parse(paramData);
+		this.options = JSON.parse(paramData);
 		this.trigger('start');
 		window.addEventListener('message', function(msgObj) {
 			if(window.parent){
 				var action, origin, parser;
 
 				parser = window.document.createElement('a');
-				parser.href = self.params.origin;
+				parser.href = self.options.origin;
 				origin = parser.protocol + '//' + parser.hostname + (parser.port &&  parseInt(parser.port,10) !== 80 ? (':' + parser.port) : '');
 
 				if(origin !== 'file://' && origin !== msgObj.origin){
@@ -53,10 +53,9 @@ Widgetfly.Server = (function(global) {'use strict';
 			action : action,
 			id : this.id
 		};
-		//self.params = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
 
 		//console.log(corsObj);
-		parent.postMessage(corsObj, this.params.origin);
+		parent.postMessage(corsObj, this.options.origin);
 	};
 
 	Server.prototype.show = function() {

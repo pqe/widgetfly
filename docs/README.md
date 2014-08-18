@@ -286,10 +286,28 @@ var CustomPanel = new Widgetfly.Panel.extend({
 		this.on('hello',callback);
 	}
 });
-var myCustomPanel = new CustomPanel({//widget options})
+var myCustomPanel = new CustomPanel({
+
+	/*custom widget options*/
+	options : {
+		'...' : '...',
+		'your_parameters_obj': 'passing parameters to Server'
+	}
+});
 myCustomPanel.onHello(function(name){
 	alert('hello ' + name);
 });
+```
+
+###Server options
+* **origin** : The Widget domain,
+* **autoGrow** : true / false
+* **options** : {//custom widget specification}
+<p>Custom options will pass from Widget to Server object</p>
+
+Get custom options passing from a **Widget** object.
+```js
+this.options.options
 ```
 
 ###Methods
