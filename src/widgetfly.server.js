@@ -36,6 +36,10 @@ Widgetfly.Server = (function(global) {'use strict';
 				}
 			}
 		}, false);
+
+		if(this.options.autoGrow){
+			this.expand();
+		}
 	};
 
 	Server.prototype.on = function(key, callback) {

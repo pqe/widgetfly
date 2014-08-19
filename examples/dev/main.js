@@ -4,6 +4,7 @@ var ModalWidget = Widgetfly.Modal.extend({/** overwrite **/});
 var pa0 = new PanelWidget({
 	container : '.social-panel',
 	show : true,
+	autoGrow : true,
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/socialpanel/panel.html',
 	options : {
 
