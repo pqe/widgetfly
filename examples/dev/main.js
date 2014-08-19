@@ -1,5 +1,16 @@
 var PanelWidget = Widgetfly.Panel.extend({/** overwrite **/});
 var ModalWidget = Widgetfly.Modal.extend({/** overwrite **/});
+
+var pa0 = new PanelWidget({
+	container : '.social-panel',
+	show : true,
+	src : 'http://pqe.github.io/widgetfly/examples/widgets/socialpanel/panel.html',
+	options : {
+
+	}
+});
+
+
 var pa1 = new PanelWidget({
 	container : '.mypanel',
 	show : true,
@@ -11,7 +22,7 @@ var pa1 = new PanelWidget({
 var m1 = new ModalWidget({
 	show : false,
 	backdrop : true,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/modal.html'
+	src : 'http://pqe.github.io/widgetfly/examples/widgets/filechooser/modal.html'
 });
 
 m1.on('selected', function(path){

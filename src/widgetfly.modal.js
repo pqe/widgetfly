@@ -93,6 +93,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 				}
 			}
 		}
+		this.style();
 		Widgetfly.Widget.prototype.show.apply(this, arguments);
 		if(Widgetfly.Utils.isTrue(this.options.backdrop)){
 			Widgetfly.Utils.removeClass(this.backdrop, 'wf-show wf-hide');
@@ -124,6 +125,11 @@ Widgetfly.Modal = (function(global) {'use strict';
 				}
 			});
 		}
+	};
+
+	Modal.prototype.sizeChange = function(size){
+		Widgetfly.Utils.innerStyle(this.el.querySelector('.wf-modal-dialog'),{size: 'height:' + ((typeof size.height === 'string') ? size.height : (String(size.height) + 'px'))});
+		Widgetfly.Widget.prototype.sizeChange.apply(this, arguments);
 	};
 
 	return Modal;

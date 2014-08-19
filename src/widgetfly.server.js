@@ -89,15 +89,24 @@ Widgetfly.Server = (function(global) {'use strict';
 	};
 
 	Server.prototype.expand = function() {
-		var height = 0, width = null,body = window.document.body;
-		if (window.innerHeight) {
-		    height = window.innerHeight;
-		} else if (body.parentElement.clientHeight) {
-		    height = body.parentElement.clientHeight;
-		} else if (body && body.clientHeight) {
-		    height = body.clientHeight;
-		}
-		this.trigger('sizeChange', {height : height, width : width});
+		var self = this,resize = function(){
+				window.removeEventListener('resize', resize, false);
+				var body = document.body,
+					html = document.documentElement,
+					height = Math.max( body.scrollHeight, body.offsetHeight,
+									html.clientHeight, html.scrollHeight, html.offsetHeight );
+				self.trigger('sizeChange', {height : height});
+			}, compact = function(){
+			if(document.readyState === 'complete'){
+
+				window.addEventListener('resize', resize, false);
+				self.trigger('sizeChange', {height : 0});
+
+			}else{
+				compact._id = setTimeout(compact,100);
+			}
+		};
+		compact();
 	};
 
 	return Server;

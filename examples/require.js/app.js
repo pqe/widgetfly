@@ -28,7 +28,7 @@ require([
 	var m1 = new ModalWidget({
 		show : false,
 		backdrop : true,
-		src : 'http://pqe.github.io/widgetfly/examples/widgets/modal.html'
+		src : 'http://pqe.github.io/widgetfly/examples/widgets/filechooser/modal.html'
 	});
 
 	m1.on('selected', function(path){

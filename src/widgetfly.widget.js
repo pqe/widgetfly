@@ -184,7 +184,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 		return iframe;
 	};
-
+	
 	Widget.prototype.sizeChange = function(size){
 		Widgetfly.Utils.innerStyle(this.iframe,{size: 'height:' + ((typeof size.height === 'string') ? size.height : (String(size.height) + 'px'))});
 	};
