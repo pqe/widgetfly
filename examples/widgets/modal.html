@@ -6,106 +6,15 @@
 		<title>widgetfly</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- Required Stylesheets -->
-		<link href="libs/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet">
-		<link href="libs/bootstrap/css/bootstrap.css" rel="stylesheet">
-
-		<!-- Required Javascript -->
-		<script src="libs/jquery/jquery-2.1.1.min.js"></script>
-		<script src="libs/bootstrap-treeview/bootstrap-treeview.min.js"></script>
 		<script type="text/javascript" src="../../dist/widgetfly.min.js"></script>
 	</head>
 	<body>
-		<div id="tree"></div>
+		<div class="mywidget">Modal Widget</div>
 		<script>
-		try{
 			var server = new Widgetfly.Server.get();
-			$('#tree').treeview({
-				showBorder: false,
-				expandIcon : 'glyphicon glyphicon-folder-close',
-          		collapseIcon: 'glyphicon glyphicon-folder-open',
-          		nodeIcon : 'glyphicon',
-				onNodeSelected: function(event, node) {
-					if(node.selectable){
-						server.trigger('selected' , node.data.path);
-						server.hide();
-					}
-				},
-				data: [
-				  {
-				    text: "Pictures",
-				    nodes: [
-				      {
-				        text: "iPhoto",
-				        selectable : false,
-				        nodes: [
-				          {
-				          	icon : 'glyphicon glyphicon-file',
-				            text: "060927_cr_015.jpg",
-				            selectable : true,
-				            data : {
-				            	path : '/Pictures/iPhoto/060927_cr_015.jpg'
-				            }
-				          },
-				          {
-				          	icon : 'glyphicon glyphicon-file',
-				            text: "060510_cr_wm_02_01.jpg",
-				            selectable : true,
-				            data : {
-				            	path : '/Pictures/iPhoto/060510_cr_wm_02_01.jpg'
-				            }
-				          }
-				        ]
-				      },
-				      {
-				      	icon : 'glyphicon glyphicon-file',
-				        text: "061017_cr_3270_3.jpg",
-				        selectable : true,
-				        data : {
-				            	path : '/Pictures/061017_cr_3270_3.jpg'
-				            }
-				      }
-				    ]
-				  },
-				  {
-				    text: "Downloads",
-				    selectable : false
-				  },
-				  {
-				    text: "Public",
-				    selectable : false
-				  },
-				  {
-				    text: "Library",
-				    selectable : false
-				  },
-				  {
-				    text: "Applications",
-				    selectable : false
-				  },
-				  {
-				    text: "Movies",
-				    selectable : false
-				  },
-				  {
-				    text: "Desktop",
-				    selectable : false
-				  },
-				  {
-				    text: "Music",
-				    selectable : false
-				  },
-				  {
-				    text: "Documents",
-				    selectable : false
-				  }
-				]
+			server.on('hello', function(name){
+				console.log('Server: hello from ' + name);
 			});
-		}catch(e){ 
-			console.log(e);
-		}
-
-			
 		</script>
 	</body>
 </html>

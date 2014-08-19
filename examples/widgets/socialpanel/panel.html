@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>widgetfly</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/base.css">
+
+		<script type="text/javascript" src="js/libs/jquery/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="../../../dist/widgetfly.min.js"></script>
+	</head>
+	<body>
+		<ul class="unstyled">
+      <li>
+        <a href="#" class="list-item">
+          <div class="pull-left" style="margin:0 10px 10px 0;">
+            <div class="circle" style="width: 40px; height: 40px;">
+              <img src="img/spiderman.png" width="39">
+            </div>
+          </div>
+          <div class="text">
+            <div>
+              Hey guys. Long time no see.<br>
+              <span class="small">to Hero 1, Hero 2</span>
+            </div>
+            <div class="drop down right small">
+              <span class="text-grey">Just now</span>
+            </div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="list-item">
+          <div class="pull-left" style="margin:0 10px 10px 0;">
+            <div class="circle" style="width: 40px; height: 40px;">
+              <img src="img/mike.png" width="39">
+            </div>
+          </div>
+          <div class="text">
+            <div>
+              I'm fine, thanks! And you?<br>
+              <span class="small">to Hero 2 <span class="text-grey">- RE: Hello! How are you?</span></span>
+            </div>
+            <div class="drop down right small">
+              <span class="text-grey">5m</span>
+            </div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="list-item">
+          <div class="pull-left" style="margin:0 10px 10px 0;">
+            <div class="circle" style="width: 40px; height: 40px;">
+              <img src="img/pumpkin.png" width="39">
+            </div>
+          </div>
+          <div class="text">
+            <div>
+              Hello! How are you?<br>
+              <span class="small">to Hero 1 <span class="text-grey">- Conversation started</span></span>
+            </div>
+            <div class="drop down right small">
+              <span class="text-grey">10m</span>
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+    <script>
+		$(document).ready(function(){
+			Widgetfly.Server.get().expand();
+		});
+	</script>
+	</body>
+</html>
