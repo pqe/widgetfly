@@ -101,8 +101,10 @@
 				  }
 				]
 			});
-
-			Widgetfly.Server.get().expand();
+			
+			Widgetfly.Server.get().onShow(function(){
+				Widgetfly.Server.get().expand();
+			});
 		});
 		</script>
 	</body>
