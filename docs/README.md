@@ -90,7 +90,7 @@ Following example shows how to interact between widgets.
 	});
 </script>
 ```
-#Widgetfly Modules
+#Widgets
 
 There are three types of widgets in Widgetfly currently.
 
@@ -137,16 +137,6 @@ myWidget.on('chooseFiles', function(files){
 ```js
 mywidget.trigger('hello',{name: 'world'});
 ```
-###Default events callback binding
-* onShow
-* onHide
-* onBeforeClose
-```js
-myWidget.onBeforeClose(function(){
-	return window.confirm('are your sure?');
-});
-```
-
 
 ##Widgetfly.Modal
 
@@ -191,15 +181,6 @@ myWidget.on('chooseFiles', function(files){
 <p>Trigger **Server** callbacks for the given event. Subsequent arguments to trigger will be passed along to the **Server** callback function.
 ```js
 mywidget.trigger('hello',{name: 'world'});
-```
-###Default events callback binding
-* onShow
-* onHide
-* onBeforeClose
-```js
-myWidget.onBeforeClose(function(){
-	return window.confirm('are your sure?');
-});
 ```
 
 ##Widgetfly.Popover
@@ -246,7 +227,8 @@ myWidget.on('chooseFiles', function(files){
 ```js
 mywidget.trigger('hello',{name: 'world'});
 ```
-###Default events callback binding
+
+##Default events callback binding for widgets
 * onShow
 * onHide
 * onBeforeClose
@@ -300,8 +282,9 @@ myCustomPanel.onHello(function(name){
 ```
 
 ###Server options
-* **origin** : The Widget domain,
+* **origin** : The Widget origin
 * **autoGrow** : true / false
+<p> Expanding height to fit the widget content when widget is initialized.</p>
 * **options** : {//custom widget specification}
 <p>Custom options will pass from Widget to Server object</p>
 
@@ -332,10 +315,16 @@ Widgetfly.Server.get().toggle();
 ```js
 Widgetfly.Server.get().close();
 ```
+
 * **expand()**
-<p>When widget is started and set autoGrow as ```true``` in initialize setting, This method can helps you to fire the method to this, and auto resize the widget in display, This method is usually used after widget is loaded and render HTML finished.</p>
+<p>This method helps you to expand **Widget** height to fit the widget content, This method is usually used after widget is loaded and render HTML finished.</p>
 ```
 Widgetfly.Server.get().expand();
+```
+* **compact()**
+<p>This method helps you to compact **Widget** height to fit the widget content, This method is usually used after widget is loaded and render HTML finished.</p>
+```
+Widgetfly.Server.get().compact();
 ```
 * **on('custom-event',callbackFunction)**
 <p>Bind a callback function to listen event form **Widget**</p>
