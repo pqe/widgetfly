@@ -6,11 +6,13 @@
 		<title>widgetfly</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="filechooser/libs/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet">
+		<link href="filechooser/libs/bootstrap/css/bootstrap.css" rel="stylesheet">
+
 		<script type="text/javascript" src="../../dist/widgetfly.min.js"></script>
 	</head>
 	<body>
-		<div class="mywidget">Panel Widget</div>
-		<button class="open-modal">Launch FileChooser</button>
+		<a class="btn btn-success open-modal"><span class="glyphicon glyphicon-hdd"></span> Choose from FileChooser</a>
 		<script>
 			var server = new Widgetfly.Server.get();
 			server.on('hello', function(name){
