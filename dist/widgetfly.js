@@ -633,18 +633,37 @@
 					};
 				
 					Server.prototype.expand = function() {
+						var self = this,compact = function(){
+							if(document.readyState === 'complete'){
+								var body = document.body,
+									html = document.documentElement,
+									height = Math.max( body.scrollHeight, body.offsetHeight,
+													html.clientHeight, html.scrollHeight, html.offsetHeight );
+								self.trigger('sizeChange', {height : height});
+							}else{
+								compact._id = setTimeout(compact,100);
+							}
+						};
+						compact();
+					};
+				
+					Server.prototype.compact = function() {
 						var self = this,resize = function(){
 								window.removeEventListener('resize', resize, false);
 								var body = document.body,
 									html = document.documentElement,
 									height = Math.max( body.scrollHeight, body.offsetHeight,
 													html.clientHeight, html.scrollHeight, html.offsetHeight );
+								self.height = height;
 								self.trigger('sizeChange', {height : height});
 							}, compact = function(){
 							if(document.readyState === 'complete'){
-				
-								window.addEventListener('resize', resize, false);
-								self.trigger('sizeChange', {height : 0});
+								var body = document.body,
+									html = document.documentElement,
+									height = Math.max( body.scrollHeight, body.offsetHeight,
+													html.clientHeight, html.scrollHeight, html.offsetHeight );
+									window.addEventListener('resize', resize, false);
+									self.trigger('sizeChange', {height : 0});
 				
 							}else{
 								compact._id = setTimeout(compact,100);

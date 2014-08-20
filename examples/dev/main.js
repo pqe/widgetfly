@@ -2,7 +2,7 @@ var PanelWidget = Widgetfly.Panel.extend({/** overwrite **/});
 var ModalWidget = Widgetfly.Modal.extend({/** overwrite **/});
 
 var pa0 = new PanelWidget({
-	container : '.social-panel',
+	container : '.socialpanel',
 	show : true,
 	autoGrow : true,
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/socialpanel/panel.html',
