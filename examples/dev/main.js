@@ -15,6 +15,7 @@ var pa0 = new PanelWidget({
 var pa1 = new PanelWidget({
 	container : '.mypanel',
 	show : true,
+	autoGrow: true,
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/panel.html',
 	options : {
 		hello : 'world'

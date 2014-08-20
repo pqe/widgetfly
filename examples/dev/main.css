@@ -102,3 +102,7 @@ body {
 .mypopover{
   line-height: 48px;
 }
+
+.mypanel{
+    height: 32px;
+}
