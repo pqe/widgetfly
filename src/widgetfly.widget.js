@@ -99,18 +99,21 @@ Widgetfly.Widget = (function(global) {'use strict';
 	};
 
 	Widget.prototype.isShow = function() {
-		return Widgetfly.Utils.hasClass(this.el,'wf-show');
+		var result = Widgetfly.Utils.hasClass(this.el,'wf-show');
+		this.trigger('_isShow',result);
+		return result;
 	};
 
 	Widget.prototype.show = function() {
 		//console.log('Widget.Action show');
-		var self = this, handlers;
+		var handlers;
 		Widgetfly.Utils.removeClass(this.el, 'wf-show wf-hide');
 		Widgetfly.Utils.addClass(this.el, 'wf-show');
 		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
 			handlers.onShow();
 		}
+		this.trigger('_onShow');
 	};
 
 	Widget.prototype.onBeforeClose = function(callback) {
@@ -127,6 +130,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 			r = handlers.onBeforeClose();
 		}
 		if(r !== false){
+			this.trigger('_onClose');
 			Widgetfly.Mediator.unregister(this.id, function() {
 				self.container.removeChild(self.el);
 			});
@@ -184,9 +188,11 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 		return iframe;
 	};
-	
+
 	Widget.prototype.sizeChange = function(size){
-		Widgetfly.Utils.innerStyle(this.iframe,{size: 'height:' + ((typeof size.height === 'string') ? size.height : (String(size.height) + 'px'))});
+		if(this.isShow()){
+			Widgetfly.Utils.innerStyle(this.iframe,{size: 'height:' + ((typeof size.height === 'string') ? size.height : (String(size.height) + 'px'))});
+		}
 	};
 
 	return Widget;

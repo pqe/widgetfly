@@ -23,7 +23,7 @@ var pa1 = new PanelWidget({
 var m1 = new ModalWidget({
 	show : false,
 	backdrop : true,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/filechooser/modal.html'
+	src : '../../../widgetfly.github.io/examples/widgets/filechooser/modal.html'
 });
 
 m1.on('selected', function(path){

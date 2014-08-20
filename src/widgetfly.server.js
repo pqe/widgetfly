@@ -62,6 +62,19 @@ Widgetfly.Server = (function(global) {'use strict';
 		parent.postMessage(corsObj, this.options.origin);
 	};
 
+	Server.prototype.isShow = function(callback) {
+		var self = this, wrapper = function(data){
+			self.off('_isShow', wrapper);
+			callback(data);
+		};
+		this.on('_isShow', wrapper);
+		this.trigger('isShow');
+	};
+
+	Server.prototype.onShow = function(callback) {
+		this.on('_onShow', callback);
+	};
+
 	Server.prototype.show = function() {
 		this.trigger('show');
 	};
@@ -73,23 +86,15 @@ Widgetfly.Server = (function(global) {'use strict';
 	Server.prototype.toggle = function() {
 		this.trigger('toggle');
 	};
-
-	Server.prototype.onClose = function(callback) {
-		//console.log('Server onClose action');
-		callback();
-	};
-
+	
 	Server.prototype.close = function() {
 		//console.log('Prepare server close action');
 		var self = this;
 		Widgetfly.Utils.each(this.events, function(key) {
 			delete self.events[key];
 		});
+		this.trigger('close');
 
-		this.onClose(function() {
-			//console.log('Server close action');
-			self.trigger('close');
-		});
 	};
 
 	Server.prototype.expand = function() {
@@ -114,17 +119,11 @@ Widgetfly.Server = (function(global) {'use strict';
 					html = document.documentElement,
 					height = Math.max( body.scrollHeight, body.offsetHeight,
 									html.clientHeight, html.scrollHeight, html.offsetHeight );
-				self.height = height;
 				self.trigger('sizeChange', {height : height});
 			}, compact = function(){
 			if(document.readyState === 'complete'){
-				var body = document.body,
-					html = document.documentElement,
-					height = Math.max( body.scrollHeight, body.offsetHeight,
-									html.clientHeight, html.scrollHeight, html.offsetHeight );
-					window.addEventListener('resize', resize, false);
-					self.trigger('sizeChange', {height : 0});
-
+				window.addEventListener('resize', resize, false);
+				self.trigger('sizeChange', {height : 0});
 			}else{
 				compact._id = setTimeout(compact,100);
 			}

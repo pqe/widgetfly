@@ -326,8 +326,25 @@ Widgetfly.Server.get().expand();
 ```
 Widgetfly.Server.get().compact();
 ```
+
+* **isShow(callback)**
+<p>check if **Widget** is shown</p>
+```
+Widgetfly.Server.get().isShow(function(show){
+	console.log(show);
+});
+```
+
+* **onShow(callback)**
+<p>bind a callback function to listen the show event from **Widget**.</p>
+```
+Widgetfly.Server.get().onShow(function(){
+	Widgetfly.Server.get().expand();
+});
+```
+
 * **on('custom-event',callbackFunction)**
-<p>Bind a callback function to listen event form **Widget**</p>
+<p>Bind a callback function to listen event from **Widget**</p>
 ```js
 myServer.on('doSomething', function(data){
 	// do something...
