@@ -47,12 +47,12 @@ pa1.onStart(function() {
 });
 
 var PopoverWidget = Widgetfly.Popover.extend({/** overwrite **/});
+
 var po1 = new PopoverWidget({
 	target : '#target-right',
 	placement : 'right',
 	show : false,
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
-	//src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 });
 
 document.querySelector('#target-right').onclick = function() {
@@ -64,7 +64,6 @@ var po2 = new PopoverWidget({
 	placement : 'left',
 	show : false,
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
-	//src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 });
 
 document.querySelector('#target-left').onclick = function() {
@@ -76,7 +75,6 @@ var po3 = new PopoverWidget({
 	placement : 'top',
 	show : false,
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
-	//src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 });
 
 document.querySelector('#target-top').onclick = function() {
@@ -88,9 +86,39 @@ var po4 = new PopoverWidget({
 	placement : 'bottom',
 	show : false,
 	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
-	//src : 'http://127.0.0.1:3000/widgetfly/example/dev/popover.html'
 });
 
 document.querySelector('#target-bottom').onclick = function() {
 	po4.toggle();
+};
+
+var PreviewWidget = Widgetfly.Popover.extend({
+	preview : function(url){
+		this.trigger('preview',url);
+	}
+});
+
+var po5 = new PreviewWidget({
+	target : '#target-preview-1',
+	placement : 'top',
+	show : false,
+	src : 'http://pqe.github.io/widgetfly/examples/widgets/embedly/popover.html'
+});
+
+document.querySelector('#target-preview-1').onmouseover = function() {
+	po5.preview(document.querySelector('#target-preview-1').getAttribute('href'));
+	po5.show();
+};
+
+document.querySelector('#target-preview-1').onmouseout = function() {
+	po5.hide();
+};
+
+document.querySelector('#target-preview-2').onmouseover = function() {
+	po5.preview(document.querySelector('#target-preview-2').getAttribute('href'));
+	po5.show();
+};
+
+document.querySelector('#target-preview-2').onmouseout = function() {
+	po5.hide();
 };
