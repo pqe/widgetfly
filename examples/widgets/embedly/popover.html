@@ -1,0 +1,96 @@
+<html>
+<head>
+  <title>jQuery Preview</title>
+  <link rel="shortcut icon" href="http://embed.ly/static/favicon.ico">
+  <link rel="stylesheet" href="common/css/foundation.min.css">
+  <link rel="stylesheet" href="common/css/font-awesome.min.css">
+  <link rel="stylesheet" href="common/css/prettify.css">
+  <link rel="stylesheet" href="common/css/demo.css">
+  <link rel="stylesheet" href="css/preview.css">
+  <style>
+    a.title {
+      font-size: 14px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  </style>
+  <script src="lib/jquery.min.js" type="text/javascript"></script>
+  <script src="common/js/prettify.js" type="text/javascript"></script>
+  <script src="lib/jquery.embedly.js" type="text/javascript"></script>
+  <script src="lib/mustache.js" type="text/javascript"></script>
+  <script src="dist/jquery.preview.js" type="text/javascript"></script>
+  <script type="text/javascript" src="../../../dist/widgetfly.min.js"></script>
+</head><body>
+<form style="display:none" id="preview_form" class="form-vertical" method="post" action=".">
+            <div class="arrow">
+              <p>Try it out.</p>
+              <img src="images/arrow.png"></div>
+            <div class="row collapse">
+              <div class="large-8 columns">
+                <input type="text" class="input-xxlarge" name="url" id="id_url" value="http://vimeo.com/18150336"></div>
+              <div class="large-3 end columns">
+                <a id="id_attach" class="button postfix">Attach</a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="large-11 columns end">
+                
+              </div>
+            </div>
+</form>
+<div class="selector-wrapper"></div>
+    <script>
+    $(document).ready(function(){
+      prettyPrint();
+      $('#id_url').preview({key: 'b8d94c17070848cf8dec4f0aad47232d', // Sign up for a key: http://embed.ly/pricing
+                            bind: false,
+                            query : {
+                              autoplay : 1,
+                              maxwidth: 600
+                            }});
+
+      $('#id_attach').bind('click', function(e){
+        if ($(this).text() == 'Attach'){
+          $('#id_url').trigger('preview');
+        } else {
+
+          var preview = $('#id_url').data('preview');
+          $('#id_url').trigger('close');
+          $('#id_url').val('');
+
+          // Create a post using mustache, i.e. the nice way.
+          var template = ['<div class="row">',
+            '<div class="large-3 columns">',
+              '<img class="thumb" src="{{thumbnail_url}}"></img>',
+            '</div>',
+            '<div class="large-9 column">',
+              '<a href="{{original_url}}">{{title}}</a>',
+              '<p>{{description}}</p>',
+            '</div>',
+          '</div>'].join('');
+
+          html = $(Mustache.to_html(template, preview));
+          html.data('preview', preview);
+          html.on('click', function(){
+            var data = $(this).data('preview');
+            // Insert the video or rich object.
+            if (data.media.type === 'video' || data.media.type === 'rich'){
+              $(this).html(data.media.html);
+              return false;
+            }
+            return true;
+          })
+          $('#feed').append(html);
+        }
+      });
+      
+      Widgetfly.Server.get().on('preview', function(url){
+          $('#id_url').val(url);
+          $('#id_attach').click();
+      });
+    
+      
+    });
+    </script></body></html>
