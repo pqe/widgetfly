@@ -1,94 +1,84 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Widgetfly by pqe</title>
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Widgetfly showcase</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Widgetfly</h1>
-        <p>A javascript library for building cross-site web widgets</p>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 
+		<link rel="stylesheet" href="main.css">
+
+		<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+
+	</head>
+	<body>
+		<div class="bs-docs-header" id="content">
+	      <div class="container">
+	        <h1>Widgetfly</h1>
+	        <p><small>A javascript library for building cross-site web widgets.</small></p>
+	      </div>
+	    </div>
+	    <!-- Begin page content -->
+    	<div class="container" id="main">
+      <div>
+        <p><strong>Widgetfly</strong> SDK is a javascript framework that helps you to building cross-site(cross domain) web widgets. It gives architecture to web widgets by providing cross-site <strong>Events</strong> model and basic <strong>UI Features</strong>.</p>
         <p class="view"><a href="https://github.com/pqe/widgetfly">View the Project on GitHub <small>pqe/widgetfly</small></a></p>
+      
+        <p>Read the <a href="https://github.com/pqe/widgetfly/blob/master/docs/README.md">documentation</a> to learn about the Widgetfly.</p>
+      </div>
+      <h2>Showcase</h2>
+      <hr></hr>
+			<h2>
+				Panel
+			</h2>
+			<div class="socialpanel">
+			</div>
+			<h2>
+				Panel and Modal interaction
+			</h2>
+			<div class="mypanel">
+			</div>
+			<div>FileChooser return: <span class="file text-success">N/a</span></div>
+			<h2>
+				Popover
+			</h2>
+			<p>
+				Four options are available: top, right, bottom, and left aligned.
+			</p>
+			<div class="mypopover" style="margin-bottom:23px;">
 
+				<button id="target-left" type="button" class="btn btn-primary" title="Popover on left">Popover on left</button>
 
-        <ul>
-          <li><a href="https://github.com/pqe/widgetfly/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/pqe/widgetfly/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/pqe/widgetfly">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a name="widgetfly" class="anchor" href="#widgetfly"><span class="octicon octicon-link"></span></a>Widgetfly</h1>
+				<button id="target-top" type="button" class="btn btn-success" title="Popover on top">Popover on top</button>
 
-<p>A javascript library for building cross-site(cross domain) web widgets.</p>
+				<button id="target-bottom" type="button" class="btn btn-info" title="Popover on bottom">Popover on bottom</button>
 
-<h2>
-<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+				<button id="target-right" type="button" class="btn btn-warning" title="Popover on right">Popover on right</button>
 
-<p>URL: <a href="https://github.com/pqe/widgetfly">https://github.com/pqe/widgetfly</a></p>
+			</div>
+			<p>
+				Hover over the links below to see previews:
+			</p>
+			<div>
+				<ul>
+					<li>
+						<a href="http://vimeo.com/18150336" id="target-preview-1">http://vimeo.com/18150336</a>
+					</li>
+					<li>
+						<a href="http://vimeo.com/103595267" id="target-preview-2">http://vimeo.com/103595267</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-<p>
-  <b>Widgetfly</b> SDK is a javascript framework that helps you to building cross-site(cross domain) web widgets. It gives architecture to web widgets by providing cross-site <b>Events</b> model and basic <b>UI Features</b>.
-</p>
-<h2>
-<a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
-
-<p>Read the <a href="https://github.com/pqe/widgetfly/blob/master/docs/README.md">documentation</a> to learn about the Widgetfly.</p>
-
-<h2>
-<a name="build-from-source" class="anchor" href="#build-from-source"><span class="octicon octicon-link"></span></a>Build from source</h2>
-
-<p>In order to build your generated AMD module from its source, you will also need Grunt. To install Grunt globally on the command line (and run the above build task), run:</p>
-
-<pre lang="shell"><code>npm install -g grunt-cli
-</code></pre>
-
-<p>Once you have generated your AMD module skeleton, you can build the minified files, the documentation and the example with Grunt:</p>
-
-<pre lang="shell"><code>grunt
-</code></pre>
-
-<p>You can also launch the <code>grunt serve</code> task to load the "examples" folder in your browser and benefit from livereload of the page in the browser once you edit one of your source file or one of the example files:</p>
-
-<pre lang="shell"><code>grunt serve
-</code></pre>
-
-<p><a href="http://gruntjs.com/"><img src="https://cdn.gruntjs.com/builtwith.png" alt="Built with Grunt"></a></p>
-
-<h2>
-<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
-
-<p>Widgetfly was initiated with <a href="https://github.com/T1st3/generator-amd">generator-amd</a>, a <a href="http://yeoman.io">Yeoman</a> generator that builds an AMD module boilerplate.</p>
-
-<p>This project uses the following as development dependencies:</p>
-
-<ul>
-<li><a href="http://jshint.com">JSHint</a></li>
-<li><a href="https://npmjs.org/package/jscs">JSCS</a></li>
-<li><a href="http://marijn.haverbeke.nl/uglifyjs">UglifyJS</a></li>
-<li><a href="http://usejsdoc.org">JSDoc</a></li>
-</ul><h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
-
-<p><a href="https://github.com/pqe/widgetfly/blob/master/LICENSE">License</a></p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/pqe">pqe</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+		
+		<script type="text/javascript" src="http://hsfeng.github.io/widgetfly-showcase/dist/widgetfly.js"></script>
+		
+		<script type="text/javascript" src="main.js"></script>
+	</body>
 </html>
