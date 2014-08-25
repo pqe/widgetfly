@@ -14,6 +14,10 @@ Documentation
 --------------
 Read the [documentation](docs/README.md) to learn about the Widgetfly.
 
+Demo
+--------------
+[http://pqe.github.io/widgetfly/](http://pqe.github.io/widgetfly/)
+
 
 Build from source
 --------------
