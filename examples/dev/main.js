@@ -5,7 +5,7 @@ var pa0 = new PanelWidget({
 	container : '.socialpanel',
 	show : true,
 	autoGrow : true,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/socialpanel/panel.html',
+	src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/socialpanel/panel.html',
 	options : {
 
 	}
@@ -16,7 +16,7 @@ var pa1 = new PanelWidget({
 	container : '.mypanel',
 	show : true,
 	autoGrow: true,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/panel.html',
+	src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/panel.html',
 	options : {
 		hello : 'world'
 	}
@@ -24,7 +24,7 @@ var pa1 = new PanelWidget({
 var m1 = new ModalWidget({
 	show : false,
 	backdrop : true,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/filechooser/modal.html'
+	src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/filechooser/modal.html'
 });
 
 m1.on('selected', function(path){
@@ -52,7 +52,7 @@ var po1 = new PopoverWidget({
 	target : '#target-right',
 	placement : 'right',
 	show : false,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
+	src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/popover.html'
 });
 
 document.querySelector('#target-right').onclick = function() {
@@ -63,7 +63,7 @@ var po2 = new PopoverWidget({
 	target : '#target-left',
 	placement : 'left',
 	show : false,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
+	src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/popover.html'
 });
 
 document.querySelector('#target-left').onclick = function() {
@@ -74,7 +74,7 @@ var po3 = new PopoverWidget({
 	target : '#target-top',
 	placement : 'top',
 	show : false,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
+	src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/popover.html'
 });
 
 document.querySelector('#target-top').onclick = function() {
@@ -85,7 +85,7 @@ var po4 = new PopoverWidget({
 	target : '#target-bottom',
 	placement : 'bottom',
 	show : false,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/popover.html'
+	src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/popover.html'
 });
 
 document.querySelector('#target-bottom').onclick = function() {
@@ -102,7 +102,7 @@ var po5 = new PreviewWidget({
 	target : '#target-preview-1',
 	placement : 'top',
 	show : false,
-	src : 'http://pqe.github.io/widgetfly/examples/widgets/embedly/popover.html'
+	src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/embedly/popover.html'
 });
 
 document.querySelector('#target-preview-1').onmouseover = function() {

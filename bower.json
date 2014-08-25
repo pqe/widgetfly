@@ -1,6 +1,6 @@
 {
   "name": "widgetfly",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/widgetfly.min.js",
   "dependencies": {
     "less.js": "~1.6.3"

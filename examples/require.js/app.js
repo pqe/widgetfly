@@ -20,7 +20,7 @@ require([
 	var pa1 = new PanelWidget({
 		container : '.mypanel',
 		show : true,
-		src : 'http://pqe.github.io/widgetfly/examples/widgets/panel.html',
+		src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/panel.html',
 		options : {
 			hello: 'world'
 		}
@@ -28,7 +28,7 @@ require([
 	var m1 = new ModalWidget({
 		show : false,
 		backdrop : true,
-		src : 'http://pqe.github.io/widgetfly/examples/widgets/filechooser/modal.html'
+		src : 'http://hsfeng.github.io/widgetfly-showcase/examples/widgets/filechooser/modal.html'
 	});
 
 	m1.on('selected', function(path){
