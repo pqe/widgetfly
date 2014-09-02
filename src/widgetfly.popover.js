@@ -69,6 +69,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 	Widgetfly.Utils.inherit(Popover, Widgetfly.Widget);
 
 	Popover.prototype.style = function() {
+
 		var vw,vh,vert,vertPlacement,horiz,horizPlacement, actualWidth, actualHeight,size = Widgetfly.Utils.actual(this.el);
 		this.placement = this.options.placement;
 
@@ -80,6 +81,12 @@ Widgetfly.Popover = (function(global) {'use strict';
 		    horiz = 0.5 * vw - size.height;
 		    horizPlacement = horiz > 0 ? 'right' : 'left';
 		    this.placement = Math.abs(horiz) > Math.abs(vert) ?  horizPlacement : vertPlacement;
+		}
+
+		if(window.innerWidth <= 640 && this.options.placement === 'left'){
+			this.placement = 'top';
+		}else if(window.innerWidth <= 640 && this.options.placement === 'right'){
+			this.placement = 'bottom';
 		}
 
 		Widgetfly.Utils.removeClass(this.el, 'wf-top wf-right wf-bottom wf-left');
@@ -94,26 +101,49 @@ Widgetfly.Popover = (function(global) {'use strict';
 
 		Widgetfly.Utils.innerStyle(this.el,this.styles);
 
-		var top,left,offset = Widgetfly.Utils.offset(this.target),
+		var top,left,right, arrowOffset, offset = Widgetfly.Utils.offset(this.target),
 			tg  = Widgetfly.Utils.actual(this.target),
 			el = Widgetfly.Utils.actual(this.el);
-			
+
 		if(this.placement === 'left'){
 			top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
 			left = offset.left - el.width;
 		}else if(this.placement === 'top'){
 			top =  offset.top - el.height;
 			left = offset.left + Math.round(tg.width / 2) - Math.round(el.width / 2);
+
+			if(left < 0){
+				arrowOffset = Math.round(tg.width / 2) + offset.left;
+				left = 5;
+			}else if(left + el.width > window.innerWidth){
+				left = window.innerWidth - el.width - 5;
+				arrowOffset = offset.left - left + Math.round(tg.width / 2);
+			}
+
 		}else if(this.placement === 'bottom'){
 			top =  offset.top + tg.height;
 			left = offset.left + Math.round(tg.width / 2) - Math.round(el.width / 2);
+
+			if(left < 0){
+				arrowOffset = Math.round(tg.width / 2) + offset.left;
+				left = 5;
+			}else if(left + el.width > window.innerWidth){
+				left = window.innerWidth - el.width - 5;
+				arrowOffset = offset.left - left + Math.round(tg.width / 2);
+			}
+
 		}else{
 			//default: right
 			top = offset.top + Math.round(tg.height / 2) - Math.round(el.height / 2);
 			left = offset.left + tg.width;
 		}
 		this.styles.offset = 'top: ' + ((typeof top === 'string') ? top : (String(top) + 'px')) + '; left:' + ((typeof left === 'string') ? left : (String(left) + 'px;'));
-		Widgetfly.Utils.innerStyle(this.el,this.styles);
+		Widgetfly.Utils.innerStyle(this.el, this.styles);
+		if(arrowOffset){
+			Widgetfly.Utils.innerStyle(this.el.querySelector('.wf-arrow'), { offset : 'left:' + ((typeof arrowOffset === 'string') ? arrowOffset : (String(arrowOffset) + 'px;')) });
+		}else{
+			Widgetfly.Utils.innerStyle(this.el.querySelector('.wf-arrow'), { offset : '' });
+		}
 	};
 
 	Popover.prototype.show = function(){
