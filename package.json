@@ -1,7 +1,7 @@
 {
   "name": "widgetfly",
   "description": "A javascript library for building cross-site(cross domain) web widgets.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "hsfeng",
   "homepage": "https://github.com/pqe/widgetfly",
   "bugs": "https://github.com/pqe/widgetfly/issues",

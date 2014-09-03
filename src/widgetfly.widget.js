@@ -3,10 +3,14 @@ Widgetfly.Widget = (function(global) {'use strict';
 	// -------------
 	var Widget = function(options) {
 		this.id = Widgetfly.Utils.uniqueId('widget');
+		this.started = false;
 		return this;
 	};
 
 	Widget.DEFAULTS = Widgetfly.Utils.extend({},{
+		autoGrow : false,
+		autoStart: true,
+		show : true,
 		spinner : '<div class="widgetfly wf-spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>'
 	});
 
@@ -55,9 +59,17 @@ Widgetfly.Widget = (function(global) {'use strict';
 
 	Widget.prototype.start = function() {
 		//console.log('Widget.Action start');
+		if(this.started){ return; }
+
 		var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onStart)) {
-			handlers.onStart();
+			handlers.onStart.apply(this,arguments);
+		}
+
+		if(this.spinner){
+			if(this.spinner.parentNode){
+				this.spinner.parentNode.removeChild(this.spinner);
+			}
 		}
 
 		if(Widgetfly.Utils.isTrue(this.options.show)){
@@ -65,7 +77,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		}else{
 			this.hide();
 		}
-
+		this.started = true;
 	};
 
 	Widget.prototype.onHide = function(callback) {
@@ -80,7 +92,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		Widgetfly.Utils.addClass(this.el, 'wf-hide');
 		var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
-			handlers.onHide();
+			handlers.onHide.apply(this,arguments);
 		}
 	};
 
@@ -111,7 +123,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		Widgetfly.Utils.addClass(this.el, 'wf-show');
 		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
-			handlers.onShow();
+			handlers.onShow.apply(this,arguments);
 		}
 		this.trigger('_onShow');
 	};
@@ -127,7 +139,7 @@ Widgetfly.Widget = (function(global) {'use strict';
 		var r, self = this, handlers;
 		handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 		if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
-			r = handlers.onBeforeClose();
+			r = handlers.onBeforeClose.apply(this,arguments);
 		}
 		if(r !== false){
 			this.trigger('_onClose');
@@ -157,7 +169,8 @@ Widgetfly.Widget = (function(global) {'use strict';
 		urlOptions = {
 			origin : origin,
 			options : this.options.options,
-			autoGrow : this.options.autoGrow
+			autoGrow : this.options.autoGrow,
+			autoStart : this.options.autoStart
 		};
 
 		this.spinner = Widgetfly.Utils.toElement(this.options.spinner);
@@ -177,10 +190,29 @@ Widgetfly.Widget = (function(global) {'use strict';
 		src = src + encodeURIComponent(JSON.stringify(urlOptions));
 
 		iframe.onload = function(e){
-			if(self.spinner){
-				if(self.spinner.parentNode){
-					self.spinner.parentNode.removeChild(self.spinner);
-				}
+			if(Widgetfly.Utils.isTrue(self.options.autoStart)){
+				var timerId, run = 0, ack = false;
+
+				self.on('ack',function(){
+					ack = true;
+					clearInterval(timerId);
+				});
+
+				timerId = setInterval(function(){
+					run++;
+					if(run > 3) {
+						clearInterval(timerId);
+						if(!ack){
+							self.start();
+						}
+					}else{
+						if(ack){
+							clearInterval(timerId);
+						}
+					}
+					self.trigger('ack');
+				},400);
+
 			}
 		};
 

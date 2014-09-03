@@ -93,7 +93,8 @@ Widgetfly.Mediator = (function(global) {'use strict';
 					widget[action](msgObj.data.msg);
 				} else {
 					if (!Widgetfly.Utils.isEmpty(myActionHandlers) && Widgetfly.Utils.isFunction(myActionHandlers[action])) {
-						myActionHandlers[action](msgObj.data.msg);
+						//myActionHandlers[action](msgObj.data.msg);
+						myActionHandlers[action].apply(widget,[msgObj.data.msg]);
 					}
 				}
 			}

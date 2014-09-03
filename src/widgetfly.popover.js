@@ -57,8 +57,7 @@ Widgetfly.Popover = (function(global) {'use strict';
 	};
 
 	Popover.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
-		autoGrow : false,
-		show : true,
+		show : false,
 		placement : 'right',
 		template : '<div class="widgetfly wf-popover wf-hide wf-animated-fadeIn wf-animated-popover"><div class="wf-arrow"></div><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="wf-popover-content"></iframe></div>',
 		options : {

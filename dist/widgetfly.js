@@ -3,7 +3,7 @@
  * A javascript library for building cross-site web widgets.
  * @link https://github.com/qpe/widgetfly
  * @author hsfeng
- * @version 0.1.2
+ * @version 0.1.3
  * @license https://github.com/qpe/widgetfly/blob/master/LICENSE
  * @copyright hsfeng
  */
@@ -528,7 +528,8 @@
 									widget[action](msgObj.data.msg);
 								} else {
 									if (!Widgetfly.Utils.isEmpty(myActionHandlers) && Widgetfly.Utils.isFunction(myActionHandlers[action])) {
-										myActionHandlers[action](msgObj.data.msg);
+										//myActionHandlers[action](msgObj.data.msg);
+										myActionHandlers[action].apply(widget,[msgObj.data.msg]);
 									}
 								}
 							}
@@ -552,7 +553,6 @@
 					Server.prototype.init = function() {
 						var self = this, paramData = decodeURIComponent(window.location.hash.substring(1));
 						this.options = JSON.parse(paramData);
-						this.trigger('start');
 						window.addEventListener('message', function(msgObj) {
 							if(window.parent){
 								var action, origin, parser;
@@ -576,6 +576,10 @@
 								}
 							}
 						}, false);
+				
+						if(this.options.autoStart){
+							this.trigger('start');
+						}
 				
 						if(this.options.autoGrow){
 							this.expand();
@@ -619,6 +623,20 @@
 						this.trigger('show');
 					};
 				
+					Server.prototype.ack = function() {
+						this.trigger('ack');
+					};
+				
+					Server.prototype.start = function(){
+						var self = this;
+						this.trigger('start');
+						if(this.options.autoGrow){
+							setTimeout(function(){
+								self.expand();
+							},100);
+						}
+					};
+				
 					Server.prototype.hide = function() {
 						this.trigger('hide');
 					};
@@ -626,7 +644,7 @@
 					Server.prototype.toggle = function() {
 						this.trigger('toggle');
 					};
-					
+				
 					Server.prototype.close = function() {
 						//console.log('Prepare server close action');
 						var self = this;
@@ -680,10 +698,14 @@
 					// -------------
 					var Widget = function(options) {
 						this.id = Widgetfly.Utils.uniqueId('widget');
+						this.started = false;
 						return this;
 					};
 				
 					Widget.DEFAULTS = Widgetfly.Utils.extend({},{
+						autoGrow : false,
+						autoStart: true,
+						show : true,
 						spinner : '<div class="widgetfly wf-spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>'
 					});
 				
@@ -732,9 +754,17 @@
 				
 					Widget.prototype.start = function() {
 						//console.log('Widget.Action start');
+						if(this.started){ return; }
+				
 						var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onStart)) {
-							handlers.onStart();
+							handlers.onStart.apply(this,arguments);
+						}
+				
+						if(this.spinner){
+							if(this.spinner.parentNode){
+								this.spinner.parentNode.removeChild(this.spinner);
+							}
 						}
 				
 						if(Widgetfly.Utils.isTrue(this.options.show)){
@@ -742,7 +772,7 @@
 						}else{
 							this.hide();
 						}
-				
+						this.started = true;
 					};
 				
 					Widget.prototype.onHide = function(callback) {
@@ -757,7 +787,7 @@
 						Widgetfly.Utils.addClass(this.el, 'wf-hide');
 						var handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onHide)) {
-							handlers.onHide();
+							handlers.onHide.apply(this,arguments);
 						}
 					};
 				
@@ -788,7 +818,7 @@
 						Widgetfly.Utils.addClass(this.el, 'wf-show');
 						handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onShow)) {
-							handlers.onShow();
+							handlers.onShow.apply(this,arguments);
 						}
 						this.trigger('_onShow');
 					};
@@ -804,7 +834,7 @@
 						var r, self = this, handlers;
 						handlers = Widgetfly.Mediator.getActionHandlers(this.id);
 						if (handlers && Widgetfly.Utils.isFunction(handlers.onBeforeClose)) {
-							r = handlers.onBeforeClose();
+							r = handlers.onBeforeClose.apply(this,arguments);
 						}
 						if(r !== false){
 							this.trigger('_onClose');
@@ -834,7 +864,8 @@
 						urlOptions = {
 							origin : origin,
 							options : this.options.options,
-							autoGrow : this.options.autoGrow
+							autoGrow : this.options.autoGrow,
+							autoStart : this.options.autoStart
 						};
 				
 						this.spinner = Widgetfly.Utils.toElement(this.options.spinner);
@@ -854,10 +885,29 @@
 						src = src + encodeURIComponent(JSON.stringify(urlOptions));
 				
 						iframe.onload = function(e){
-							if(self.spinner){
-								if(self.spinner.parentNode){
-									self.spinner.parentNode.removeChild(self.spinner);
-								}
+							if(Widgetfly.Utils.isTrue(self.options.autoStart)){
+								var timerId, run = 0, ack = false;
+				
+								self.on('ack',function(){
+									ack = true;
+									clearInterval(timerId);
+								});
+				
+								timerId = setInterval(function(){
+									run++;
+									if(run > 3) {
+										clearInterval(timerId);
+										if(!ack){
+											self.start();
+										}
+									}else{
+										if(ack){
+											clearInterval(timerId);
+										}
+									}
+									self.trigger('ack');
+								},400);
+				
 							}
 						};
 				
@@ -922,7 +972,6 @@
 					};
 				
 					Panel.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
-						autoGrow : false,
 						show : true,
 						template : '<iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="widgetfly wf-panel wf-hide"></iframe>',
 						options : {
@@ -1024,8 +1073,7 @@
 					};
 				
 					Modal.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
-						autoGrow : false,
-						show : true,
+						show : false,
 						backdrop : true,
 						template : '<div class="widgetfly wf-modal wf-hide"><div class="wf-modal-dialog"><div class="wf-modal-content wf-animated-fadeInUpBig wf-animated-modal"><a class="wf-close" href="javascript:void(0)">&#215</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="wf-modal-body wf-show"></iframe></div></div></div>',
 						options : {
@@ -1148,8 +1196,7 @@
 					};
 				
 					Popover.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
-						autoGrow : false,
-						show : true,
+						show : false,
 						placement : 'right',
 						template : '<div class="widgetfly wf-popover wf-hide wf-animated-fadeIn wf-animated-popover"><div class="wf-arrow"></div><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="wf-popover-content"></iframe></div>',
 						options : {

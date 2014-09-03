@@ -73,8 +73,7 @@ Widgetfly.Modal = (function(global) {'use strict';
 	};
 
 	Modal.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
-		autoGrow : false,
-		show : true,
+		show : false,
 		backdrop : true,
 		template : '<div class="widgetfly wf-modal wf-hide"><div class="wf-modal-dialog"><div class="wf-modal-content wf-animated-fadeInUpBig wf-animated-modal"><a class="wf-close" href="javascript:void(0)">&#215</a><iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="wf-modal-body wf-show"></iframe></div></div></div>',
 		options : {

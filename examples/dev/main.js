@@ -32,11 +32,11 @@ m1.on('selected', function(path){
 });
 
 pa1.onStart(function() {
-	console.log('p1 is started');
-	pa1.trigger('hello', 'p1');
+	console.log('pa1 is started');
+	pa1.trigger('hello', 'pa1');
 
 	pa1.onBeforeClose(function() {
-		console.log('p1 is closing');
+		console.log('pa1 is closing');
 		return true;
 	});
 

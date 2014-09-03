@@ -3,7 +3,7 @@
  * A javascript library for building cross-site web widgets.
  * @link https://github.com/qpe/widgetfly
  * @author hsfeng
- * @version 0.1.2
+ * @version 0.1.3
  * @license https://github.com/qpe/widgetfly/blob/master/LICENSE
  * @copyright hsfeng
  */

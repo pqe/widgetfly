@@ -59,6 +59,10 @@ Browser compatibility
  - Newer versions of Google Chrome, Safari, Firefox
  - IE10+
 
+## Release History
+ * 2014-09-03   v0.1.3 New autoStart option supports Server trigger start event manually.
+
+
 License
 --------------
 

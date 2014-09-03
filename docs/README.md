@@ -99,9 +99,11 @@ There are three types of widgets in Widgetfly currently.
 
 ###Widget Options
 * **container** : id / class / HTML tag
-* **autoGrow** : true / false
+* **autoGrow** : true / false , default: false
+* **autoStart** : true / false , default: true
+<p> This option indicates **Server** trigger start event automatically.</p>
+* **show** : true / false, default: true
 * **src** : URL of widget
-* **show** : true / false
 * **options** : { //custom widget specification }
 <p>Extra options will pass to **Server** object</p>
 
@@ -143,9 +145,11 @@ mywidget.trigger('hello',{name: 'world'});
 ###Widget Options
 * **container** : id / class / HTML tag
 * **backdrop** : true / false
-* **autoGrow** : true / false
+* **autoGrow** : true / false , default: false
+* **autoStart** : true / false , default: true
+<p> This option indicates **Server** trigger start event automatically.</p>
+* **show** : true / false, default: false
 * **src** : URL of widget
-* **show** : true / false
 * **size** : small / medium / large
 * **options** : { //custom widget specification }
 <p>Extra options will pass to **Server** object</p>
@@ -188,9 +192,11 @@ mywidget.trigger('hello',{name: 'world'});
 ###Widget Options
 * **target** : id / class / HTML tag
 * **placement** : top / left / bottom / right / auto
-* **autoGrow** : true / false
+* **autoGrow** : true / false , default: false
+* **autoStart** : true / false , default: true
+<p> This option indicates **Server** trigger start event automatically.</p>
+* **show** : true / false, default: false
 * **src** : URL of widget
-* **show** : true / false
 * **styles** : extra css styles (ex. width:500px; height:500px;)
 * **options** : { //custom widget specification }
 <p>Extra options will pass to **Server** object</p>
@@ -285,6 +291,8 @@ myCustomPanel.onHello(function(name){
 * **origin** : The Widget origin
 * **autoGrow** : true / false
 <p> Expanding height to fit the widget content when widget is initialized.</p>
+* **autoStart** : true / false, default: true
+<p> This option indicates **Server** trigger start event automatically.</p>
 * **options** : {//custom widget specification}
 <p>Custom options will pass from Widget to Server object</p>
 
@@ -309,7 +317,11 @@ Widgetfly.Server.get().hide();
 ```js
 Widgetfly.Server.get().toggle();
 ```
-
+* **start()**
+<p>Manually **Server** trigger to start a **Widget**</p>
+```js
+Widgetfly.Server.get().start();
+```
 * **close()**
 <p>Manually **Server** trigger to destroy a **Widget**</p>
 ```js

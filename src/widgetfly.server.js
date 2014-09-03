@@ -12,7 +12,6 @@ Widgetfly.Server = (function(global) {'use strict';
 	Server.prototype.init = function() {
 		var self = this, paramData = decodeURIComponent(window.location.hash.substring(1));
 		this.options = JSON.parse(paramData);
-		this.trigger('start');
 		window.addEventListener('message', function(msgObj) {
 			if(window.parent){
 				var action, origin, parser;
@@ -36,6 +35,10 @@ Widgetfly.Server = (function(global) {'use strict';
 				}
 			}
 		}, false);
+
+		if(this.options.autoStart){
+			this.trigger('start');
+		}
 
 		if(this.options.autoGrow){
 			this.expand();
@@ -79,6 +82,20 @@ Widgetfly.Server = (function(global) {'use strict';
 		this.trigger('show');
 	};
 
+	Server.prototype.ack = function() {
+		this.trigger('ack');
+	};
+
+	Server.prototype.start = function(){
+		var self = this;
+		this.trigger('start');
+		if(this.options.autoGrow){
+			setTimeout(function(){
+				self.expand();
+			},100);
+		}
+	};
+
 	Server.prototype.hide = function() {
 		this.trigger('hide');
 	};
@@ -86,7 +103,7 @@ Widgetfly.Server = (function(global) {'use strict';
 	Server.prototype.toggle = function() {
 		this.trigger('toggle');
 	};
-	
+
 	Server.prototype.close = function() {
 		//console.log('Prepare server close action');
 		var self = this;
