@@ -582,7 +582,11 @@
 						}
 				
 						if(this.options.autoGrow){
-							this.expand();
+							this.isShow(function(value){
+								if(value){
+									self.expand();
+								}
+							});
 						}
 					};
 				
@@ -972,7 +976,6 @@
 					};
 				
 					Panel.DEFAULTS = Widgetfly.Utils.extend({}, Widgetfly.Widget.DEFAULTS,{
-						show : true,
 						template : '<iframe allowtransparency="true" frameborder="0" tabindex="0" title="Widgetfly Widget" width="100%" class="widgetfly wf-panel wf-hide"></iframe>',
 						options : {
 				

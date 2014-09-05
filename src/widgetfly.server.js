@@ -41,7 +41,11 @@ Widgetfly.Server = (function(global) {'use strict';
 		}
 
 		if(this.options.autoGrow){
-			this.expand();
+			this.isShow(function(value){
+				if(value){
+					self.expand();
+				}
+			});
 		}
 	};
 
