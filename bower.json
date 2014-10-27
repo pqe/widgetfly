@@ -2,7 +2,7 @@
   "name": "widgetfly",
   "version": "0.1.4",
   "main": "dist/widgetfly.min.js",
-  "dependencies": {
+  "devDependencies": {
     "less.js": "~1.6.3"
   },
   "ignore": [
