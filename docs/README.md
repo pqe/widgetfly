@@ -3,7 +3,7 @@ Pure javascript
 ```html
 <script src="widgetfly.min.js"></script>
 <script>
-var ModalWidget = new Widgetfly.Modal.extend({/** overwrite **/});
+var ModalWidget = Widgetfly.Modal.extend({/** overwrite **/});
 var m1 = new ModalWidget({
 	show : false,
 	backdrop : true,
@@ -29,7 +29,7 @@ require.config({
 ...
 
 define(["widgetfly"], function (Widgetfly) {
-	var ModalWidget = new Widgetfly.Modal.extend({/** overwrite **/});
+	var ModalWidget = Widgetfly.Modal.extend({/** overwrite **/});
 	var m1 = new ModalWidget({
 		show : false,
 		backdrop : true,
@@ -257,7 +257,7 @@ myServer.trigger('your-event',{//event data});
 ###Custom your Server and Widget
 Extending **Server** class
 ```js
-var CustomServer = new Widgetfly.Server.extend({
+var CustomServer = Widgetfly.Server.extend({
 	//extend to add your features
 	hello : function(name){
 		this.trigger('hello',{name: name});
@@ -268,7 +268,7 @@ myCustomServer.hello('world');
 ```
 Extending **Widget** class
 ```js
-var CustomPanel = new Widgetfly.Panel.extend({
+var CustomPanel = Widgetfly.Panel.extend({
 	//extend to add support Server features
 	onHello : function(callback){
 		this.on('hello',callback);
